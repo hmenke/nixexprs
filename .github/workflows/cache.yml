@@ -1,0 +1,31 @@
+name: "cache"
+
+on:
+  push:
+  pull_request:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  nix-build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: cachix/install-nix-action@v23
+    - uses: cachix/cachix-action@v12
+      with:
+        name: hmenke
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+        pushFilter: "(-source$|nixpkgs.tar.gz$)"
+    - name: Run nix-build
+      run: |
+        rev="$(git ls-remote https://github.com/NixOS/nixpkgs refs/heads/$channel | awk '{print $1}')"
+        nixpkgs="fetchTarball \"https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz\""
+        nix-build \
+            --show-trace \
+            --option allow-import-from-derivation false \
+            ${channel:+--arg pkgs "import ($nixpkgs) {}"}
+      env:
+        channel: nixpkgs-unstable
