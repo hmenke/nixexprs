@@ -1,0 +1,29 @@
+name: "cache"
+on:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 0 * * *"
+
+jobs:
+  nix-build:
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+    - uses: cachix/install-nix-action@v20
+    - uses: cachix/cachix-action@v12
+      with:
+        name: hmenke
+        signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
+        pushFilter: "(-source$|nixpkgs.tar.gz$)"
+    - name: Run nix-build
+      run: |
+        rev="$(git ls-remote https://github.com/NixOS/nixpkgs refs/heads/$channel | awk '{print $1}')"
+        nixpkgs="fetchTarball \"https://github.com/NixOS/nixpkgs/archive/$rev.tar.gz\""
+        nix-build \
+            --show-trace \
+            --option allow-import-from-derivation false \
+            ${channel:+--arg pkgs "import ($nixpkgs) {}"}
+      env:
+        channel: nixpkgs-unstable
