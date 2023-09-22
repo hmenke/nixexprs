@@ -60,6 +60,8 @@ let
     { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
     { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }
     { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
+    { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
+    { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     #{ src = "${pkgsStatic.ripgrep}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
