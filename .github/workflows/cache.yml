@@ -26,8 +26,8 @@ jobs:
       run: nix-build --show-trace --no-out-link
     - name: Prepare artifacts
       run: |
-        nix-build --show-trace -A local-bin -o local-bin
-        tar czvf local-bin.tar.gz --mode='a+rwX' local-bin/*
+        nix-build --show-trace -A local-bin -o results/local-bin
+        tar czvf local-bin.tar.gz --mode='u+rwX,go+rX' results/local-bin/*
     - uses: actions/upload-artifact@v3
       with:
         name: local-bin
