@@ -3,8 +3,6 @@
 with pkgs;
 
 let
-  name = "local-bin";
-
   entries = let
     goLinkStatic = drv: args:
       drv.overrideAttrs ({ ldflags ? [], ... }: {
@@ -87,11 +85,13 @@ let
   });
 
 in
-runCommand name {
-  preferLocalBuild = true;
-  allowSubstitutes = false;
- } ''
-  mkdir -p $out/bin $out/libexec
-  ${lib.concatStrings copyCommands}
-  cp -av ${gitMinimalStatic}/libexec/git-core $out/libexec
-''
+pkgs.stdenvNoCC.mkDerivation {
+  name = "local-bin";
+  phases = [ "installPhase" "fixupPhase" ];
+  dontPatchShebangs = true;
+  installPhase = ''
+    mkdir -p $out/bin $out/libexec
+    ${lib.concatStrings copyCommands}
+    cp -av ${gitMinimalStatic}/libexec/git-core $out/libexec
+  '';
+}
