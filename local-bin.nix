@@ -54,6 +54,8 @@ let
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
+    { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
+    { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
     { src = "${hdf5toolsStatic}/bin/h5ls"; dst = "h5ls"; }
     { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
     { src = "${pkgsStatic.patchelf}/bin/patchelf"; dst = "patchelf"; }
