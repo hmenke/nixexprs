@@ -9,7 +9,7 @@
 }:
 
 mkDerivation rec {
-  name = "klatexformula";
+  pname = "klatexformula";
   version = "4.1.0";
 
   src = fetchFromGitHub {

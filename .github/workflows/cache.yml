@@ -30,4 +30,5 @@ jobs:
         tar czvf local-bin.tar.gz --mode='a+rwX' local-bin/*
     - uses: actions/upload-artifact@v3
       with:
+        name: local-bin
         path: local-bin.tar.gz
