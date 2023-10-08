@@ -20,16 +20,7 @@ let
       ];
     });
 
-    unisonStatic = stdenvNoCC.mkDerivation (finalAttrs: {
-      name = "unison-static";
-      version = "2.53.3";
-      src = fetchurl {
-        url = "https://github.com/bcpierce00/unison/releases/download/v${finalAttrs.version}/unison-${finalAttrs.version}-ubuntu-x86_64-static.tar.gz";
-        sha256 = "sha256-y7xsKECpJ9Gl3ZGDfkR8UGi2xiVOWPFnEEEpO5M1u1U=";
-      };
-      phases = [ "unpackPhase" "installPhase" ];
-      installPhase = "install -v -Dt $out/bin unison unison-fsmonitor";
-    });
+    unisonStatic = (pkgsMusl.unison.override { enableX11 = false; }).overrideAttrs { LDFLAGS = "-static"; };
 
     ncduStatic = stdenvNoCC.mkDerivation (finalAttrs: {
       name = "ncdu-static";
