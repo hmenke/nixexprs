@@ -34,6 +34,10 @@ let
       installPhase = "install -v -Dt $out/bin ncdu";
     });
 
+    ripgrepStatic = pkgsStatic.ripgrep.overrideAttrs (oa: {
+      patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
+    });
+
   in [
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
@@ -55,7 +59,7 @@ let
     { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
     { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
-    #{ src = "${pkgsStatic.ripgrep}/bin/rg"; dst = "rg"; }
+    { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
     { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
