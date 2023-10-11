@@ -39,12 +39,14 @@ let
     });
 
   in [
+    { src = "${pkgsStatic.bat}/bin/.bat-wrapped"; dst = "bat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdtar"; dst = "bsdtar"; }
     { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
+    { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
@@ -52,6 +54,7 @@ let
     { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
     { src = "${hdf5toolsStatic}/bin/h5ls"; dst = "h5ls"; }
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
+    { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
     { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
     { src = "${pkgsStatic.patchelf}/bin/patchelf"; dst = "patchelf"; }
     { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
