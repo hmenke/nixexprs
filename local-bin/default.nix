@@ -66,8 +66,8 @@ let
   ];
 
   copyCommands = map (p: ''
-    cp -av ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
-    ${pkgs.binutils}/bin/readelf -x .interp $out/bin/${p.dst}
+    ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${p.src}"}
+    ln -s ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
   '') entries;
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
@@ -87,6 +87,6 @@ pkgs.stdenvNoCC.mkDerivation {
   installPhase = ''
     mkdir -p $out/bin $out/libexec
     ${lib.concatStrings copyCommands}
-    cp -av ${gitMinimalStatic}/libexec/git-core $out/libexec
+    ln -s ${gitMinimalStatic}/libexec/git-core $out/libexec/git-core
   '';
 }

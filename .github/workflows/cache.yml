@@ -27,7 +27,9 @@ jobs:
     - name: Prepare artifacts
       run: |
         nix-build --show-trace -A local-bin -o .local
-        tar czvf local-bin.tar.gz --mode='u+rwX,go+rX' .local/*
+        tar cvf local-bin.tar --mode='u+rwX,go+rX' --dereference .local/bin/*
+        tar rvf local-bin.tar --mode='u+rwX,go+rX' .local/libexec/git-core/*
+        gzip local-bin.tar
     - uses: actions/upload-artifact@v3
       with:
         name: local-bin
