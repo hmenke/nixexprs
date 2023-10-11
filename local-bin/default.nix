@@ -69,6 +69,7 @@ let
     { src = "${pkgsStatic.tree}/bin/tree"; dst = "tree"; }
     { src = "${unisonStatic}/bin/unison"; dst = "unison"; }
     { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
+    { src = "${goLinkStatic pkgs.upterm {}}/bin/upterm"; dst = "upterm"; }
     { src = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william"; dst = "wormhole-william"; }
     { src = "${pkgsStatic.zstd}/bin/zstd"; dst = "zstd"; }
   ];
