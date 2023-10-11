@@ -43,8 +43,8 @@ let
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdtar"; dst = "bsdtar"; }
-    { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
+    { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
     { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
@@ -57,8 +57,8 @@ let
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
     { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
     { src = "${pkgsStatic.patchelf}/bin/patchelf"; dst = "patchelf"; }
-    { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
     { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }
+    { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
     { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
     { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
@@ -66,6 +66,7 @@ let
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
     { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
+    { src = "${pkgsStatic.tree}/bin/tree"; dst = "tree"; }
     { src = "${unisonStatic}/bin/unison"; dst = "unison"; }
     { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
     { src = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william"; dst = "wormhole-william"; }
