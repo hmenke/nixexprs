@@ -46,7 +46,7 @@ let
     { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
     { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
-    { src = "${pkgsStatic.fd.override { rust-jemalloc-sys = null; }}/bin/fd"; dst = "fd"; }
+    { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
@@ -64,7 +64,7 @@ let
     { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
-    { src = "${pkgsStatic.ruff.override { rust-jemalloc-sys = null; }}/bin/ruff"; dst = "ruff"; }
+    { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tailspin}/bin/spin"; dst = "spin"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
