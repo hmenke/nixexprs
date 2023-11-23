@@ -47,6 +47,7 @@ let
     { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
     { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
+    { src = "${pkgsStatic.file}/bin/file"; dst = "file"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
@@ -66,7 +67,7 @@ let
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
-    { src = "${pkgsStatic.tailspin}/bin/spin"; dst = "spin"; }
+    { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
     { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
     { src = "${pkgsStatic.tree}/bin/tree"; dst = "tree"; }
@@ -79,7 +80,7 @@ let
 
   copyCommands = map (p: ''
     ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${p.src}"}
-    ln -s ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
+    ln -sv ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
   '') entries;
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
