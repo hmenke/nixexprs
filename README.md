@@ -19,3 +19,12 @@ python3 -c 'import shutil; shutil.unpack_archive("local-bin.zip")'
 ```shell
 tar -kxvf local-bin.tar.gz -C ~
 ```
+
+### Using Git
+
+*Disclaimer:* Not everything works as expected.
+
+```shell
+export GIT_EXEC_PATH="$HOME/.local/libexec/git-core"
+export PATH="$GIT_EXEC_PATH:$PATH"
+```
