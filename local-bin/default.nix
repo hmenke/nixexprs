@@ -43,6 +43,7 @@ let
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdtar"; dst = "bsdtar"; }
+    { src = "${pkgsStatic.coreutils}/bin/coreutils"; dst = "coreutils"; }
     { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
     { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
