@@ -51,6 +51,7 @@ let
     { src = "${pkgsStatic.file}/bin/file"; dst = "file"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
+    { src = "${goLinkStatic pkgs.gh {}}/bin/gh"; dst = "gh"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
     { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
