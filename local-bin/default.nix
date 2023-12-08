@@ -65,6 +65,7 @@ let
     { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
     { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
     { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
+    { src = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr"; dst = "reptyr"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
