@@ -16,7 +16,7 @@ python3.pkgs.buildPythonApplication rec {
   };
 
   nativeBuildInputs = with python3.pkgs; [ poetry-core ];
-  propagatedBuildInputs = with python3.pkgs; [ setuptools ];
+  propagatedBuildInputs = with python3.pkgs; [ setuptools pyyaml ];
 
   meta = {
     description = "Convert Python package requirements to Flatpak build manifests";
