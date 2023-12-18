@@ -31,7 +31,7 @@ jobs:
         tar cvf local-libexec.tar --mode='u+rwX,go+rX' .local/libexec/git-core/*
         gzip --rsyncable local-bin.tar
         gzip --rsyncable local-libexec.tar
-    - uses: actions/upload-artifact@v3
+    - uses: actions/upload-artifact@v4
       with:
         path: |
           local-bin.tar.gz
