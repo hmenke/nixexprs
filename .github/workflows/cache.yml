@@ -29,8 +29,8 @@ jobs:
         nix-build --show-trace -A local-bin -o .local
         tar cvf local-bin.tar --mode='u+rwX,go+rX' --dereference .local/bin/*
         tar cvf local-libexec.tar --mode='u+rwX,go+rX' .local/libexec/git-core/*
-        gzip --rsyncable local-bin.tar
-        gzip --rsyncable local-libexec.tar
+        gzip -fv --rsyncable local-bin.tar
+        gzip -fv --rsyncable local-libexec.tar
     - uses: actions/upload-artifact@v4
       with:
         path: |
