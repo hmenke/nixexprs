@@ -38,6 +38,40 @@ let
       patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
     });
 
+    radare2Static = let
+      capstone' = pkgsStatic.capstone.overrideAttrs (oa: {
+        cmakeFlags = (oa.cmakeFlags or []) ++ [
+          "-DCAPSTONE_BUILD_STATIC:BOOL=ON"
+          "-DCAPSTONE_BUILD_SHARED:BOOL=OFF"
+        ];
+        postInstall = (oa.postInstall or "") + ''
+          install -Dvt $out/lib/pkgconfig/ capstone.pc
+        '';
+      });
+      libzip' = pkgsStatic.libzip.overrideAttrs (oa: {
+        patches = (oa.patches or []) ++ [
+          (fetchpatch2 {
+            name = "Check-for-zstd_TARGET-before-using-it-in-a-regex.patch";
+            url = "https://github.com/nih-at/libzip/commit/c719428916b4d19e838f873b1a177b126a080d61.patch";
+            sha256 = "sha256-4ksbXEM8kNvs3wtbIaXLEQNSKaxl0es/sIg0EINaTHE=";
+          })
+        ];
+      });
+    in (pkgsStatic.radare2.override {
+      capstone = capstone';
+      libzip = libzip';
+      perl = perl;
+    }).overrideAttrs (oa: {
+      mesonFlags = (oa.mesonFlags or []) ++ [
+        "-Denable_tests=false"
+        "-Duse_sys_zlib=true"
+      ];
+      hardeningDisable = (oa.hardeningDisable or []) ++ [
+        "fortify"
+      ];
+      LDFLAGS = (oa.LDFLAGS or "") + " -z muldefs";
+    });
+
   in [
     { src = "${pkgsStatic.bat}/bin/.bat-wrapped"; dst = "bat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
@@ -65,6 +99,7 @@ let
     { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }
     { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
     { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
+    { src = "${radare2Static}/bin/radare2"; dst = "r2"; }
     { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
     { src = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr"; dst = "reptyr"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
