@@ -10,6 +10,16 @@ let
         ldflags = (oa.ldflags or []) ++ [ "-s" "-w" "-extldflags '-static'" ];
       } // args);
 
+    capstoneStatic = pkgsStatic.capstone.overrideAttrs (oa: {
+      cmakeFlags = (oa.cmakeFlags or []) ++ [
+        "-DCAPSTONE_BUILD_STATIC:BOOL=ON"
+        "-DCAPSTONE_BUILD_SHARED:BOOL=OFF"
+      ];
+      postInstall = (oa.postInstall or "") + ''
+        install -Dvt $out/lib/pkgconfig/ capstone.pc
+      '';
+    });
+
     hdf5toolsStatic = pkgsStatic.hdf5.out.overrideAttrs (oa: {
       configureFlags = oa.configureFlags or [] ++ [
         "hdf5_cv_ldouble_to_long_special=no" # disabled except for IBM Power6 Linux
@@ -39,15 +49,6 @@ let
     });
 
     radare2Static = let
-      capstone' = pkgsStatic.capstone.overrideAttrs (oa: {
-        cmakeFlags = (oa.cmakeFlags or []) ++ [
-          "-DCAPSTONE_BUILD_STATIC:BOOL=ON"
-          "-DCAPSTONE_BUILD_SHARED:BOOL=OFF"
-        ];
-        postInstall = (oa.postInstall or "") + ''
-          install -Dvt $out/lib/pkgconfig/ capstone.pc
-        '';
-      });
       libzip' = pkgsStatic.libzip.overrideAttrs (oa: {
         patches = (oa.patches or []) ++ [
           (fetchpatch2 {
@@ -58,7 +59,7 @@ let
         ];
       });
     in (pkgsStatic.radare2.override {
-      capstone = capstone';
+      capstone = capstoneStatic;
       libzip = libzip';
       perl = perl;
     }).overrideAttrs (oa: {
@@ -70,6 +71,13 @@ let
         "fortify"
       ];
       LDFLAGS = (oa.LDFLAGS or "") + " -z muldefs";
+    });
+
+    uftraceStatic = let
+    in pkgsStatic.uftrace.overrideAttrs (oa: {
+      nativeBuildInputs = (oa.nativeBuildInputs or []) ++ [ binutils ];
+      buildInputs = [ capstoneStatic ];
+      patches = (oa.patches or []) ++ [ ./uftrace-static.patch ];
     });
 
   in [
@@ -110,6 +118,7 @@ let
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
     { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
     { src = "${pkgsStatic.tree}/bin/tree"; dst = "tree"; }
+    { src = "${uftraceStatic}/bin/uftrace"; dst = "uftrace"; }
     { src = "${unisonStatic}/bin/unison"; dst = "unison"; }
     { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
     { src = "${goLinkStatic pkgs.upterm {}}/bin/upterm"; dst = "upterm"; }
