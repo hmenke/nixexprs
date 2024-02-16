@@ -48,19 +48,8 @@ let
       patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
     });
 
-    radare2Static = let
-      libzip' = pkgsStatic.libzip.overrideAttrs (oa: {
-        patches = (oa.patches or []) ++ [
-          (fetchpatch2 {
-            name = "Check-for-zstd_TARGET-before-using-it-in-a-regex.patch";
-            url = "https://github.com/nih-at/libzip/commit/c719428916b4d19e838f873b1a177b126a080d61.patch";
-            sha256 = "sha256-4ksbXEM8kNvs3wtbIaXLEQNSKaxl0es/sIg0EINaTHE=";
-          })
-        ];
-      });
-    in (pkgsStatic.radare2.override {
+    radare2Static = (pkgsStatic.radare2.override {
       capstone = capstoneStatic;
-      libzip = libzip';
       perl = perl;
     }).overrideAttrs (oa: {
       mesonFlags = (oa.mesonFlags or []) ++ [
@@ -71,13 +60,6 @@ let
         "fortify"
       ];
       LDFLAGS = (oa.LDFLAGS or "") + " -z muldefs";
-    });
-
-    uftraceStatic = let
-    in pkgsStatic.uftrace.overrideAttrs (oa: {
-      nativeBuildInputs = (oa.nativeBuildInputs or []) ++ [ binutils ];
-      buildInputs = [ capstoneStatic ];
-      patches = (oa.patches or []) ++ [ ./uftrace-static.patch ];
     });
 
   in [
@@ -118,7 +100,6 @@ let
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
     { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
     { src = "${pkgsStatic.tree}/bin/tree"; dst = "tree"; }
-    { src = "${uftraceStatic}/bin/uftrace"; dst = "uftrace"; }
     { src = "${unisonStatic}/bin/unison"; dst = "unison"; }
     { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
     { src = "${goLinkStatic pkgs.upterm {}}/bin/upterm"; dst = "upterm"; }
