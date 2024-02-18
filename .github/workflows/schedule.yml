@@ -1,0 +1,13 @@
+name: Schedule
+
+# Scheduled workflows don't automatically run on forks, which actually disables
+# the entire workflow altogether, so we have this extra workflow whose only
+# purpose is to trigger other workflows on a schedule.
+
+on:
+  schedule:
+  - cron: '0 5 * * 3' # At 05:00 on Wednesday
+
+jobs:
+  cache:
+    uses: ./.github/workflows/cache.yml
