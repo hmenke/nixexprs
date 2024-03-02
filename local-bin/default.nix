@@ -63,6 +63,8 @@ let
     });
 
   in [
+    { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
+    { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
     { src = "${pkgsStatic.bat}/bin/.bat-wrapped"; dst = "bat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
@@ -95,6 +97,7 @@ let
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
+    { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
