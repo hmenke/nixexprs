@@ -11,3 +11,4 @@ on:
 jobs:
   cache:
     uses: ./.github/workflows/cache.yml
+    secrets: inherit
