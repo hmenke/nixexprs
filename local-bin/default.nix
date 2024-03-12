@@ -74,7 +74,6 @@ let
     { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
     { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
-    { src = "${pkgsStatic.file}/bin/file"; dst = "file"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
     { src = "${goLinkStatic pkgs.gh {}}/bin/gh"; dst = "gh"; }
