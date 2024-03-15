@@ -85,6 +85,7 @@ let
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
     { src = "${pkgsStatic.lsof}/bin/lsof"; dst = "lsof"; }
+    { src = "${pkgsStatic.netcat}/bin/nc"; dst = "nc"; }
     { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
     { src = "${pkgsStatic.patchelf}/bin/patchelf"; dst = "patchelf"; }
     { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }
