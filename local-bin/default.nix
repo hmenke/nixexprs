@@ -20,16 +20,6 @@ let
       '';
     });
 
-    hdf5toolsStatic = pkgsStatic.hdf5.out.overrideAttrs (oa: {
-      configureFlags = oa.configureFlags or [] ++ [
-        "hdf5_cv_ldouble_to_long_special=no" # disabled except for IBM Power6 Linux
-        "hdf5_cv_long_to_ldouble_special=no" # disabled except for IBM Power6 Linux
-        "hdf5_cv_ldouble_to_llong_accurate=yes" # enabled except for Mac OS 10.4, SGI IRIX64 6.5 and Powerpc Linux using XL compilers
-        "hdf5_cv_llong_to_ldouble_correct=yes" # enabled except Mac OS 10.4 and Powerpc Linux using XL compilers
-        "hdf5_cv_disable_some_ldouble_conv=no" # disabled except for IBM ppc64le
-      ];
-    });
-
     unisonStatic = (pkgsMusl.unison.override { enableX11 = false; }).overrideAttrs { LDFLAGS = "-static"; };
 
     ncduStatic = stdenvNoCC.mkDerivation (finalAttrs: {
@@ -81,7 +71,8 @@ let
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
     { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
-    { src = "${hdf5toolsStatic}/bin/h5ls"; dst = "h5ls"; }
+    { src = "${pkgsStatic.hdf5}/bin/h5ls"; dst = "h5ls"; }
+    { src = "${pkgsStatic.hyperfine}/bin/hyperfine"; dst = "hyperfine"; }
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
     { src = "${pkgsStatic.lsof}/bin/lsof"; dst = "lsof"; }
