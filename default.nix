@@ -8,4 +8,5 @@ lib.recurseIntoAttrs {
   klatexformula = libsForQt5.callPackage ./klatexformula {};
   prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter {};
   req2flatpak = callPackage ./req2flatpak {};
+  verrou = callPackage ./verrou {};
 }
