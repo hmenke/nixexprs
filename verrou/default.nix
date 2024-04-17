@@ -17,7 +17,7 @@ in
 valgrind.overrideAttrs (oa: rec {
   pname = "verrou";
   version = "unstable-2024-03-29";
-  name = "${oa.name}+${pname}-${version}";
+  name = "${oa.pname}-${oa.version}+${pname}-${version}";
 
   patches = (oa.patches or []) ++ [
     (verrou + "/valgrind.arm64.diff")
