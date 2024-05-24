@@ -10,16 +10,6 @@ let
         ldflags = (oa.ldflags or []) ++ [ "-s" "-w" "-extldflags '-static'" ];
       } // args);
 
-    capstoneStatic = pkgsStatic.capstone.overrideAttrs (oa: {
-      cmakeFlags = (oa.cmakeFlags or []) ++ [
-        "-DCAPSTONE_BUILD_STATIC:BOOL=ON"
-        "-DCAPSTONE_BUILD_SHARED:BOOL=OFF"
-      ];
-      postInstall = (oa.postInstall or "") + ''
-        install -Dvt $out/lib/pkgconfig/ capstone.pc
-      '';
-    });
-
     unisonStatic = (pkgsMusl.unison.override { enableX11 = false; }).overrideAttrs { LDFLAGS = "-static"; };
 
     ncduStatic = stdenvNoCC.mkDerivation (finalAttrs: {
@@ -36,20 +26,6 @@ let
 
     ripgrepStatic = pkgsStatic.ripgrep.overrideAttrs (oa: {
       patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
-    });
-
-    radare2Static = (pkgsStatic.radare2.override {
-      capstone = capstoneStatic;
-      perl = perl;
-    }).overrideAttrs (oa: {
-      mesonFlags = (oa.mesonFlags or []) ++ [
-        "-Denable_tests=false"
-        "-Duse_sys_zlib=true"
-      ];
-      hardeningDisable = (oa.hardeningDisable or []) ++ [
-        "fortify"
-      ];
-      LDFLAGS = (oa.LDFLAGS or "") + " -z muldefs";
     });
 
   in [
@@ -82,7 +58,6 @@ let
     { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }
     { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
     { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
-    { src = "${radare2Static}/bin/radare2"; dst = "r2"; }
     { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
     { src = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr"; dst = "reptyr"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
