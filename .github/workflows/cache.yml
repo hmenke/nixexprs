@@ -16,7 +16,7 @@ jobs:
     - uses: cachix/install-nix-action@V27
       with:
         extra_nix_config: "allow-import-from-derivation = false"
-        nix_path: nixpkgs=channel:nixos-23.11
+        nix_path: nixpkgs=channel:nixos-24.05
     - uses: cachix/cachix-action@v14
       with:
         name: hmenke
