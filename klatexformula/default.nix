@@ -16,14 +16,14 @@ mkDerivation rec {
     owner = "klatexformula";
     repo = "klatexformula";
     rev = "KLF_4-1-0";
-    sha256 = "sha256-0w9JlJoJz3EBkdxIGXPK1UsirGjX+fsc0Mf+hc5ZT4k=";
+    hash = "sha256-0w9JlJoJz3EBkdxIGXPK1UsirGjX+fsc0Mf+hc5ZT4k=";
   };
 
   patches = [
     (fetchpatch {
       name = "applied-suggested-patch-fixes-53.patch";
       url = "https://github.com/klatexformula/klatexformula/commit/1ba3a77a6095fff45b73413ef9b4319c56921d48.patch";
-      sha256 = "sha256-iposz1ee/8RQ43V7bHdYwKWLL5h5MCVK/XIiWzyUzIo=";
+      hash = "sha256-iposz1ee/8RQ43V7bHdYwKWLL5h5MCVK/XIiWzyUzIo=";
     })
   ];
 

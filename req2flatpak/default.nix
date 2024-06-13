@@ -12,7 +12,7 @@ python3.pkgs.buildPythonApplication rec {
     owner = "johannesjh";
     repo = "req2flatpak";
     rev = "v${version}";
-    sha256 = "sha256-Q4lqlLJ59DiXy6fClU2dcwR/5eWM9s0QpYTDWP1UQEI=";
+    hash = "sha256-Q4lqlLJ59DiXy6fClU2dcwR/5eWM9s0QpYTDWP1UQEI=";
   };
 
   nativeBuildInputs = with python3.pkgs; [ poetry-core ];

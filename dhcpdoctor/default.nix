@@ -12,7 +12,7 @@ python3.pkgs.buildPythonApplication rec {
     owner = "ArnesSI";
     repo = "dhcpdoctor";
     rev = version;
-    sha256 = "sha256-u0VmIWvuOGmYliB5eomU1yUc+TEgkPDV8IW94swR8d4=";
+    hash = "sha256-u0VmIWvuOGmYliB5eomU1yUc+TEgkPDV8IW94swR8d4=";
   };
 
   postPatch = ''

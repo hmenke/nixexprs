@@ -17,7 +17,7 @@ let
       version = "2.3";
       src = fetchurl {
         url = "https://dev.yorhel.nl/download/ncdu-${finalAttrs.version}-linux-x86_64.tar.gz";
-        sha256 = "sha256-nc3Q77Xnfl0r3OF4YVuPl5+RqmY+ggnFq9vgslv2OOg=";
+        hash = "sha256-nc3Q77Xnfl0r3OF4YVuPl5+RqmY+ggnFq9vgslv2OOg=";
       };
       sourceRoot = ".";
       phases = [ "unpackPhase" "installPhase" ];
