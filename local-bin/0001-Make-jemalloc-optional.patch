@@ -19,7 +19,7 @@ index fb78fcb..7edb550 100644
  
 -[target.'cfg(all(target_env = "musl", target_pointer_width = "64"))'.dependencies.jemallocator]
 +[dependencies.jemallocator]
- version = "0.3.0"
+ version = "0.5.0"
 +optional = true
  
  [build-dependencies]
