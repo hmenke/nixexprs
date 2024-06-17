@@ -47,7 +47,7 @@ let
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
     { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
-    { src = "${pkgsStatic.hdf5}/bin/h5ls"; dst = "h5ls"; }
+    { src = "${pkgsStatic.hdf5.bin}/bin/h5ls"; dst = "h5ls"; }
     { src = "${pkgsStatic.hyperfine}/bin/hyperfine"; dst = "hyperfine"; }
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
