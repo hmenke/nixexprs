@@ -83,11 +83,17 @@ let
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
     doInstallCheck = false;
+    # force detection of curl
+    configureFlags = oa.configureFlags or [] ++ [
+      "ac_cv_lib_curl_curl_global_init=yes"
+    ];
     # undo patchShebangs and substitutions
     postFixup = oa.postFixup or "" + ''
       find $out -type f -exec grep -Iq . {} \; -print0 |
         xargs -0 -l -t sed -i 's%#!/nix/store/[[:graph:]]*%#!/bin/sh%g; s%/nix/store/[^/]*/bin/\([[:graph:]]*\)%\1%g'
     '';
+    # libidn2 also defines `error'
+    LDFLAGS = (oa.LDFLAGS or "") + " -z muldefs";
   });
 
 in
