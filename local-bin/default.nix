@@ -63,6 +63,7 @@ let
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
+    { src = "${pkgsStatic.rustic-rs}/bin/rustic"; dst = "rustic"; }
     { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
