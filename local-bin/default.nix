@@ -28,6 +28,17 @@ let
       patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
     });
 
+    mgStatic = pkgsStatic.mg.overrideAttrs (oa: {
+      patches = assert (oa.patches or []) == []; [
+        (fetchpatch {
+          name = "Add-Ctrl-arrow-Ctrl-PgUp-Dn-to-fundamental-bindings.patch";
+          url = "https://github.com/troglobit/mg/commit/4a1ddb3aa158a9e2d8281427972debc6d326a2f8.patch";
+          hash = "sha256-TxAO9gJGUoHgnC6IJpkq2Cx5evV3UVgHIsokLwetlg4=";
+        })
+      ];
+      patchFlags = [ "-p2" "-F3" ];
+    });
+
   in [
     { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
     { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
@@ -53,7 +64,7 @@ let
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
     { src = "${pkgsStatic.lsof}/bin/lsof"; dst = "lsof"; }
-    { src = "${pkgsStatic.mg}/bin/mg"; dst = "mg"; }
+    { src = "${mgStatic}/bin/mg"; dst = "mg"; }
     { src = "${pkgsStatic.mtr}/bin/mtr"; dst = "mtr"; }
     { src = "${pkgsStatic.netcat}/bin/nc"; dst = "nc"; }
     { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
