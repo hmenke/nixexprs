@@ -78,6 +78,7 @@ let
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
     { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
     { src = "${pkgsStatic.rustic-rs}/bin/rustic"; dst = "rustic"; }
+    { src = "${pkgsStatic.sccache}/bin/sccache"; dst = "sccache"; }
     { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
