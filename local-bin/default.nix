@@ -59,6 +59,7 @@ let
     { src = "${goLinkStatic pkgs.glab {}}/bin/glab"; dst = "glab"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
+    { src = "${goLinkStatic pkgs.gotop {}}/bin/gotop"; dst = "gotop"; }
     { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
     { src = "${pkgsStatic.hdf5.bin}/bin/h5ls"; dst = "h5ls"; }
     { src = "${pkgsStatic.hyperfine}/bin/hyperfine"; dst = "hyperfine"; }
