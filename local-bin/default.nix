@@ -51,6 +51,7 @@ let
     { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
     { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
     { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
+    { src = "${goLinkStatic pkgs.dive {}}/bin/dive"; dst = "dive"; }
     { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
     { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
