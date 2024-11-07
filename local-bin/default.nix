@@ -14,10 +14,10 @@ let
 
     ncduStatic = stdenvNoCC.mkDerivation (finalAttrs: {
       name = "ncdu-static";
-      version = "2.3";
+      version = "2.6";
       src = fetchurl {
         url = "https://dev.yorhel.nl/download/ncdu-${finalAttrs.version}-linux-x86_64.tar.gz";
-        hash = "sha256-nc3Q77Xnfl0r3OF4YVuPl5+RqmY+ggnFq9vgslv2OOg=";
+        hash = "sha256-zYU5/f7qGSAXS6QIsb6I5MhXnVRDtxF4+2hBRp+StSc=";
       };
       sourceRoot = ".";
       phases = [ "unpackPhase" "installPhase" ];
