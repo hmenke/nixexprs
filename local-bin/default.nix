@@ -39,6 +39,16 @@ let
       patchFlags = [ "-p2" "-F3" ];
     });
 
+    btopStatic = (pkgsStatic.btop.override { cudaSupport = true; }).overrideAttrs (oa: {
+      hardeningDisable = (oa.hardeningDisable or []) ++ [
+        "fortify"
+      ];
+      cmakeFlags = (oa.cmakeFlags or []) ++ [
+        "-DBTOP_STATIC:BOOL=ON"
+        "-DBTOP_FORTIFY:BOOL=OFF"
+      ];
+    });
+
   in [
     { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
     { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
@@ -46,6 +56,7 @@ let
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdtar"; dst = "bsdtar"; }
+    { src = "${btopStatic}/bin/btop"; dst = "btop"; }
     { src = "${pkgsStatic.bubblewrap}/bin/bwrap"; dst = "bwrap"; }
     { src = "${pkgsStatic.coreutils}/bin/coreutils"; dst = "coreutils"; }
     { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
