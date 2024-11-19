@@ -3,7 +3,7 @@
 with pkgs;
 
 let
-  entries = let
+  binaries = let
     goLinkStatic = drv: args:
       drv.overrideAttrs (oa: {
         CGO_ENABLED = 0;
@@ -105,10 +105,32 @@ let
     { src = "${pkgsStatic.zstd}/bin/zstd"; dst = "zstd"; }
   ];
 
-  copyCommands = map (p: ''
-    ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${p.src}"}
+  scripts = let
+    lesspipe' = stdenv.mkDerivation {
+      name = lesspipe.name;
+      src = lesspipe.src;
+      meta = lesspipe.meta;
+      nativeBuildInputs = [ perl ];
+      configureFlags = [ "--prefix=/" ];
+      configurePlatforms = [ ];
+      dontBuild = true;
+      installFlags = [ "DESTDIR=$(out)" ];
+      dontPatchShebangs = true;
+    };
+  in [
+    { src = "${lesspipe'}/bin/lesspipe.sh"; dst = "lesspipe.sh"; }
+  ];
+
+  copyBinaries = map (p: ''
+    2>&1 ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${p.src}"} |
+      tee /dev/stderr | grep -qF "Warning: Section '.interp' was not dumped because it does not exist"
     ln -sv ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
-  '') entries;
+  '') binaries;
+
+  copyScripts = map (p: ''
+    grep -F '/nix/store' "${p.src}" && exit 1
+    ln -sv ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
+  '') scripts;
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
     doInstallCheck = false;
@@ -132,7 +154,8 @@ pkgs.stdenvNoCC.mkDerivation {
   dontPatchShebangs = true;
   installPhase = ''
     mkdir -p $out/bin $out/libexec
-    ${lib.concatStrings copyCommands}
+    ${lib.concatStrings copyBinaries}
+    ${lib.concatStrings copyScripts}
     ln -s ${gitMinimalStatic}/libexec/git-core $out/libexec/git-core
   '';
 }
