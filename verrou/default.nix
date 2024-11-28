@@ -10,19 +10,18 @@ let
   verrou = fetchFromGitHub {
     owner = "edf-hpc";
     repo = "verrou";
-    rev = "2c871e7c73516100b9509474432557be97619267";
-    hash = "sha256-a8WFaNEMij6qP7U9bA2uCGAFOAcivmf8MR1WePWyl50=";
+    rev = "v2.6.0";
+    hash = "sha256-TSPJp6PWboo2xjl7oP4O0RH2X7uQuAYQAIExulUQ4u4=";
   };
 in
 valgrind.overrideAttrs (oa: rec {
   pname = "verrou";
-  version = "unstable-2024-03-29";
+  version = "2.6.0";
   name = "${oa.pname}-${oa.version}+${pname}-${version}";
 
   patches = (oa.patches or []) ++ [
     (verrou + "/valgrind.arm64.diff")
     (verrou + "/valgrind.diff")
-    (verrou + "/valgrind.fma_amd64.diff")
     (verrou + "/valgrind.fma_arm64.diff")
   ];
 
