@@ -73,6 +73,7 @@ let
     { src = "${goLinkStatic pkgs.gotop {}}/bin/gotop"; dst = "gotop"; }
     { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
     { src = "${pkgsStatic.hdf5.bin}/bin/h5ls"; dst = "h5ls"; }
+    { src = "${pkgsStatic.httm}/bin/httm"; dst = "httm"; }
     { src = "${pkgsStatic.hyperfine}/bin/hyperfine"; dst = "hyperfine"; }
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
