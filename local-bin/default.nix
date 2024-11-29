@@ -49,6 +49,11 @@ let
       ];
     });
 
+    # https://github.com/NixOS/nixpkgs/pull/350654#issuecomment-2507236711
+    ruffStatic = pkgsStatic.ruff.overrideAttrs (_: {
+      postInstallCheck = null;
+    });
+
   in [
     { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
     { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
@@ -90,7 +95,7 @@ let
     { src = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr"; dst = "reptyr"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
-    { src = "${pkgsStatic.ruff}/bin/ruff"; dst = "ruff"; }
+    { src = "${ruffStatic}/bin/ruff"; dst = "ruff"; }
     { src = "${pkgsStatic.rustic-rs}/bin/rustic"; dst = "rustic"; }
     { src = "${pkgsStatic.sccache}/bin/sccache"; dst = "sccache"; }
     { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
