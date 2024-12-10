@@ -9,5 +9,5 @@ lib.recurseIntoAttrs {
   prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter {};
   redu = callPackage ./redu {};
   req2flatpak = callPackage ./req2flatpak {};
-  #verrou = callPackage ./verrou {};
+  verrou = callPackage ./verrou {};
 }
