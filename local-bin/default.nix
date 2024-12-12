@@ -107,6 +107,7 @@ let
     { src = "${unisonStatic}/bin/unison"; dst = "unison"; }
     { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
     { src = "${goLinkStatic pkgs.upterm {}}/bin/upterm"; dst = "upterm"; }
+    { src = "${pkgsStatic.uv}/bin/uv"; dst = "uv"; }
     { src = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william"; dst = "wormhole-william"; }
     { src = "${pkgsStatic.zstd}/bin/zstd"; dst = "zstd"; }
   ];
