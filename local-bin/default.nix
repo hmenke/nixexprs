@@ -54,10 +54,19 @@ let
       postInstallCheck = null;
     });
 
+    bfsStatic = pkgsStatic.bfs.overrideAttrs (oa: {
+      configurePhase = ''
+        runHook preConfigure
+        ./configure --prefix=$out --enable-release EXTRA_CFLAGS=-static EXTRA_LDFLAGS=-static
+        runHook postConfigure
+      '';
+    });
+
   in [
     { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
     { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
     { src = "${pkgsStatic.bat}/bin/.bat-wrapped"; dst = "bat"; }
+    { src = "${bfsStatic}/bin/bfs"; dst = "bfs"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
     { src = "${pkgsStatic.libarchive}/bin/bsdtar"; dst = "bsdtar"; }
