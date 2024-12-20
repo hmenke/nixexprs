@@ -5,7 +5,7 @@
 
 rustPlatform.buildRustPackage rec {
   pname = "redu";
-  version = "0.2.3";
+  version = "0.2.10";
 
   env = {
     # redu depends on nightly features
@@ -16,10 +16,10 @@ rustPlatform.buildRustPackage rec {
     owner = "drdo";
     repo = "redu";
     rev = "refs/tags/v${version}";
-    hash = "sha256-51kHAAkA32GInSTDPl0GlEdG5Xl3oZXeJH3WZmFuF4w=";
+    hash = "sha256-zZkwfO8T9k73eHXkocXQK6qegCYZJHWOjI/73hMXq4o=";
   };
 
-  cargoHash = "sha256-taXeSur1F5niIbip9OerprYBa5iUkZCZ35hgH427gSE=";
+  cargoHash = "sha256-lPiMJxqyplo9tZknwL9SLWAuWpvFF9SottI+R91vSp0=";
 
   meta = {
     homepage = "https://github.com/drdo/redu";
