@@ -1,0 +1,51 @@
+name: "update"
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  nix-update:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+    - uses: cachix/install-nix-action@v30
+      with:
+        extra_nix_config: "allow-import-from-derivation = false"
+        nix_path: nixpkgs=channel:nixos-24.11
+    - uses: cachix/cachix-action@v15
+      with:
+        name: hmenke
+        authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+        pushFilter: "(-source$|nixpkgs.tar.gz$)"
+    - name: nix-update
+      env:
+        GIT_AUTHOR_NAME: 'github-actions[bot]'
+        GIT_AUTHOR_EMAIL: 'github-actions[bot]@users.noreply.github.com'
+        GIT_COMMITTER_NAME: 'github-actions[bot]'
+        GIT_COMMITTER_EMAIL: 'github-actions[bot]@users.noreply.github.com'
+      run: |
+        # Download nix-update in advance
+        nix-build --no-out-link -A nix-update '<nixpkgs>'
+
+        # Update top-level attrs
+        xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit --use-update-script '{}'" <<-'EOF'
+          dhcpdoctor
+          prometheus-slurm-exporter
+          redu
+          req2flatpak
+          verrou
+        EOF
+        # TODO: klatexformula
+
+        # Everything has already been committed, remove unwanted files
+        git clean -dfx
+    - uses: peter-evans/create-pull-request@v7
+      with:
+        delete-branch: true

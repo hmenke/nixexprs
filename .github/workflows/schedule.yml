@@ -12,3 +12,6 @@ jobs:
   cache:
     uses: ./.github/workflows/cache.yml
     secrets: inherit
+  update:
+    uses: ./.github/workflows/update.yml
+    secrets: inherit
