@@ -10,7 +10,7 @@
 
 mkDerivation rec {
   pname = "klatexformula";
-  version = "4.1.0";
+  version = "KLF_4-1-0";
 
   src = fetchFromGitHub {
     owner = "klatexformula";
