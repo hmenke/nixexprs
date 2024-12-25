@@ -15,3 +15,6 @@ jobs:
   update:
     uses: ./.github/workflows/update.yml
     secrets: inherit
+    permissions:
+      contents: write
+      pull-requests: write
