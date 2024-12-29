@@ -82,6 +82,7 @@ let
     { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
     { src = "${goLinkStatic pkgs.gh {}}/bin/gh"; dst = "gh"; }
     { src = "${goLinkStatic pkgs.glab {}}/bin/glab"; dst = "glab"; }
+    { src = "${goLinkStatic pkgs.gobuster {}}/bin/gobuster"; dst = "gobuster"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
     { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
     { src = "${goLinkStatic pkgs.gotop {}}/bin/gotop"; dst = "gotop"; }
@@ -109,6 +110,7 @@ let
     { src = "${pkgsStatic.sccache}/bin/sccache"; dst = "sccache"; }
     { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
     { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
+    { src = "${goLinkStatic pkgs.subfinder {}}/bin/subfinder"; dst = "subfinder"; }
     { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
     { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
