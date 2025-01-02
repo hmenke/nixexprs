@@ -62,6 +62,21 @@ let
       '';
     });
 
+    liblinearStatic = pkgsStatic.liblinear.overrideAttrs (oa: {
+      patches = (oa.patches or []) ++ [ ./0002-liblinear-static.patch ];
+      installPhase = ''
+        install -Dt $out/lib liblinear.a
+        install -D train $bin/bin/liblinear-train
+        install -D predict $bin/bin/liblinear-predict
+        install -Dm444 -t $dev/include linear.h
+      '';
+    });
+
+    nmapStatic = pkgsStatic.nmap.override {
+      liblinear = liblinearStatic;
+      withLua = false;
+    };
+
   in [
     { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
     { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
@@ -96,6 +111,9 @@ let
     { src = "${mgStatic}/bin/mg"; dst = "mg"; }
     { src = "${pkgsStatic.mtr}/bin/mtr"; dst = "mtr"; }
     { src = "${pkgsStatic.netcat}/bin/nc"; dst = "nc"; }
+    { src = "${nmapStatic}/bin/ncat"; dst = "ncat"; }
+    { src = "${nmapStatic}/bin/nmap"; dst = "nmap"; }
+    { src = "${nmapStatic}/bin/nping"; dst = "nping"; }
     { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
     { src = "${pkgsStatic.patchelf}/bin/patchelf"; dst = "patchelf"; }
     { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }

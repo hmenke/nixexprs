@@ -1,0 +1,12 @@
+--- a/Makefile
++++ b/Makefile
+@@ -14,7 +14,8 @@ endif
+ all: train predict
+ 
+ lib: linear.o newton.o blas/blas.a
+-	$(CXX) $(SHARED_LIB_FLAG) linear.o newton.o blas/blas.a -o liblinear.so.$(SHVER)
++	$(AR) rcv liblinear.a *.o blas/*.o
++	$(RANLIB) liblinear.a
+ 
+ train: newton.o linear.o train.c blas/blas.a
+ 	$(CXX) $(CFLAGS) -o train train.c newton.o linear.o $(LIBS)
