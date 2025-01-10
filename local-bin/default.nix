@@ -28,6 +28,12 @@ let
       patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
     });
 
+    ripgrepAllStatic = pkgsStatic.ripgrep-all.overrideAttrs (oa: {
+      doCheck = false;
+      nativeCheckInputs = null;
+      postInstall = null;
+    });
+
     mgStatic = pkgsStatic.mg.overrideAttrs (oa: {
       patches = assert (oa.patches or []) == []; [
         (fetchpatch {
@@ -123,6 +129,8 @@ let
     { src = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr"; dst = "reptyr"; }
     { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
     { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
+    { src = "${ripgrepAllStatic}/bin/rga"; dst = "rga"; }
+    { src = "${ripgrepAllStatic}/bin/rga-preproc"; dst = "rga-preproc"; }
     { src = "${ruffStatic}/bin/ruff"; dst = "ruff"; }
     { src = "${pkgsStatic.rustic-rs}/bin/rustic"; dst = "rustic"; }
     { src = "${pkgsStatic.sccache}/bin/sccache"; dst = "sccache"; }
