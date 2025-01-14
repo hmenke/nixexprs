@@ -8,6 +8,12 @@ on:
 
 jobs:
   nix-build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+        - channel: nixos-24.11
+        - channel: nixpkgs-unstable
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v4
@@ -16,7 +22,7 @@ jobs:
     - uses: cachix/install-nix-action@v30
       with:
         extra_nix_config: "allow-import-from-derivation = false"
-        nix_path: nixpkgs=channel:nixos-24.11
+        nix_path: nixpkgs=channel:${{ matrix.channel }}
     - uses: cachix/cachix-action@v15
       with:
         name: hmenke
@@ -25,6 +31,7 @@ jobs:
     - name: Run nix-build
       run: nix-build --show-trace --no-out-link
     - name: Prepare artifacts
+      if: ${{ matrix.channel == 'nixos-24.11' }}
       run: |
         nix-build --show-trace -A local-bin -o .local
         tar cvf local-bin.tar --mode='u+rwX,go+rX' --dereference .local/bin/*
@@ -32,6 +39,7 @@ jobs:
         gzip -fv --rsyncable local-bin.tar
         gzip -fv --rsyncable local-libexec.tar
     - uses: actions/upload-artifact@v4
+      if: ${{ matrix.channel == 'nixos-24.11' }}
       with:
         path: |
           local-bin.tar.gz
