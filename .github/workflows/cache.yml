@@ -29,7 +29,9 @@ jobs:
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
         pushFilter: "(-source$|nixpkgs.tar.gz$)"
     - name: Run nix-build
-      run: nix-build --show-trace --no-out-link
+      run: |
+        nix-build --show-trace --dry-run
+        nix build --option keep-going true --print-build-logs --no-link --file ./default.nix
     - name: Prepare artifacts
       if: ${{ matrix.channel == 'nixos-24.11' }}
       run: |
