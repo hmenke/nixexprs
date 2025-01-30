@@ -112,6 +112,7 @@ let
     { src = "${pkgsStatic.hdf5.bin}/bin/h5ls"; dst = "h5ls"; }
     { src = "${pkgsStatic.httm}/bin/httm"; dst = "httm"; }
     { src = "${pkgsStatic.hyperfine}/bin/hyperfine"; dst = "hyperfine"; }
+    { src = "${pkgsStatic.jq}/bin/jq"; dst = "jq"; }
     { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
     { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
     { src = "${pkgsStatic.lsof}/bin/lsof"; dst = "lsof"; }
@@ -136,7 +137,7 @@ let
     { src = "${pkgsStatic.rustic-rs}/bin/rustic"; dst = "rustic"; }
     { src = "${pkgsStatic.sccache}/bin/sccache"; dst = "sccache"; }
     { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
-    { src = "${pkgsStatic.sqlite}/bin/sqlite3"; dst = "sqlite3"; }
+    { src = "${pkgsStatic.sqlite.override { interactive = true; }}/bin/sqlite3"; dst = "sqlite3"; }
     { src = "${goLinkStatic pkgs.subfinder {}}/bin/subfinder"; dst = "subfinder"; }
     { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
     { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
@@ -146,6 +147,7 @@ let
     { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
     { src = "${goLinkStatic pkgs.upterm {}}/bin/upterm"; dst = "upterm"; }
     { src = "${pkgsStatic.uv}/bin/uv"; dst = "uv"; }
+    { src = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy"; dst = "wireproxy"; }
     { src = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william"; dst = "wormhole-william"; }
     { src = "${pkgsStatic.zstd}/bin/zstd"; dst = "zstd"; }
   ];
