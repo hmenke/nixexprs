@@ -84,73 +84,73 @@ let
       withLua = false;
     };
 
-  in [
-    { src = "${goLinkStatic pkgs.age {}}/bin/age"; dst = "age"; }
-    { src = "${goLinkStatic pkgs.age {}}/bin/age-keygen"; dst = "age-keygen"; }
-    { src = "${pkgsStatic.bat}/bin/.bat-wrapped"; dst = "bat"; }
-    { src = "${bfsStatic}/bin/bfs"; dst = "bfs"; }
-    { src = "${pkgsStatic.libarchive}/bin/bsdcat"; dst = "bsdcat"; }
-    { src = "${pkgsStatic.libarchive}/bin/bsdcpio"; dst = "bsdcpio"; }
-    { src = "${pkgsStatic.libarchive}/bin/bsdtar"; dst = "bsdtar"; }
-    { src = "${btopStatic}/bin/btop"; dst = "btop"; }
-    { src = "${pkgsStatic.bubblewrap}/bin/bwrap"; dst = "bwrap"; }
-    { src = "${pkgsStatic.coreutils}/bin/coreutils"; dst = "coreutils"; }
-    { src = "${goLinkStatic pkgs.croc {}}/bin/croc"; dst = "croc"; }
-    { src = "${pkgsStatic.delta}/bin/delta"; dst = "delta"; }
-    { src = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv"; dst = "direnv"; }
-    { src = "${goLinkStatic pkgs.dive {}}/bin/dive"; dst = "dive"; }
-    { src = "${pkgsStatic.fd}/bin/fd"; dst = "fd"; }
-    { src = "${goLinkStatic pkgs.fq {}}/bin/fq"; dst = "fq"; }
-    { src = "${goLinkStatic pkgs.fzf {}}/bin/fzf"; dst = "fzf"; }
-    { src = "${goLinkStatic pkgs.gh {}}/bin/gh"; dst = "gh"; }
-    { src = "${goLinkStatic pkgs.glab {}}/bin/glab"; dst = "glab"; }
-    { src = "${goLinkStatic pkgs.gobuster {}}/bin/gobuster"; dst = "gobuster"; }
-    { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped"; dst = "gocryptfs"; }
-    { src = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray"; dst = "gocryptfs-xray"; }
-    { src = "${goLinkStatic pkgs.gotop {}}/bin/gotop"; dst = "gotop"; }
-    { src = "${goLinkStatic pkgs.gotty {}}/bin/gotty"; dst = "gotty"; }
-    { src = "${pkgsStatic.hdf5.bin}/bin/h5ls"; dst = "h5ls"; }
-    { src = "${pkgsStatic.httm}/bin/httm"; dst = "httm"; }
-    { src = "${pkgsStatic.hyperfine}/bin/hyperfine"; dst = "hyperfine"; }
-    { src = "${pkgsStatic.jq}/bin/jq"; dst = "jq"; }
-    { src = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade"; dst = "lemonade"; }
-    { src = "${pkgsStatic.less}/bin/less"; dst = "less"; }
-    { src = "${pkgsStatic.lsof}/bin/lsof"; dst = "lsof"; }
-    { src = "${mgStatic}/bin/mg"; dst = "mg"; }
-    { src = "${pkgsStatic.mtr}/bin/mtr"; dst = "mtr"; }
-    { src = "${pkgsStatic.netcat}/bin/nc"; dst = "nc"; }
-    { src = "${nmapStatic}/bin/ncat"; dst = "ncat"; }
-    { src = "${nmapStatic}/bin/nmap"; dst = "nmap"; }
-    { src = "${nmapStatic}/bin/nping"; dst = "nping"; }
-    { src = "${ncduStatic}/bin/ncdu"; dst = "ncdu"; }
-    { src = "${pkgsStatic.patchelf}/bin/patchelf"; dst = "patchelf"; }
-    { src = "${pkgsStatic.par2cmdline}/bin/par2"; dst = "par2"; }
-    { src = "${pkgsStatic.progress}/bin/progress"; dst = "progress"; }
-    { src = "${pkgsStatic.pv}/bin/pv"; dst = "pv"; }
-    { src = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped"; dst = "rclone"; }
-    { src = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr"; dst = "reptyr"; }
-    { src = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped"; dst = "restic"; }
-    { src = "${ripgrepStatic}/bin/rg"; dst = "rg"; }
-    { src = "${ripgrepAllStatic}/bin/rga"; dst = "rga"; }
-    { src = "${ripgrepAllStatic}/bin/rga-preproc"; dst = "rga-preproc"; }
-    { src = "${ruffStatic}/bin/ruff"; dst = "ruff"; }
-    { src = "${pkgsStatic.rustic-rs}/bin/rustic"; dst = "rustic"; }
-    { src = "${pkgsStatic.sccache}/bin/sccache"; dst = "sccache"; }
-    { src = "${goLinkStatic sops {}}/bin/sops"; dst = "sops"; }
-    { src = "${pkgsStatic.sqlite.override { interactive = true; }}/bin/sqlite3"; dst = "sqlite3"; }
-    { src = "${goLinkStatic pkgs.subfinder {}}/bin/subfinder"; dst = "subfinder"; }
-    { src = "${pkgsStatic.tailspin}/bin/tspin"; dst = "tspin"; }
-    { src = "${pkgsStatic.tmux}/bin/tmux"; dst = "tmux"; }
-    { src = "${pkgsStatic.taskspooler}/bin/.ts-wrapped"; dst = "ts"; }
-    { src = "${pkgsStatic.tree}/bin/tree"; dst = "tree"; }
-    { src = "${unisonStatic}/bin/unison"; dst = "unison"; }
-    { src = "${unisonStatic}/bin/unison-fsmonitor"; dst = "unison-fsmonitor"; }
-    { src = "${goLinkStatic pkgs.upterm {}}/bin/upterm"; dst = "upterm"; }
-    { src = "${pkgsStatic.uv}/bin/uv"; dst = "uv"; }
-    { src = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy"; dst = "wireproxy"; }
-    { src = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william"; dst = "wormhole-william"; }
-    { src = "${pkgsStatic.zstd}/bin/zstd"; dst = "zstd"; }
-  ];
+  in {
+    age = "${goLinkStatic pkgs.age {}}/bin/age";
+    age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
+    bat = "${pkgsStatic.bat}/bin/.bat-wrapped";
+    bfs = "${bfsStatic}/bin/bfs";
+    bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
+    bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
+    bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
+    btop = "${btopStatic}/bin/btop";
+    bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
+    coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
+    croc = "${goLinkStatic pkgs.croc {}}/bin/croc";
+    delta = "${pkgsStatic.delta}/bin/delta";
+    direnv = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv";
+    dive = "${goLinkStatic pkgs.dive {}}/bin/dive";
+    fd = "${pkgsStatic.fd}/bin/fd";
+    fq = "${goLinkStatic pkgs.fq {}}/bin/fq";
+    fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
+    gh = "${goLinkStatic pkgs.gh {}}/bin/gh";
+    glab = "${goLinkStatic pkgs.glab {}}/bin/glab";
+    gobuster = "${goLinkStatic pkgs.gobuster {}}/bin/gobuster";
+    gocryptfs = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped";
+    gocryptfs-xray = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray";
+    gotop = "${goLinkStatic pkgs.gotop {}}/bin/gotop";
+    gotty = "${goLinkStatic pkgs.gotty {}}/bin/gotty";
+    h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
+    httm = "${pkgsStatic.httm}/bin/httm";
+    hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
+    jq = "${pkgsStatic.jq}/bin/jq";
+    lemonade = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade";
+    less = "${pkgsStatic.less}/bin/less";
+    lsof = "${pkgsStatic.lsof}/bin/lsof";
+    mg = "${mgStatic}/bin/mg";
+    mtr = "${pkgsStatic.mtr}/bin/mtr";
+    nc = "${pkgsStatic.netcat}/bin/nc";
+    ncat = "${nmapStatic}/bin/ncat";
+    ncdu = "${ncduStatic}/bin/ncdu";
+    nmap = "${nmapStatic}/bin/nmap";
+    nping = "${nmapStatic}/bin/nping";
+    par2 = "${pkgsStatic.par2cmdline}/bin/par2";
+    patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
+    progress = "${pkgsStatic.progress}/bin/progress";
+    pv = "${pkgsStatic.pv}/bin/pv";
+    rclone = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped";
+    reptyr = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr";
+    restic = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped";
+    rg = "${ripgrepStatic}/bin/rg";
+    rga = "${ripgrepAllStatic}/bin/rga";
+    rga-preproc = "${ripgrepAllStatic}/bin/rga-preproc";
+    ruff = "${ruffStatic}/bin/ruff";
+    rustic = "${pkgsStatic.rustic-rs}/bin/rustic";
+    sccache = "${pkgsStatic.sccache}/bin/sccache";
+    sops = "${goLinkStatic sops {}}/bin/sops";
+    sqlite3 = "${pkgsStatic.sqlite.override { interactive = true; }}/bin/sqlite3";
+    subfinder = "${goLinkStatic pkgs.subfinder {}}/bin/subfinder";
+    tmux = "${pkgsStatic.tmux}/bin/tmux";
+    tree = "${pkgsStatic.tree}/bin/tree";
+    ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
+    tspin = "${pkgsStatic.tailspin}/bin/tspin";
+    unison = "${unisonStatic}/bin/unison";
+    unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
+    upterm = "${goLinkStatic pkgs.upterm {}}/bin/upterm";
+    uv = "${pkgsStatic.uv}/bin/uv";
+    wireproxy = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy";
+    wormhole-william = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william";
+    zstd = "${pkgsStatic.zstd}/bin/zstd";
+  };
 
   scripts = let
     lesspipe' = stdenv.mkDerivation {
@@ -164,19 +164,19 @@ let
       installFlags = [ "DESTDIR=$(out)" ];
       dontPatchShebangs = true;
     };
-  in [
-    { src = "${lesspipe'}/bin/lesspipe.sh"; dst = "lesspipe.sh"; }
-  ];
+  in {
+    "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
+  };
 
-  copyBinaries = map (p: ''
-    2>&1 ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${p.src}"} |
+  copyBinaries = lib.attrsets.mapAttrsToList (dst: src: ''
+    2>&1 ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${src}"} |
       tee /dev/stderr | grep -qF "Warning: Section '.interp' was not dumped because it does not exist"
-    ln -sv ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
+    ln -sv ${lib.escapeShellArg "${src}"} $out/bin/${dst}
   '') binaries;
 
-  copyScripts = map (p: ''
-    grep -F '/nix/store' "${p.src}" && exit 1
-    ln -sv ${lib.escapeShellArg "${p.src}"} $out/bin/${p.dst}
+  copyScripts = lib.attrsets.mapAttrsToList (dst: src: ''
+    grep -F '/nix/store' "${src}" && exit 1
+    ln -sv ${lib.escapeShellArg "${src}"} $out/bin/${dst}
   '') scripts;
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
