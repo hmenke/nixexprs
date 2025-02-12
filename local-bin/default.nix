@@ -101,6 +101,7 @@ let
     dive = "${goLinkStatic pkgs.dive {}}/bin/dive";
     fd = "${pkgsStatic.fd}/bin/fd";
     fq = "${goLinkStatic pkgs.fq {}}/bin/fq";
+    freeze = "${goLinkStatic pkgs.charm-freeze {}}/bin/freeze";
     fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
     gh = "${goLinkStatic pkgs.gh {}}/bin/gh";
     glab = "${goLinkStatic pkgs.glab {}}/bin/glab";
