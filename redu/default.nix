@@ -19,9 +19,8 @@ rustPlatform.buildRustPackage rec {
     hash = "sha256-6S61PyZLHB/iI9q1qxZq7eVuUMwcF/uCgCAyjJZNm5E=";
   };
 
-  cargoHash = if lib.strings.hasPrefix "25.05" lib.version
-              then "sha256-ZgSinEGf7WLPiGBMIvCvob9P1MWTQqnwpXzo9BzYhVE="
-              else "sha256-WioF3G8syU2smwMe90Bv9Hsm9nLJtCoRUcrcujGiCws=";
+  useFetchCargoVendor = true;
+  cargoHash = "sha256-OSPFaZmDayO4uHuWUwX+xaeEI+vPScC2NQbfdVFC/+w=";
 
   meta = {
     homepage = "https://github.com/drdo/redu";
