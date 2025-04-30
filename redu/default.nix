@@ -3,9 +3,9 @@
 , rustPlatform
 }:
 
-rustPlatform.buildRustPackage rec {
+rustPlatform.buildRustPackage (finalAttrs: {
   pname = "redu";
-  version = "0.2.11";
+  version = "0.2.13";
 
   env = {
     # redu depends on nightly features
@@ -15,12 +15,16 @@ rustPlatform.buildRustPackage rec {
   src = fetchFromGitHub {
     owner = "drdo";
     repo = "redu";
-    rev = "refs/tags/v${version}";
-    hash = "sha256-6S61PyZLHB/iI9q1qxZq7eVuUMwcF/uCgCAyjJZNm5E=";
+    tag = "v${finalAttrs.version}";
+    hash = "sha256-iea3tt1WB0/5XPNeCAk38/UoCHVSngXfNmfZQyspmsw=";
   };
 
+  postPatch = ''
+    sed -i"" -e '1i #![feature(char_min)]' src/lib.rs
+  '';
+
   useFetchCargoVendor = true;
-  cargoHash = "sha256-OSPFaZmDayO4uHuWUwX+xaeEI+vPScC2NQbfdVFC/+w=";
+  cargoHash = "sha256-fiMZIFIVeFnBnRBgmdUB8E5A2pM5nrTfUgD1LS6a4LQ=";
 
   meta = {
     homepage = "https://github.com/drdo/redu";
@@ -29,4 +33,4 @@ rustPlatform.buildRustPackage rec {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ hmenke ];
   };
-}
+})
