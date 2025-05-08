@@ -21,7 +21,19 @@ python3.pkgs.buildPythonApplication rec {
   '';
 
   nativeBuildInputs = with python3.pkgs; [ poetry-core ];
-  propagatedBuildInputs = with python3.pkgs; [ setuptools pyyaml ];
+  propagatedBuildInputs = with python3.pkgs; [ setuptools packaging pyyaml ];
+
+  nativeCheckInputs = with python3.pkgs; [
+    pytestCheckHook
+  ];
+
+  disabledTests = [
+    "test_api"
+    "test_cli_with_reqs_as_args"
+    "test_cli_with_reqs_as_args_yaml"
+    "test_cli_with_reqs_as_file"
+    "test_cli_with_reqs_as_file_yaml"
+  ];
 
   meta = {
     description = "Convert Python package requirements to Flatpak build manifests";
