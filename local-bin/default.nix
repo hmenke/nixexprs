@@ -79,10 +79,14 @@ let
       '';
     });
 
-    nmapStatic = pkgsStatic.nmap.override {
+    nmapStatic = (pkgsStatic.nmap.override {
       liblinear = liblinearStatic;
       withLua = false;
-    };
+    }).overrideAttrs (oa: {
+      configureFlags = (oa.configureFlags or []) ++ [
+        "--without-libnl"
+      ];
+    });
 
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
