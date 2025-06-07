@@ -88,6 +88,27 @@ let
       ];
     });
 
+    # HACK: work around https://github.com/NixOS/nixpkgs/issues/177129
+    # Though this is an issue between Clang and GCC,
+    # so it may not get fixed anytime soon...
+    empty-libgcc_eh = stdenv.mkDerivation {
+      pname = "empty-libgcc_eh";
+      version = "0";
+      dontUnpack = true;
+      installPhase = ''
+        mkdir -p "$out"/lib
+        "${binutils}"/bin/ar r "$out"/lib/libgcc_eh.a
+      '';
+    };
+
+    bzip3Static = pkgsStatic.bzip3.overrideAttrs (oa: {
+      buildInputs = (oa.buildInputs or []) ++ [ empty-libgcc_eh ];
+    });
+
+    ugrepStatic = pkgsStatic.ugrep.override {
+      bzip3 = bzip3Static;
+    };
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -149,6 +170,7 @@ let
     tree = "${pkgsStatic.tree}/bin/tree";
     ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
     tspin = "${pkgsStatic.tailspin}/bin/tspin";
+    ug = "${ugrepStatic}/bin/ug";
     unison = "${unisonStatic}/bin/unison";
     unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
     upterm = "${goLinkStatic pkgs.upterm {}}/bin/upterm";
