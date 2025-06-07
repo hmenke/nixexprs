@@ -12,7 +12,6 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - channel: nixos-24.11
         - channel: nixos-25.05
         - channel: nixpkgs-unstable
     runs-on: ubuntu-latest
@@ -35,7 +34,7 @@ jobs:
     - name: Run nix build
       run: nix build --print-build-logs --no-link --file ./default.nix
     - name: Prepare artifacts
-      if: ${{ matrix.channel == 'nixos-24.11' }}
+      if: ${{ matrix.channel == 'nixos-25.05' }}
       run: |
         nix build --file ./default.nix -o .local local-bin
         tar cvf local-bin.tar --mode='u+rwX,go+rX' --dereference .local/bin/*
@@ -43,7 +42,7 @@ jobs:
         gzip -fv --rsyncable local-bin.tar
         gzip -fv --rsyncable local-libexec.tar
     - uses: actions/upload-artifact@v4
-      if: ${{ matrix.channel == 'nixos-24.11' }}
+      if: ${{ matrix.channel == 'nixos-25.05' }}
       with:
         path: |
           local-bin.tar.gz
