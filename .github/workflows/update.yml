@@ -38,7 +38,6 @@ jobs:
         xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit '{}'" <<-'EOF'
           dhcpdoctor
           prometheus-slurm-exporter
-          redu
           req2flatpak
           verrou
         EOF
