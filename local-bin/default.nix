@@ -141,6 +141,7 @@ let
     jq = "${pkgsStatic.jq}/bin/jq";
     lemonade = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade";
     less = "${pkgsStatic.less}/bin/less";
+    libtree = "${pkgsStatic.libtree}/bin/libtree";
     lsof = "${pkgsStatic.lsof}/bin/lsof";
     mg = "${mgStatic}/bin/mg";
     mtr = "${pkgsStatic.mtr}/bin/mtr";
