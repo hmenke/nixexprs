@@ -144,12 +144,14 @@ let
     libtree = "${pkgsStatic.libtree}/bin/libtree";
     lsof = "${pkgsStatic.lsof}/bin/lsof";
     mg = "${mgStatic}/bin/mg";
+    micro = "${goLinkStatic pkgs.micro {}}/bin/micro";
     mtr = "${pkgsStatic.mtr}/bin/mtr";
     nc = "${pkgsStatic.netcat}/bin/nc";
     ncat = "${nmapStatic}/bin/ncat";
     ncdu = "${ncduStatic}/bin/ncdu";
     nmap = "${nmapStatic}/bin/nmap";
     nping = "${nmapStatic}/bin/nping";
+    ox = "${pkgsStatic.ox}/bin/ox";
     par2 = "${pkgsStatic.par2cmdline}/bin/par2";
     patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
     progress = "${pkgsStatic.progress}/bin/progress";
