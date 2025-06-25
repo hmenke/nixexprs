@@ -178,6 +178,7 @@ let
     unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
     upterm = "${goLinkStatic pkgs.upterm {}}/bin/upterm";
     uv = "${pkgsStatic.uv}/bin/uv";
+    watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy";
     wormhole-william = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
