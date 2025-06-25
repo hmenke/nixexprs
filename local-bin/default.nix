@@ -6,8 +6,7 @@ let
   binaries = let
     goLinkStatic = drv: args:
       drv.overrideAttrs (oa: {
-        CGO_ENABLED = 0;
-        env = removeAttrs (oa.env or {}) [ "CGO_ENABLED" ];
+        env.CGO_ENABLED = 0;
         ldflags = (oa.ldflags or []) ++ [ "-s" "-w" "-extldflags '-static'" ];
       } // args);
 
