@@ -35,8 +35,9 @@ jobs:
         nix-build --no-out-link -A nix-update '<nixpkgs>'
 
         # Update top-level attrs
-        xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit '{}'" <<-'EOF'
+        xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit {}" <<-'EOF'
           dhcpdoctor
+          --version=branch findent-octopus
           prometheus-slurm-exporter
           req2flatpak
           verrou

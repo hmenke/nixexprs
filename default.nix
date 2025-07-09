@@ -4,8 +4,9 @@ with pkgs;
 
 lib.recurseIntoAttrs {
   dhcpdoctor = callPackage ./dhcpdoctor {};
-  local-bin = import ./local-bin { inherit pkgs; };
+  findent-octopus = callPackage ./findent-octopus {};
   klatexformula = libsForQt5.callPackage ./klatexformula {};
+  local-bin = import ./local-bin { inherit pkgs; };
   prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter {};
   req2flatpak = callPackage ./req2flatpak {};
   verrou = callPackage ./verrou {};

@@ -108,6 +108,8 @@ let
       bzip3 = bzip3Static;
     };
 
+    findent-octopus = pkgsStatic.callPackage ../findent-octopus {};
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -124,6 +126,7 @@ let
     direnv = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv";
     dive = "${goLinkStatic pkgs.dive {}}/bin/dive";
     fd = "${pkgsStatic.fd}/bin/fd";
+    findent-octopus = "${findent-octopus}/bin/findent-octopus";
     fq = "${goLinkStatic pkgs.fq {}}/bin/fq";
     freeze = "${goLinkStatic pkgs.charm-freeze {}}/bin/freeze";
     fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
