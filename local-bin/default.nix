@@ -110,6 +110,10 @@ let
 
     findent-octopus = pkgsStatic.callPackage ../findent-octopus {};
 
+    difftasticStatic = pkgsStatic.difftastic.overrideAttrs (oa: {
+      env.RUSTFLAGS = (oa.env.RUSTFLAGS or "") + " -C relocation-model=static";
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -123,6 +127,7 @@ let
     coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
     croc = "${goLinkStatic pkgs.croc {}}/bin/croc";
     delta = "${pkgsStatic.delta}/bin/delta";
+    difft = "${difftasticStatic}/bin/difft";
     direnv = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv";
     dive = "${goLinkStatic pkgs.dive {}}/bin/dive";
     fd = "${pkgsStatic.fd}/bin/fd";
