@@ -230,7 +230,7 @@ let
         xargs -0 -l -t sed -i 's%#!/nix/store/[[:graph:]]*%#!/bin/sh%g; s%/nix/store/[^/]*/bin/\([[:graph:]]*\)%\1%g'
     '';
     # libidn2 also defines `error'
-    LDFLAGS = (oa.LDFLAGS or "") + " -z muldefs";
+    env.LDFLAGS = (oa.env.LDFLAGS or "") + " -z muldefs";
   });
 
 in
