@@ -173,7 +173,7 @@ let
     rustic = "${pkgsStatic.rustic-rs}/bin/rustic";
     sccache = "${pkgsStatic.sccache}/bin/sccache";
     sops = "${goLinkStatic sops {}}/bin/sops";
-    sqlite3 = "${pkgsStatic.sqlite.override { interactive = true; }}/bin/sqlite3";
+    sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
     ssh-to-age = "${goLinkStatic pkgs.ssh-to-age {}}/bin/ssh-to-age";
     subfinder = "${goLinkStatic pkgs.subfinder {}}/bin/subfinder";
     tmux = "${pkgsStatic.tmux}/bin/tmux";
