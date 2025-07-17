@@ -114,6 +114,12 @@ let
       env.RUSTFLAGS = (oa.env.RUSTFLAGS or "") + " -C relocation-model=static";
     });
 
+    ctagsStatic = (pkgsStatic.universal-ctags.override {
+      python3 = pkgs.python3;
+    }).overrideAttrs (_: {
+      doCheck = false;
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -125,6 +131,7 @@ let
     btop = "${btopStatic}/bin/btop";
     bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
     coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
+    ctags = "${ctagsStatic}/bin/ctags";
     delta = "${pkgsStatic.delta}/bin/delta";
     difft = "${difftasticStatic}/bin/difft";
     direnv = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv";
@@ -160,6 +167,7 @@ let
     progress = "${pkgsStatic.progress}/bin/progress";
     pv = "${pkgsStatic.pv}/bin/pv";
     rclone = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped";
+    readtags = "${ctagsStatic}/bin/readtags";
     reptyr = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr";
     restic = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped";
     rg = "${ripgrepStatic}/bin/rg";
