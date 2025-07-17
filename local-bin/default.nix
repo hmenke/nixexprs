@@ -125,7 +125,6 @@ let
     btop = "${btopStatic}/bin/btop";
     bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
     coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
-    croc = "${goLinkStatic pkgs.croc {}}/bin/croc";
     delta = "${pkgsStatic.delta}/bin/delta";
     difft = "${difftasticStatic}/bin/difft";
     direnv = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv";
@@ -137,7 +136,6 @@ let
     fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
     gh = "${goLinkStatic pkgs.gh {}}/bin/gh";
     glab = "${goLinkStatic pkgs.glab {}}/bin/glab";
-    gobuster = "${goLinkStatic pkgs.gobuster {}}/bin/gobuster";
     gocryptfs = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped";
     gocryptfs-xray = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray";
     gotop = "${goLinkStatic pkgs.gotop {}}/bin/gotop";
@@ -151,14 +149,12 @@ let
     libtree = "${pkgsStatic.libtree}/bin/libtree";
     lsof = "${pkgsStatic.lsof}/bin/lsof";
     mg = "${mgStatic}/bin/mg";
-    micro = "${goLinkStatic pkgs.micro {}}/bin/micro";
     mtr = "${pkgsStatic.mtr}/bin/mtr";
     nc = "${pkgsStatic.netcat}/bin/nc";
     ncat = "${nmapStatic}/bin/ncat";
     ncdu = "${ncduStatic}/bin/ncdu";
     nmap = "${nmapStatic}/bin/nmap";
     nping = "${nmapStatic}/bin/nping";
-    ox = "${pkgsStatic.ox}/bin/ox";
     par2 = "${pkgsStatic.par2cmdline}/bin/par2";
     patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
     progress = "${pkgsStatic.progress}/bin/progress";
@@ -175,11 +171,9 @@ let
     sops = "${goLinkStatic sops {}}/bin/sops";
     sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
     ssh-to-age = "${goLinkStatic pkgs.ssh-to-age {}}/bin/ssh-to-age";
-    subfinder = "${goLinkStatic pkgs.subfinder {}}/bin/subfinder";
     tmux = "${pkgsStatic.tmux}/bin/tmux";
     tree = "${pkgsStatic.tree}/bin/tree";
     ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
-    tspin = "${pkgsStatic.tailspin}/bin/tspin";
     ug = "${ugrepStatic}/bin/ug";
     unison = "${unisonStatic}/bin/unison";
     unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
@@ -187,7 +181,6 @@ let
     uv = "${pkgsStatic.uv}/bin/uv";
     watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy";
-    wormhole-william = "${goLinkStatic pkgs.wormhole-william {}}/bin/wormhole-william";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
   };
 
