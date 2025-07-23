@@ -142,7 +142,7 @@ let
     freeze = "${goLinkStatic pkgs.charm-freeze {}}/bin/freeze";
     fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
     gh = "${goLinkStatic pkgs.gh {}}/bin/gh";
-    glab = "${goLinkStatic pkgs.glab {}}/bin/glab";
+    glab = "${goLinkStatic pkgs.glab {}}/bin/.glab-wrapped";
     gocryptfs = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped";
     gocryptfs-xray = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray";
     gotop = "${goLinkStatic pkgs.gotop {}}/bin/gotop";
