@@ -5,10 +5,12 @@ with pkgs;
 let
   binaries = let
     goLinkStatic = drv: args:
-      drv.overrideAttrs (oa: {
-        env.CGO_ENABLED = 0;
+      drv.overrideAttrs (oa: lib.recursiveUpdate {
+        env = (oa.env or {}) // { CGO_ENABLED = 0; };
         ldflags = (oa.ldflags or []) ++ [ "-s" "-w" "-extldflags '-static'" ];
-      } // args);
+      } (if lib.isFunction args
+         then args oa
+         else args));
 
     unisonStatic = (pkgsMusl.unison.override { enableX11 = false; }).overrideAttrs { LDFLAGS = "-static"; };
 
@@ -120,19 +122,6 @@ let
       doCheck = false;
     });
 
-    ghStatic = pkgs.gh.overrideAttrs (oa: {
-      env.CGO_ENABLED = 0;
-      ldflags = (oa.ldflags or []) ++ [ "-s" "-w" "-extldflags '-static'" ];
-      patches = (oa.patches or []) ++ lib.optionals (lib.strings.versionAtLeast oa.version "2.76.0") [
-        (fetchpatch {
-          name = "Bump-Go-to-1.24.5.patch";
-          url = "https://github.com/cli/cli/commit/228fbe31dc231d089bc3383bf80bb7904a11954f.patch?full_index=1";
-          hash = "sha256-EJDDMO12jee0lfgIXwExvbV4SCZwZIkR5SK+grlKHIw=";
-          revert = true;
-        })
-      ];
-    });
-
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -154,7 +143,7 @@ let
     fq = "${goLinkStatic pkgs.fq {}}/bin/fq";
     freeze = "${goLinkStatic pkgs.charm-freeze {}}/bin/freeze";
     fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
-    gh = "${ghStatic}/bin/gh";
+    gh = "${goLinkStatic pkgs.gh {}}/bin/gh";
     glab = "${goLinkStatic pkgs.glab {}}/bin/.glab-wrapped";
     gocryptfs = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/.gocryptfs-wrapped";
     gocryptfs-xray = "${goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }}/bin/gocryptfs-xray";
