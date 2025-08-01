@@ -1,0 +1,22 @@
+diff --git a/src/netxs/desktopio/system.hpp b/src/netxs/desktopio/system.hpp
+index f2ffab0..43d35cd 100644
+--- a/src/netxs/desktopio/system.hpp
++++ b/src/netxs/desktopio/system.hpp
+@@ -32,6 +32,7 @@
+ #else
+ 
+     #include <errno.h>      // ::errno
++    #include <features.h>   // __GLIBC__
+     #include <spawn.h>      // ::exec
+     #include <unistd.h>     // ::gethostname(), ::getpid(), ::read()
+     #include <sys/param.h>  //
+@@ -1263,7 +1264,9 @@ namespace netxs::os
+             auto platform = "Linux"s;
+             if constexpr (!debugmode)
+             {
++                #ifdef __GLIBC__
+                 ::fedisableexcept(FE_ALL_EXCEPT);
++                #endif
+             }
+             #elif defined(__BSD__)
+             auto platform = "BSD"s;

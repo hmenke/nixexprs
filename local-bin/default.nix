@@ -122,6 +122,12 @@ let
       doCheck = false;
     });
 
+    vtmStatic = pkgsStatic.vtm.overrideAttrs (oa: {
+      patches = (oa.patches or []) ++ [
+        ./0003-vtm-musl.patch
+      ];
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -189,6 +195,7 @@ let
     unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
     upterm = "${goLinkStatic pkgs.upterm {}}/bin/upterm";
     uv = "${pkgsStatic.uv}/bin/uv";
+    vtm = "${vtmStatic}/bin/vtm";
     watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
