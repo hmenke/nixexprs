@@ -1,3 +1,7 @@
+[![cache](https://github.com/hmenke/nixexprs/actions/workflows/cache.yml/badge.svg)](https://github.com/hmenke/nixexprs/actions/workflows/cache.yml)
+[![schedule](https://github.com/hmenke/nixexprs/actions/workflows/schedule.yml/badge.svg)](https://github.com/hmenke/nixexprs/actions/workflows/schedule.yml)
+[![update](https://github.com/hmenke/nixexprs/actions/workflows/update.yml/badge.svg)](https://github.com/hmenke/nixexprs/actions/workflows/update.yml)
+
 https://nightly.link/hmenke/nixexprs/workflows/cache/master/artifact.zip
 
 ### All-in-one download and extract
