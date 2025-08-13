@@ -39,6 +39,7 @@ jobs:
           dhcpdoctor
           --version=branch findent-octopus
           prometheus-slurm-exporter
+          --version=branch rederr
           req2flatpak
           verrou
         EOF

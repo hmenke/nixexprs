@@ -128,6 +128,8 @@ let
       ];
     });
 
+    rederr = pkgsStatic.callPackage ../rederr {};
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -176,6 +178,7 @@ let
     pv = "${pkgsStatic.pv}/bin/pv";
     rclone = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped";
     readtags = "${ctagsStatic}/bin/readtags";
+    rederr = "${rederr}/bin/rederr";
     reptyr = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr";
     restic = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped";
     rg = "${ripgrepStatic}/bin/rg";
