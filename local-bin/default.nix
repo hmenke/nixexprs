@@ -141,6 +141,7 @@ let
     btop = "${btopStatic}/bin/btop";
     bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
     coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
+    cpz = "${pkgsStatic.fuc}/bin/cpz";
     ctags = "${ctagsStatic}/bin/ctags";
     delta = "${pkgsStatic.delta}/bin/delta";
     difft = "${difftasticStatic}/bin/difft";
@@ -184,6 +185,7 @@ let
     rg = "${ripgrepStatic}/bin/rg";
     rga = "${ripgrepAllStatic}/bin/rga";
     rga-preproc = "${ripgrepAllStatic}/bin/rga-preproc";
+    rmz = "${pkgsStatic.fuc}/bin/rmz";
     ruff = "${ruffStatic}/bin/ruff";
     rustic = "${pkgsStatic.rustic-rs}/bin/rustic";
     sccache = "${pkgsStatic.sccache}/bin/sccache";
