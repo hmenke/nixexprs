@@ -130,6 +130,12 @@ let
 
     rederr = pkgsStatic.callPackage ../rederr {};
 
+    watchexecStatic = pkgsStatic.watchexec.overrideAttrs (oa: {
+      checkFlags = (oa.checkFlags or []) ++ [
+        "--skip=e2e_ignore_many_files_200_000" # No space left on device (os error 28)
+      ];
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -201,7 +207,7 @@ let
     upterm = "${goLinkStatic pkgs.upterm {}}/bin/upterm";
     uv = "${pkgsStatic.uv}/bin/uv";
     vtm = "${vtmStatic}/bin/vtm";
-    watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
+    watchexec = "${watchexecStatic}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
   };
