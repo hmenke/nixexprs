@@ -38,6 +38,7 @@ jobs:
         xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit {}" <<-'EOF'
           dhcpdoctor
           --version=branch findent-octopus
+          pkgcheck
           prometheus-slurm-exporter
           --version=branch rederr
           req2flatpak
