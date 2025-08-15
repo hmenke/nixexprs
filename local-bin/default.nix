@@ -228,6 +228,11 @@ let
     "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
   };
 
+  share = {
+    "fzf/completion.bash" = "${fzf}/share/fzf/completion.bash";
+    "fzf/key-bindings.bash" = "${fzf}/share/fzf/key-bindings.bash";
+  };
+
   copyBinaries = lib.attrsets.mapAttrsToList (dst: src: ''
     2>&1 ${pkgs.binutils}/bin/readelf -x .interp ${lib.escapeShellArg "${src}"} |
       tee /dev/stderr | grep -qF "Warning: Section '.interp' was not dumped because it does not exist"
@@ -238,6 +243,12 @@ let
     grep -F '/nix/store' "${src}" && exit 1
     ln -sv ${lib.escapeShellArg "${src}"} $out/bin/${dst}
   '') scripts;
+
+  copyShare = lib.attrsets.mapAttrsToList (dst: src: ''
+    grep -F '/nix/store' "${src}" && exit 1
+    mkdir -p "$(dirname $out/share/${dst})"
+    ln -sv ${lib.escapeShellArg "${src}"} $out/share/${dst}
+  '') share;
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
     doInstallCheck = false;
@@ -260,9 +271,10 @@ pkgs.stdenvNoCC.mkDerivation {
   phases = [ "installPhase" "fixupPhase" ];
   dontPatchShebangs = true;
   installPhase = ''
-    mkdir -p $out/bin $out/libexec
+    mkdir -p $out/bin $out/libexec $out/share
     ${lib.concatStrings copyBinaries}
     ${lib.concatStrings copyScripts}
+    ${lib.concatStrings copyShare}
     ln -s ${gitMinimalStatic}/libexec/git-core $out/libexec/git-core
   '';
 }
