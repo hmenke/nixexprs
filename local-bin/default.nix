@@ -228,9 +228,18 @@ let
     "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
   };
 
-  share = {
-    "fzf/completion.bash" = "${fzf}/share/fzf/completion.bash";
-    "fzf/key-bindings.bash" = "${fzf}/share/fzf/key-bindings.bash";
+  share = pkgs.buildEnv {
+    name = "local-share";
+    paths = lib.lists.flatten
+      (lib.mapAttrsToList
+        (_: path: lib.mapAttrsToList
+          (drvPath: _: (import drvPath).all)
+          (builtins.getContext path))
+        (binaries // scripts));
+    pathsToLink = [
+      "/share/bash-completion"
+      "/share/fzf"
+    ];
   };
 
   copyBinaries = lib.attrsets.mapAttrsToList (dst: src: ''
@@ -244,11 +253,11 @@ let
     ln -sv ${lib.escapeShellArg "${src}"} $out/bin/${dst}
   '') scripts;
 
-  copyShare = lib.attrsets.mapAttrsToList (dst: src: ''
-    grep -F '/nix/store' "${src}" && exit 1
-    mkdir -p "$(dirname $out/share/${dst})"
-    ln -sv ${lib.escapeShellArg "${src}"} $out/share/${dst}
-  '') share;
+  copyShare = map (path: ''
+    grep -RF '/nix/store' "${share}/${path}" && exit 1
+    mkdir -p "$(dirname "$out/${path}")"
+    cp -PRv ${lib.escapeShellArg "${share}/${path}"} $out/${path}
+  '') share.pathsToLink;
 
   gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
     doInstallCheck = false;
