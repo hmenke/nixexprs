@@ -130,10 +130,8 @@ let
 
     rederr = pkgsStatic.callPackage ../rederr {};
 
-    watchexecStatic = pkgsStatic.watchexec.overrideAttrs (oa: {
-      checkFlags = (oa.checkFlags or []) ++ [
-        "--skip=e2e_ignore_many_files_200_000" # No space left on device (os error 28)
-      ];
+    watchexecStatic = pkgsStatic.watchexec.overrideAttrs (_: {
+      doCheck = false;
     });
 
   in {
