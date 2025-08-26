@@ -130,10 +130,6 @@ let
 
     rederr = pkgsStatic.callPackage ../rederr {};
 
-    watchexecStatic = pkgsStatic.watchexec.overrideAttrs (_: {
-      doCheck = false;
-    });
-
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -205,7 +201,7 @@ let
     upterm = "${goLinkStatic pkgs.upterm {}}/bin/upterm";
     uv = "${pkgsStatic.uv}/bin/uv";
     vtm = "${vtmStatic}/bin/vtm";
-    watchexec = "${watchexecStatic}/bin/watchexec";
+    watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy {}}/bin/wireproxy";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
   };
