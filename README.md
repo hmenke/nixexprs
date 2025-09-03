@@ -23,10 +23,10 @@ finally:
     remove("artifact.zip")
 
 try:
-    print("Extracting local-bin...")
-    unpack_archive("local-bin.tar.gz", expanduser("~"))
+    print("Extracting local-bin-share...")
+    unpack_archive("local-bin-share.tar.gz", expanduser("~"))
 finally:
-    remove("local-bin.tar.gz")
+    remove("local-bin-share.tar.gz")
     remove("local-libexec.tar.gz")
 EOF
 ```
@@ -49,7 +49,7 @@ python3 -c 'import shutil; shutil.unpack_archive("artifact.zip")'
 ### Unpack contents
 
 ```shell
-tar -kxvf local-bin.tar.gz -C ~
+tar -kxvf local-bin-share.tar.gz -C ~
 tar -kxvf local-libexec.tar.gz -C ~
 ```
 
