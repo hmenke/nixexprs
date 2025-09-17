@@ -130,6 +130,10 @@ let
 
     rederr = pkgsStatic.callPackage ../rederr {};
 
+    patchelfStatic = pkgsStatic.patchelf.overrideAttrs (oa: {
+      doCheck = false;
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -174,7 +178,7 @@ let
     nmap = "${nmapStatic}/bin/nmap";
     nping = "${nmapStatic}/bin/nping";
     par2 = "${pkgsStatic.par2cmdline}/bin/par2";
-    patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
+    patchelf = "${patchelfStatic}/bin/patchelf";
     progress = "${pkgsStatic.progress}/bin/progress";
     pv = "${pkgsStatic.pv}/bin/pv";
     rclone = "${goLinkStatic pkgs.rclone {}}/bin/.rclone-wrapped";
