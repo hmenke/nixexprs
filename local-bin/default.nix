@@ -134,6 +134,10 @@ let
       doCheck = false;
     });
 
+    toyboxStatic = pkgsStatic.toybox.overrideAttrs (oa: {
+      hardeningDisable = (oa.hardeningDisable or []) ++ [ "fortify" ];
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -143,6 +147,7 @@ let
     bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
     bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
     btop = "${btopStatic}/bin/btop";
+    busybox = "${pkgsStatic.busybox}/bin/busybox";
     bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
     coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
     cpz = "${pkgsStatic.fuc}/bin/cpz";
@@ -197,6 +202,7 @@ let
     sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
     ssh-to-age = "${goLinkStatic pkgs.ssh-to-age {}}/bin/ssh-to-age";
     tmux = "${pkgsStatic.tmux}/bin/tmux";
+    toybox = "${toyboxStatic}/bin/toybox";
     tree = "${pkgsStatic.tree}/bin/tree";
     ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
     ug = "${ugrepStatic}/bin/ug";
