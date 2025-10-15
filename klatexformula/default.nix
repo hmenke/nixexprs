@@ -25,6 +25,11 @@ mkDerivation rec {
       url = "https://github.com/klatexformula/klatexformula/commit/1ba3a77a6095fff45b73413ef9b4319c56921d48.patch";
       hash = "sha256-iposz1ee/8RQ43V7bHdYwKWLL5h5MCVK/XIiWzyUzIo=";
     })
+    (fetchpatch {
+      name = "Compatibility-with-CMake-4.patch";
+      url = "https://github.com/klatexformula/klatexformula/pull/80/commits/ff8e7fd3b8e21eaac77bfc8e6ff90b48ecc3bc1c.patch";
+      hash = "sha256-dW0j48/+BP+NyNuP24XpvHQvJH8uGaeGE0TtqCKAIx8=";
+    })
   ];
 
   nativeBuildInputs = [ cmake ];
