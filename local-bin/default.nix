@@ -196,7 +196,7 @@ let
     rga-preproc = "${ripgrepAllStatic}/bin/rga-preproc";
     rmz = "${pkgsStatic.fuc}/bin/rmz";
     ruff = "${ruffStatic}/bin/ruff";
-    rustic = "${pkgsStatic.rustic-rs}/bin/rustic";
+    rustic = "${pkgsStatic.rustic}/bin/rustic";
     sccache = "${pkgsStatic.sccache}/bin/sccache";
     sops = "${goLinkStatic sops {}}/bin/sops";
     sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
