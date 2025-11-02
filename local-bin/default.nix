@@ -26,10 +26,6 @@ let
       installPhase = "install -v -Dt $out/bin ncdu";
     });
 
-    ripgrepStatic = pkgsStatic.ripgrep.overrideAttrs (oa: {
-      patches = (oa.patches or []) ++ [ ./0001-Make-jemalloc-optional.patch ];
-    });
-
     ripgrepAllStatic = pkgsStatic.ripgrep-all.overrideAttrs (oa: {
       doCheck = false;
       nativeCheckInputs = null;
@@ -191,7 +187,7 @@ let
     rederr = "${rederr}/bin/rederr";
     reptyr = "${pkgsStatic.reptyr.overrideAttrs (_: { doCheck = false; checkFlags = null; })}/bin/reptyr";
     restic = "${goLinkStatic pkgs.restic {}}/bin/.restic-wrapped";
-    rg = "${ripgrepStatic}/bin/rg";
+    rg = "${pkgsStatic.ripgrep}/bin/rg";
     rga = "${ripgrepAllStatic}/bin/rga";
     rga-preproc = "${ripgrepAllStatic}/bin/rga-preproc";
     rmz = "${pkgsStatic.fuc}/bin/rmz";
