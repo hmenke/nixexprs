@@ -57,7 +57,7 @@ jobs:
           res.data.artifacts.forEach(({ id }) => {
             github.rest.actions.deleteArtifact({owner, repo, artifact_id: id})
           })
-    - uses: actions/upload-artifact@v4
+    - uses: actions/upload-artifact@v5
       if: ${{ matrix.channel == 'nixos-25.05' }}
       with:
         path: |
