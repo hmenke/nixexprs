@@ -166,11 +166,13 @@ let
     h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
     httm = "${pkgsStatic.httm}/bin/httm";
     hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
+    jj = "${pkgsStatic.jujutsu}/bin/jj";
     jq = "${pkgsStatic.jq}/bin/jq";
     lemonade = "${goLinkStatic pkgs.lemonade {}}/bin/lemonade";
     less = "${pkgsStatic.less}/bin/less";
     libtree = "${pkgsStatic.libtree}/bin/libtree";
     lsof = "${pkgsStatic.lsof}/bin/lsof";
+    mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
     mg = "${mgStatic}/bin/mg";
     mtr = "${pkgsStatic.mtr}/bin/mtr";
     nc = "${pkgsStatic.netcat}/bin/nc";
