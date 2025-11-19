@@ -237,7 +237,8 @@ let
         (_: path: lib.mapAttrsToList
           (drvPath: _: (import drvPath).all)
           (builtins.getContext path))
-        (binaries // scripts));
+        (lib.filterAttrs (name: _: !lib.elem name [ "jj" ])
+          (binaries // scripts)));
     pathsToLink = [
       "/share/bash-completion"
       "/share/fzf"
