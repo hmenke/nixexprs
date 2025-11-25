@@ -134,6 +134,10 @@ let
       hardeningDisable = (oa.hardeningDisable or []) ++ [ "fortify" ];
     });
 
+    htopStatic = pkgsStatic.htop.override {
+      sensorsSupport = false;
+    };
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -164,6 +168,7 @@ let
     gotop = "${goLinkStatic pkgs.gotop {}}/bin/gotop";
     gotty = "${goLinkStatic pkgs.gotty {}}/bin/gotty";
     h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
+    htop = "${htopStatic}/bin/htop";
     httm = "${pkgsStatic.httm}/bin/httm";
     hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
     jj = "${pkgsStatic.jujutsu}/bin/jj";
