@@ -16,6 +16,7 @@ jobs:
       matrix:
         include:
         - channel: nixos-25.05
+        - channel: nixos-25.11
         - channel: nixpkgs-unstable
     runs-on: ubuntu-latest
     steps:
