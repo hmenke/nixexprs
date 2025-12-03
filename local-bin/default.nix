@@ -246,6 +246,7 @@ let
           (binaries // scripts)));
     pathsToLink = [
       "/share/bash-completion"
+      "/share/btop"
       "/share/fzf"
     ];
   };
