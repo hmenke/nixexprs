@@ -51,6 +51,6 @@ jobs:
 
         # Everything has already been committed, remove unwanted files
         git clean -dfx
-    - uses: peter-evans/create-pull-request@v7
+    - uses: peter-evans/create-pull-request@v8
       with:
         delete-branch: true
