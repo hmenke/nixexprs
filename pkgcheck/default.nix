@@ -7,17 +7,17 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "pkgcheck";
-  version = "3.3.0_2025-06-01";
+  version = "3.3.1_2025-12-11";
 
   src = fetchFromGitea {
     domain = "codeberg.org";
     owner = "ManfredLotz";
     repo = "pkgcheck";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-+/ZQAhmw1dEs3AomgYNmc6wtdkW7NYyXfGW+RaPkruA=";
+    hash = "sha256-sFQk3Y9skvvVs/R7qjB53cio6mFMAuWOwjylLXt/RnE=";
   };
 
-  cargoHash = "sha256-1RrKJqNBC0cNLHhXwpyuxeFpvslORRwBzHxAEjHgK0s=";
+  cargoHash = "sha256-OeW6c27W3hif87kIV9mSSx04FmXvNUftiRmNEz/UKSY=";
 
   meta = {
     description = "Command line utility which the author uses to check uploaded packages to CTAN before installing them";
