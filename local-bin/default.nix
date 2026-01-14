@@ -138,6 +138,8 @@ let
       sensorsSupport = false;
     };
 
+    btduStatic = import ./btdu-static.nix { inherit pkgs; };
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -146,6 +148,7 @@ let
     bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
     bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
     bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
+    btdu = "${btduStatic}/bin/btdu";
     btop = "${btopStatic}/bin/btop";
     busybox = "${pkgsStatic.busybox}/bin/busybox";
     bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
