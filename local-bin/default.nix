@@ -140,6 +140,22 @@ let
 
     btduStatic = import ./btdu-static.nix { inherit pkgs; };
 
+    libutempterStatic = pkgsStatic.libutempter.overrideAttrs (oa: {
+      makeFlags = [ "utempter" "libutempter.a" ] ++ (oa.makeFlags or []);
+      preInstall = ''
+        touch libutempter.so
+      '';
+
+      postInstall = ''
+        rm -v $out/lib/libutempter.so*
+      '';
+    });
+
+    tmuxStatic = pkgsStatic.tmux.override {
+      withUtempter = true;
+      libutempter = libutempterStatic;
+    };
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -207,7 +223,7 @@ let
     sops = "${goLinkStatic sops {}}/bin/sops";
     sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
     ssh-to-age = "${goLinkStatic pkgs.ssh-to-age {}}/bin/ssh-to-age";
-    tmux = "${pkgsStatic.tmux}/bin/tmux";
+    tmux = "${tmuxStatic}/bin/tmux";
     toybox = "${toyboxStatic}/bin/toybox";
     tree = "${pkgsStatic.tree}/bin/tree";
     ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
