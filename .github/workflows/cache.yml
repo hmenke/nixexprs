@@ -18,6 +18,8 @@ jobs:
         - channel: nixos-25.11
         - channel: nixpkgs-unstable
     runs-on: ubuntu-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
     steps:
     - uses: actions/checkout@v6
       with:

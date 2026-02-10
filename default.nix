@@ -5,6 +5,7 @@ with pkgs;
 lib.recurseIntoAttrs {
   dhcpdoctor = callPackage ./dhcpdoctor {};
   findent-octopus = callPackage ./findent-octopus {};
+  gitbutler-cli = callPackage ./gitbutler-cli {};
   klatexformula = libsForQt5.callPackage ./klatexformula {};
   local-bin = import ./local-bin { inherit pkgs; };
   pkgcheck = callPackage ./pkgcheck {};

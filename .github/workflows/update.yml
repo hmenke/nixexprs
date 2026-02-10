@@ -11,6 +11,8 @@ permissions:
 jobs:
   nix-update:
     runs-on: ubuntu-latest
+    env:
+      NIXPKGS_ALLOW_UNFREE: 1
     steps:
     - uses: actions/checkout@v6
       with:
@@ -41,6 +43,7 @@ jobs:
         xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit {}" <<-'EOF'
           dhcpdoctor
           --version=branch findent-octopus
+          gitbutler-cli
           pkgcheck
           prometheus-slurm-exporter
           --version=branch rederr
