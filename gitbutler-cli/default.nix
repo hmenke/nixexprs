@@ -41,8 +41,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   doCheck = false; # TODO
   nativeCheckInputs = [ git ];
-  checkType = "debug";
   cargoTestFlags = [ "--package but" ];
+
+  postInstall = ''
+    export HOME="$TMPDIR"
+    mkdir -p $out/share/bash-completion/completions/
+    $out/bin/but completions bash > $out/share/bash-completion/completions/but.bash
+    mkdir -p $out/share/zsh/site-functions/
+    $out/bin/but completions zsh > $out/share/zsh/site-functions/_but
+  '';
 
   meta = {
     description = "The GitButler version control client";
