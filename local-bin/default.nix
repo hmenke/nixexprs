@@ -163,6 +163,17 @@ let
       };
     };
 
+    freezeStatic = goLinkStatic pkgs.charm-freeze (oa: {
+      patches = (oa.patches or []) ++ [
+        (fetchpatch {
+          name = "fix-Support-bold-ANSI-escape-sequence.patch";
+          url = "https://github.com/charmbracelet/freeze/pull/154/commits/a35b9da282154c6a88550a68e130a5b161645ebc.patch";
+          hash = "sha256-bgoKLYiTFIktE5YqXwd9TmcQIcBsWNQAo5cHVj3qtlU=";
+        })
+      ];
+      doCheck = false; # tests including bold of course fail now
+    });
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -186,7 +197,7 @@ let
     fd = "${pkgsStatic.fd}/bin/fd";
     findent-octopus = "${findent-octopus}/bin/findent-octopus";
     fq = "${goLinkStatic pkgs.fq {}}/bin/fq";
-    freeze = "${goLinkStatic pkgs.charm-freeze {}}/bin/freeze";
+    freeze = "${freezeStatic}/bin/freeze";
     fzf = "${goLinkStatic pkgs.fzf {}}/bin/fzf";
     gh = "${goLinkStatic pkgs.gh {}}/bin/gh";
     glab = "${goLinkStatic pkgs.glab {}}/bin/.glab-wrapped";
