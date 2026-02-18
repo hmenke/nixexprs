@@ -12,13 +12,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "gitbutler-cli";
-  version = "0.19.1";
+  version = "0.19.2";
 
   src = fetchFromGitHub {
     owner = "gitbutlerapp";
     repo = "gitbutler";
     rev = "release/${finalAttrs.version}";
-    hash = "sha256-ZCjlN8DF/l1v4AHk2CPB8VcaSuRLVIuOWPUfSn59LiE=";
+    hash = "sha256-kkvghzNNsSv1mI+99y/LGPB715itgacE9uy7Cq3xU/M=";
   };
 
   cargoPatches = [ ./remove-duplicate-packages.patch ];
