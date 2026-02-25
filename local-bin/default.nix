@@ -174,6 +174,12 @@ let
       doCheck = false; # tests including bold of course fail now
     });
 
+    direnvStatic = goLinkStatic pkgs.direnv (oa:
+      if oa ? "BASH_PATH"
+      then { BASH_PATH = ""; }
+      else { env = (oa.env or {}) // { BASH_PATH = ""; }; }
+    );
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -192,7 +198,7 @@ let
     ctags = "${ctagsStatic}/bin/ctags";
     delta = "${pkgsStatic.delta}/bin/delta";
     difft = "${difftasticStatic}/bin/difft";
-    direnv = "${goLinkStatic pkgs.direnv { BASH_PATH = ""; }}/bin/direnv";
+    direnv = "${direnvStatic}/bin/direnv";
     dive = "${goLinkStatic pkgs.dive {}}/bin/dive";
     fd = "${pkgsStatic.fd}/bin/fd";
     findent-octopus = "${findent-octopus}/bin/findent-octopus";
