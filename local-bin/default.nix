@@ -245,6 +245,7 @@ let
     ruff = "${ruffStatic}/bin/ruff";
     rustic = "${pkgsStatic.rustic}/bin/rustic";
     sccache = "${pkgsStatic.sccache}/bin/sccache";
+    sd = "${pkgsStatic.sd}/bin/sd";
     sops = "${goLinkStatic sops {}}/bin/sops";
     sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
     ssh-to-age = "${goLinkStatic pkgs.ssh-to-age {}}/bin/ssh-to-age";
