@@ -177,7 +177,7 @@ let
     direnvStatic = goLinkStatic pkgs.direnv (oa:
       if oa ? "BASH_PATH"
       then { BASH_PATH = ""; }
-      else { env = (oa.env or {}) // { BASH_PATH = ""; }; }
+      else { env.BASH_PATH = ""; }
     );
 
   in {
