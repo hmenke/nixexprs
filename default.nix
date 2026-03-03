@@ -3,6 +3,7 @@
 with pkgs;
 
 lib.recurseIntoAttrs {
+  denet = callPackage ./denet {};
   dhcpdoctor = callPackage ./dhcpdoctor {};
   findent-octopus = callPackage ./findent-octopus {};
   gitbutler-cli = callPackage ./gitbutler-cli {};
