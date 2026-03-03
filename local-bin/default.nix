@@ -180,6 +180,8 @@ let
       else { env.BASH_PATH = ""; }
     );
 
+    denetStatic = pkgsStatic.callPackage ../denet {};
+
   in {
     age = "${goLinkStatic pkgs.age {}}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age {}}/bin/age-keygen";
@@ -197,6 +199,7 @@ let
     cpz = "${pkgsStatic.fuc}/bin/cpz";
     ctags = "${ctagsStatic}/bin/ctags";
     delta = "${pkgsStatic.delta}/bin/delta";
+    denet = "${denetStatic}/bin/denet";
     difft = "${difftasticStatic}/bin/difft";
     direnv = "${direnvStatic}/bin/direnv";
     dive = "${goLinkStatic pkgs.dive {}}/bin/dive";
