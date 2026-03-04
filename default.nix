@@ -14,4 +14,5 @@ lib.recurseIntoAttrs {
   rederr = callPackage ./rederr {};
   req2flatpak = callPackage ./req2flatpak {};
   verrou = callPackage ./verrou {};
+  weave = callPackage ./weave {};
 }
