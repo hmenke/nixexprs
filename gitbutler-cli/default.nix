@@ -4,7 +4,6 @@
   git,
   lib,
   libgit2,
-  nix-update-script,
   openssl,
   pkg-config,
   rustPlatform,

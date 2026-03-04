@@ -1,7 +1,6 @@
 {
   lib,
   fetchFromGitea,
-  nix-update-script,
   rustPlatform,
 }:
 
