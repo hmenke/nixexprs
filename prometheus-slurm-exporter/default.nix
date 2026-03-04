@@ -1,6 +1,7 @@
-{ lib
-, buildGoModule
-, fetchFromGitHub
+{
+  lib,
+  buildGoModule,
+  fetchFromGitHub,
 }:
 
 buildGoModule rec {
@@ -17,7 +18,11 @@ buildGoModule rec {
   vendorHash = "sha256-A1dd9T9SIEHDCiVT2UwV6T02BSLh9ej6LC/2l54hgwI=";
 
   env.CGO_ENABLED = 0;
-  ldflags = [ "-s" "-w" "-extldflags '-static'" ];
+  ldflags = [
+    "-s"
+    "-w"
+    "-extldflags '-static'"
+  ];
   doCheck = false;
 
   meta = with lib; {

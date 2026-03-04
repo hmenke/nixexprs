@@ -1,8 +1,9 @@
-{ lib
-, stdenv
-, fetchFromGitHub
-, meson
-, ninja
+{
+  lib,
+  stdenv,
+  fetchFromGitHub,
+  meson,
+  ninja,
 }:
 
 stdenv.mkDerivation (final: {
@@ -20,7 +21,10 @@ stdenv.mkDerivation (final: {
     ./missing-include.patch
   ];
 
-  nativeBuildInputs = [ meson ninja ];
+  nativeBuildInputs = [
+    meson
+    ninja
+  ];
 
   meta = {
     description = "Colour your stderr red";

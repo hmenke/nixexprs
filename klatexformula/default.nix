@@ -1,11 +1,12 @@
-{ lib
-, mkDerivation
-, fetchFromGitHub
-, fetchpatch
-, cmake
-, qttools
-, qtx11extras
-, ghostscript
+{
+  lib,
+  mkDerivation,
+  fetchFromGitHub,
+  fetchpatch,
+  cmake,
+  qttools,
+  qtx11extras,
+  ghostscript,
 }:
 
 mkDerivation rec {

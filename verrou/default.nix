@@ -1,11 +1,12 @@
-{ autoreconfHook
-, fetchurl
-, gdb
-, lib
-, makeWrapper
-, perl
-, python3
-, stdenv
+{
+  autoreconfHook,
+  fetchurl,
+  gdb,
+  lib,
+  makeWrapper,
+  perl,
+  python3,
+  stdenv,
 }:
 
 stdenv.mkDerivation (final: {
@@ -17,15 +18,31 @@ stdenv.mkDerivation (final: {
     hash = "sha256-DpLhIKmyLGnyPCUkbP6iGZ6oRC/szsy+4L4Y5E86ix4=";
   };
 
-  outputs = [ "out" "dev" "man" "doc" ];
+  outputs = [
+    "out"
+    "dev"
+    "man"
+    "doc"
+  ];
 
-  hardeningDisable = [ "pie" "stackprotector" ];
+  hardeningDisable = [
+    "pie"
+    "stackprotector"
+  ];
   NIX_ENFORCE_NO_NATIVE = false;
 
   # GDB is needed to provide a sane default for `--db-command'.
   # Perl is needed for `callgrind_{annotate,control}'.
-  buildInputs = [ gdb perl python3 ];
-  nativeBuildInputs = [ autoreconfHook perl makeWrapper ];
+  buildInputs = [
+    gdb
+    perl
+    python3
+  ];
+  nativeBuildInputs = [
+    autoreconfHook
+    perl
+    makeWrapper
+  ];
 
   enableParallelBuilding = true;
   separateDebugInfo = true;

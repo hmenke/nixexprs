@@ -6,7 +6,16 @@ let
   src = fetchTarball "https://github.com/CyberShadow/${pname}/archive/refs/tags/v${version}.tar.gz";
   flake = import "${src}/flake.nix";
   self = null;
-  nixpkgs = { legacyPackages = { "${pkgs.stdenv.hostPlatform.system}" = pkgs; }; };
-  flake-utils = { lib = { eachDefaultSystem = fn: fn "${pkgs.stdenv.hostPlatform.system}"; }; };
+  nixpkgs = {
+    legacyPackages = {
+      "${pkgs.stdenv.hostPlatform.system}" = pkgs;
+    };
+  };
+  flake-utils = {
+    lib = {
+      eachDefaultSystem = fn: fn "${pkgs.stdenv.hostPlatform.system}";
+    };
+  };
   outputs = flake.outputs { inherit self nixpkgs flake-utils; };
-in outputs.packages.btdu-static-x86_64
+in
+outputs.packages.btdu-static-x86_64

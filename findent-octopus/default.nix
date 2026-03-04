@@ -1,8 +1,9 @@
-{ lib
-, stdenv
-, fetchFromGitLab
-, bison
-, flex
+{
+  lib,
+  stdenv,
+  fetchFromGitLab,
+  bison,
+  flex,
 }:
 
 stdenv.mkDerivation (final: {
@@ -16,9 +17,15 @@ stdenv.mkDerivation (final: {
     hash = "sha256-6EZHA6UNFRFsq2avE9Al+PHdu9HfONcBNKLiCGN0le0=";
   };
 
-  nativeBuildInputs = [ bison flex ];
+  nativeBuildInputs = [
+    bison
+    flex
+  ];
 
-  makeFlags = [ "-C bin" "CPP=$(CXX)" ];
+  makeFlags = [
+    "-C bin"
+    "CPP=$(CXX)"
+  ];
 
   installPhase = ''
     install -D -m755 ./bin/findent-octopus $out/bin/findent-octopus

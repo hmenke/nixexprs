@@ -1,18 +1,20 @@
-{ pkgs ? import <nixpkgs> {} }:
+{
+  pkgs ? import <nixpkgs> { },
+}:
 
 with pkgs;
 
 lib.recurseIntoAttrs {
-  denet = callPackage ./denet {};
-  dhcpdoctor = callPackage ./dhcpdoctor {};
-  findent-octopus = callPackage ./findent-octopus {};
-  gitbutler-cli = callPackage ./gitbutler-cli {};
-  klatexformula = libsForQt5.callPackage ./klatexformula {};
+  denet = callPackage ./denet { };
+  dhcpdoctor = callPackage ./dhcpdoctor { };
+  findent-octopus = callPackage ./findent-octopus { };
+  gitbutler-cli = callPackage ./gitbutler-cli { };
+  klatexformula = libsForQt5.callPackage ./klatexformula { };
   local-bin = import ./local-bin { inherit pkgs; };
-  pkgcheck = callPackage ./pkgcheck {};
-  prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter {};
-  rederr = callPackage ./rederr {};
-  req2flatpak = callPackage ./req2flatpak {};
-  verrou = callPackage ./verrou {};
-  weave = callPackage ./weave {};
+  pkgcheck = callPackage ./pkgcheck { };
+  prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter { };
+  rederr = callPackage ./rederr { };
+  req2flatpak = callPackage ./req2flatpak { };
+  verrou = callPackage ./verrou { };
+  weave = callPackage ./weave { };
 }
