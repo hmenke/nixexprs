@@ -26,7 +26,6 @@ stdenv.mkDerivation (final: {
   ];
 
   hardeningDisable = [
-    "pie"
     "stackprotector"
   ];
   NIX_ENFORCE_NO_NATIVE = false;
