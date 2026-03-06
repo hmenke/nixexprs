@@ -129,12 +129,6 @@ let
         bzip3 = bzip3Static;
       };
 
-      findent-octopus = pkgsStatic.callPackage ../findent-octopus { };
-
-      difftasticStatic = pkgsStatic.difftastic.overrideAttrs (oa: {
-        env.RUSTFLAGS = (oa.env.RUSTFLAGS or "") + " -C relocation-model=static";
-      });
-
       ctagsStatic =
         (pkgsStatic.universal-ctags.override {
           python3 = pkgs.python3;
@@ -149,8 +143,6 @@ let
         ];
       });
 
-      rederr = pkgsStatic.callPackage ../rederr { };
-
       patchelfStatic = pkgsStatic.patchelf.overrideAttrs (oa: {
         doCheck = false;
       });
@@ -162,8 +154,6 @@ let
       htopStatic = pkgsStatic.htop.override {
         sensorsSupport = false;
       };
-
-      btduStatic = import ./btdu-static.nix { inherit pkgs; };
 
       libutempterStatic = pkgsStatic.libutempter.overrideAttrs (oa: {
         makeFlags = [
@@ -185,13 +175,6 @@ let
         libutempter = libutempterStatic;
       };
 
-      # gitbutler-cli = pkgsStatic.callPackage ../gitbutler-cli {
-      #   dbus = pkgsStatic.dbus.override {
-      #     enableSystemd = false;
-      #     x11Support = false;
-      #   };
-      # };
-
       freezeStatic = goLinkStatic pkgs.charm-freeze (oa: {
         patches = (oa.patches or [ ]) ++ [
           (fetchpatch {
@@ -207,7 +190,26 @@ let
         oa: if oa ? "BASH_PATH" then { BASH_PATH = ""; } else { env.BASH_PATH = ""; }
       );
 
+      # Local packages
+
+      btduStatic = import ./btdu-static.nix { inherit pkgs; };
+
       denetStatic = pkgsStatic.callPackage ../denet { };
+
+      difftasticStatic = pkgsStatic.callPackage ../difftastic { };
+
+      findent-octopus = pkgsStatic.callPackage ../findent-octopus { };
+
+      # gitbutler-cli = pkgsStatic.callPackage ../gitbutler-cli {
+      #   dbus = pkgsStatic.dbus.override {
+      #     enableSystemd = false;
+      #     x11Support = false;
+      #   };
+      # };
+
+      mergirafStatic = pkgsStatic.callPackage ../mergiraf { };
+
+      rederr = pkgsStatic.callPackage ../rederr { };
 
     in
     {
@@ -256,7 +258,7 @@ let
       less = "${pkgsStatic.less}/bin/less";
       libtree = "${pkgsStatic.libtree}/bin/libtree";
       lsof = "${pkgsStatic.lsof}/bin/lsof";
-      mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
+      mergiraf = "${mergirafStatic}/bin/mergiraf";
       mg = "${mgStatic}/bin/mg";
       mtr = "${pkgsStatic.mtr}/bin/mtr";
       nc = "${pkgsStatic.netcat}/bin/nc";

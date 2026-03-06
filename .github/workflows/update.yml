@@ -42,11 +42,13 @@ jobs:
         # Update top-level attrs
         xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit {}" <<-'EOF'
           dhcpdoctor
-          --version=branch findent-octopus
-          --version-regex='release/(.*)' gitbutler-cli
+          difftastic --version=branch
+          findent-octopus --version=branch
+          gitbutler-cli --version-regex=\"release/(.*)\"
+          mergiraf --version=branch
           pkgcheck
           prometheus-slurm-exporter
-          --version=branch rederr
+          rederr --version=branch
           req2flatpak
           verrou
         EOF
