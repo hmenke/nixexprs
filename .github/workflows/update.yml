@@ -44,7 +44,7 @@ jobs:
           dhcpdoctor
           difftastic --version=branch
           findent-octopus --version=branch
-          gitbutler-cli --version-regex=\"release/(.*)\"
+          gitbutler-cli --version-regex=\"release/(.*)\" || true
           mergiraf --version=branch
           pkgcheck
           prometheus-slurm-exporter
