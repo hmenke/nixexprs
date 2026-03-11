@@ -7,13 +7,13 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "mergiraf";
-  version = "0.16.3-unstable-2026-03-01";
+  version = "0.16.3-unstable-2026-03-09";
 
   src = fetchFromCodeberg {
     owner = "mergiraf";
     repo = "mergiraf";
-    rev = "eaf71aeec3ace2f7b57b1441b97b989fd152898b";
-    hash = "sha256-Ga4ixNuOtthfgp5lB3XniHZ3lauVb3B51wtHv644ThY=";
+    rev = "1e9ba89542a6a60cddb3278b2bdc663bd4218b58";
+    hash = "sha256-qhhkjcDqhGZ+UXuMZqO0F8vDnGLR7LXVChycg7qrQqI=";
   };
 
   cargoHash = "sha256-cNtkvUpKHzLisGiABxSoidXLgxhIdieDZZeNaFCwiD0=";
