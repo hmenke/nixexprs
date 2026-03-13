@@ -237,6 +237,7 @@ let
       findent-octopus = "${findent-octopus}/bin/findent-octopus";
       fq = "${goLinkStatic pkgs.fq { }}/bin/fq";
       freeze = "${freezeStatic}/bin/freeze";
+      fuse2fs = "${pkgsStatic.fuse2fs}/bin/fuse2fs";
       fzf = "${goLinkStatic pkgs.fzf { }}/bin/fzf";
       gh = "${goLinkStatic pkgs.gh { }}/bin/gh";
       glab = "${goLinkStatic pkgs.glab { }}/bin/.glab-wrapped";
