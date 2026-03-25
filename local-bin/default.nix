@@ -200,13 +200,6 @@ let
 
       findent-octopus = pkgsStatic.callPackage ../findent-octopus { };
 
-      # gitbutler-cli = pkgsStatic.callPackage ../gitbutler-cli {
-      #   dbus = pkgsStatic.dbus.override {
-      #     enableSystemd = false;
-      #     x11Support = false;
-      #   };
-      # };
-
       mergirafStatic = pkgsStatic.callPackage ../mergiraf { };
 
       rederr = pkgsStatic.callPackage ../rederr { };
@@ -223,7 +216,6 @@ let
       btdu = "${btduStatic}/bin/btdu";
       btop = "${btopStatic}/bin/btop";
       busybox = "${pkgsStatic.busybox}/bin/busybox";
-      # but = "${gitbutler-cli}/bin/but";
       bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
       coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
       cpz = "${pkgsStatic.fuc}/bin/cpz";

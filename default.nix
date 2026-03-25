@@ -9,7 +9,6 @@ lib.recurseIntoAttrs {
   dhcpdoctor = callPackage ./dhcpdoctor { };
   difftastic = callPackage ./difftastic { };
   findent-octopus = callPackage ./findent-octopus { };
-  gitbutler-cli = callPackage ./gitbutler-cli { };
   klatexformula = libsForQt5.callPackage ./klatexformula { };
   local-bin = import ./local-bin { inherit pkgs; };
   mergiraf = callPackage ./mergiraf { };
