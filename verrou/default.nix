@@ -11,11 +11,11 @@
 
 stdenv.mkDerivation (final: {
   pname = "verrou";
-  version = "2.6.0";
+  version = "2.7.0";
 
   src = fetchurl {
-    url = "https://github.com/edf-hpc/verrou/releases/download/v${final.version}/valgrind-3.23.0_verrou-${final.version}.tar.gz";
-    hash = "sha256-DpLhIKmyLGnyPCUkbP6iGZ6oRC/szsy+4L4Y5E86ix4=";
+    url = "https://github.com/edf-hpc/verrou/releases/download/v${final.version}/valgrind-3.26.0_verrou-${final.version}.tar.gz";
+    hash = "sha256-5enYsk0yRRVBfCwTSudtXdVmg1IZ1krw+mb2UsHWavc=";
   };
 
   outputs = [
@@ -48,6 +48,9 @@ stdenv.mkDerivation (final: {
 
   postPatch = ''
     substituteInPlace verrou/Makefile.am --replace-fail '/usr/share' '/share'
+    patchShebangs verrou/generateBackendInterOperator.py
+    patchShebangs verrou/generateInstrumentOp_impl.py
+    patchShebangs verrou/generateOpImpl.py
   '';
 
   configureFlags = [
