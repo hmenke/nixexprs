@@ -190,6 +190,20 @@ let
         oa: if oa ? "BASH_PATH" then { BASH_PATH = ""; } else { env.BASH_PATH = ""; }
       );
 
+      moshStatic = (pkgsStatic.mosh.override {
+        inherit (pkgs) perl openssh;
+        withUtempter = true;
+        libutempter = libutempterStatic;
+      }).overrideAttrs (oa: {
+        postPatch = ''
+          substituteInPlace scripts/mosh.pl \
+            --subst-var-by ssh "ssh" \
+            --subst-var-by mosh-client "mosh-client"
+        '';
+        postInstall = "";
+        dontPatchShebangs = true;
+      });
+
       # Local packages
 
       btduStatic = import ./btdu-static.nix { inherit pkgs; };
@@ -253,6 +267,7 @@ let
       lsof = "${pkgsStatic.lsof}/bin/lsof";
       mergiraf = "${mergirafStatic}/bin/mergiraf";
       mg = "${mgStatic}/bin/mg";
+      mosh-server = "${moshStatic}/bin/mosh-server";
       mtr = "${pkgsStatic.mtr}/bin/mtr";
       nc = "${pkgsStatic.netcat}/bin/nc";
       ncat = "${nmapStatic}/bin/ncat";
