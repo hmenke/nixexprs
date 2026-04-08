@@ -147,10 +147,6 @@ let
         doCheck = false;
       });
 
-      toyboxStatic = pkgsStatic.toybox.overrideAttrs (oa: {
-        hardeningDisable = (oa.hardeningDisable or [ ]) ++ [ "fortify" ];
-      });
-
       htopStatic = pkgsStatic.htop.override {
         sensorsSupport = false;
       };
@@ -202,6 +198,29 @@ let
         '';
         postInstall = "";
         dontPatchShebangs = true;
+      });
+
+      libwebsocketsStatic = pkgsStatic.libwebsockets.overrideAttrs (oa: {
+        postPatch = (oa.postPatch or "") + ''
+          substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-fail \
+            "set(LIBWEBSOCKETS_LIBRARIES websockets websockets_shared)" \
+            "set(LIBWEBSOCKETS_LIBRARIES websockets)"
+        '';
+      });
+
+      ttydStatic = pkgsStatic.ttyd.override {
+        libwebsockets = libwebsocketsStatic;
+      };
+
+      vhsStatic = goLinkStatic pkgs.vhs (oa: {
+        postInstall = ''
+          $out/bin/vhs man > vhs.1
+          installManPage vhs.1
+          installShellCompletion --cmd vhs \
+            --bash <($out/bin/vhs completion bash) \
+            --fish <($out/bin/vhs completion fish) \
+            --zsh <($out/bin/vhs completion zsh)
+        '';
       });
 
       # Local packages
@@ -300,14 +319,16 @@ let
       sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
       ssh-to-age = "${goLinkStatic pkgs.ssh-to-age { }}/bin/ssh-to-age";
       tmux = "${tmuxStatic}/bin/tmux";
-      toybox = "${toyboxStatic}/bin/toybox";
+      toybox = "${pkgsStatic.toybox}/bin/toybox";
       tree = "${pkgsStatic.tree}/bin/tree";
+      ttyd = "${ttydStatic}/bin/ttyd";
       ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
       ug = "${ugrepStatic}/bin/ug";
       unison = "${unisonStatic}/bin/unison";
       unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
       upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
       uv = "${pkgsStatic.uv}/bin/uv";
+      vhs = "${vhsStatic}/bin/vhs";
       vtm = "${vtmStatic}/bin/vtm";
       watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
       wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
