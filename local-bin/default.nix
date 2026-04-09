@@ -74,15 +74,10 @@ let
         ];
       });
 
-      # https://github.com/NixOS/nixpkgs/pull/350654#issuecomment-2507236711
-      ruffStatic = pkgsStatic.ruff.overrideAttrs (_: {
-        postInstallCheck = null;
-      });
-
       bfsStatic = pkgsStatic.bfs.overrideAttrs (oa: {
         configurePhase = ''
           runHook preConfigure
-          ./configure --prefix=$out --enable-release EXTRA_CFLAGS=-static EXTRA_LDFLAGS=-static
+          ./configure --prefix=$out --enable-release
           runHook postConfigure
         '';
       });
@@ -107,27 +102,6 @@ let
               "--without-libnl"
             ];
           });
-
-      # HACK: work around https://github.com/NixOS/nixpkgs/issues/177129
-      # Though this is an issue between Clang and GCC,
-      # so it may not get fixed anytime soon...
-      empty-libgcc_eh = stdenv.mkDerivation {
-        pname = "empty-libgcc_eh";
-        version = "0";
-        dontUnpack = true;
-        installPhase = ''
-          mkdir -p "$out"/lib
-          "${binutils}"/bin/ar r "$out"/lib/libgcc_eh.a
-        '';
-      };
-
-      bzip3Static = pkgsStatic.bzip3.overrideAttrs (oa: {
-        buildInputs = (oa.buildInputs or [ ]) ++ [ empty-libgcc_eh ];
-      });
-
-      ugrepStatic = pkgsStatic.ugrep.override {
-        bzip3 = bzip3Static;
-      };
 
       ctagsStatic =
         (pkgsStatic.universal-ctags.override {
@@ -311,11 +285,11 @@ let
       rga = "${ripgrepAllStatic}/bin/rga";
       rga-preproc = "${ripgrepAllStatic}/bin/rga-preproc";
       rmz = "${pkgsStatic.fuc}/bin/rmz";
-      ruff = "${ruffStatic}/bin/ruff";
+      ruff = "${pkgsStatic.ruff}/bin/ruff";
       rustic = "${pkgsStatic.rustic}/bin/rustic";
       sccache = "${pkgsStatic.sccache}/bin/sccache";
       sd = "${pkgsStatic.sd}/bin/sd";
-      sops = "${goLinkStatic sops { }}/bin/sops";
+      sops = "${goLinkStatic pkgs.sops { }}/bin/sops";
       sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
       ssh-to-age = "${goLinkStatic pkgs.ssh-to-age { }}/bin/ssh-to-age";
       tmux = "${tmuxStatic}/bin/tmux";
@@ -323,7 +297,7 @@ let
       tree = "${pkgsStatic.tree}/bin/tree";
       ttyd = "${ttydStatic}/bin/ttyd";
       ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
-      ug = "${ugrepStatic}/bin/ug";
+      ug = "${pkgsStatic.ugrep}/bin/ug";
       unison = "${unisonStatic}/bin/unison";
       unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
       upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
