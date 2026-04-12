@@ -165,6 +165,10 @@ let
         withUtempter = true;
         libutempter = libutempterStatic;
       }).overrideAttrs (oa: {
+        patches = (oa.patches or []) ++ [
+          ./mosh-fix-colors.patch
+          ./mosh-fix-username.patch
+        ];
         postPatch = ''
           substituteInPlace scripts/mosh.pl \
             --subst-var-by ssh "ssh" \

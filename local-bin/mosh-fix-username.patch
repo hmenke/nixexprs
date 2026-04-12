@@ -1,0 +1,27 @@
+--- a/src/frontend/mosh-server.cc
++++ b/src/frontend/mosh-server.cc
+@@ -1002,14 +1002,18 @@ static void warn_unattached( const string & ignore_entry )
+ {
+ #ifdef HAVE_UTMPX_H
+   /* get username */
+-  const struct passwd *pw = getpwuid( getuid() );
+-  if ( pw == NULL ) {
+-    perror( "getpwuid" );
+-    /* non-fatal */
+-    return;
++  const char *user = getenv( "USER" );
++  if ( user == NULL ) {
++    const struct passwd *pw = getpwuid( getuid() );
++    if ( pw == NULL ) {
++      perror( "getpwuid" );
++      /* non-fatal */
++      return;
++    }
++    user = pw->pw_name;
+   }
+ 
+-  const string username( pw->pw_name );
++  const string username( user );
+ 
+   /* look for unattached sessions */
+   vector< string > unattached_mosh_servers;
