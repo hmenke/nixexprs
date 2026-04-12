@@ -180,7 +180,7 @@ let
 
       libwebsocketsStatic = pkgsStatic.libwebsockets.overrideAttrs (oa: {
         postPatch = (oa.postPatch or "") + ''
-          substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-fail \
+          substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-warn \
             "set(LIBWEBSOCKETS_LIBRARIES websockets websockets_shared)" \
             "set(LIBWEBSOCKETS_LIBRARIES websockets)"
         '';
