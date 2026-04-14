@@ -213,6 +213,8 @@ let
 
       mergirafStatic = pkgsStatic.callPackage ../mergiraf { };
 
+      ntfy-send = goLinkStatic (pkgs.callPackage ../ntfy-send { }) { };
+
       rederr = pkgsStatic.callPackage ../rederr { };
 
     in
@@ -271,6 +273,7 @@ let
       ncdu = "${ncduStatic}/bin/ncdu";
       nmap = "${nmapStatic}/bin/nmap";
       nping = "${nmapStatic}/bin/nping";
+      ntfy-send = "${ntfy-send}/bin/ntfy-send";
       par2 = "${pkgsStatic.par2cmdline}/bin/par2";
       patchelf = "${patchelfStatic}/bin/patchelf";
       progress = "${pkgsStatic.progress}/bin/progress";

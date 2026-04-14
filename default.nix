@@ -12,6 +12,7 @@ lib.recurseIntoAttrs {
   klatexformula = libsForQt5.callPackage ./klatexformula { };
   local-bin = import ./local-bin { inherit pkgs; };
   mergiraf = callPackage ./mergiraf { };
+  ntfy-send = callPackage ./ntfy-send { };
   pkgcheck = callPackage ./pkgcheck { };
   prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter { };
   rederr = callPackage ./rederr { };
