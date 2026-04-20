@@ -125,20 +125,23 @@ let
         sensorsSupport = false;
       };
 
-      libutempterStatic = pkgsStatic.libutempter.overrideAttrs (oa: {
-        makeFlags = [
-          "utempter"
-          "libutempter.a"
-        ]
-        ++ (oa.makeFlags or [ ]);
-        preInstall = ''
-          touch libutempter.so
-        '';
+      libutempterStatic = pkgsStatic.libutempter.overrideAttrs (
+        oa:
+        lib.optionalAttrs (lib.versionOlder lib.version "26") {
+          makeFlags = [
+            "utempter"
+            "libutempter.a"
+          ]
+          ++ (oa.makeFlags or [ ]);
+          preInstall = ''
+            touch libutempter.so
+          '';
 
-        postInstall = ''
-          rm -v $out/lib/libutempter.so*
-        '';
-      });
+          postInstall = ''
+            rm -v $out/lib/libutempter.so*
+          '';
+        }
+      );
 
       tmuxStatic = pkgsStatic.tmux.override {
         withUtempter = true;
@@ -160,23 +163,25 @@ let
         oa: if oa ? "BASH_PATH" then { BASH_PATH = ""; } else { env.BASH_PATH = ""; }
       );
 
-      moshStatic = (pkgsStatic.mosh.override {
-        inherit (pkgs) perl openssh;
-        withUtempter = true;
-        libutempter = libutempterStatic;
-      }).overrideAttrs (oa: {
-        patches = (oa.patches or []) ++ [
-          ./mosh-fix-colors.patch
-          ./mosh-fix-username.patch
-        ];
-        postPatch = ''
-          substituteInPlace scripts/mosh.pl \
-            --subst-var-by ssh "ssh" \
-            --subst-var-by mosh-client "mosh-client"
-        '';
-        postInstall = "";
-        dontPatchShebangs = true;
-      });
+      moshStatic =
+        (pkgsStatic.mosh.override {
+          inherit (pkgs) perl openssh;
+          withUtempter = true;
+          libutempter = libutempterStatic;
+        }).overrideAttrs
+          (oa: {
+            patches = (oa.patches or [ ]) ++ [
+              ./mosh-fix-colors.patch
+              ./mosh-fix-username.patch
+            ];
+            postPatch = ''
+              substituteInPlace scripts/mosh.pl \
+                --subst-var-by ssh "ssh" \
+                --subst-var-by mosh-client "mosh-client"
+            '';
+            postInstall = "";
+            dontPatchShebangs = true;
+          });
 
       libwebsocketsStatic = pkgsStatic.libwebsockets.overrideAttrs (oa: {
         postPatch = (oa.postPatch or "") + ''
