@@ -1,7 +1,17 @@
-{
-  pkgs ? import <nixpkgs> { },
-}:
+{ ... }@args:
 
+let
+  pkgs' = args.pkgs or (import <nixpkgs> { });
+  pkgs = pkgs'.appendOverlays [
+    (
+      final: prev:
+      pkgs'.lib.filesystem.packagesFromDirectoryRecursive {
+        inherit (prev) callPackage newScope;
+        directory = ../pkgs;
+      }
+    )
+  ];
+in
 with pkgs;
 
 let
@@ -210,18 +220,6 @@ let
 
       btduStatic = import ./btdu-static.nix { inherit pkgs; };
 
-      denetStatic = pkgsStatic.callPackage ../denet { };
-
-      difftasticStatic = pkgsStatic.callPackage ../difftastic { };
-
-      findent-octopus = pkgsStatic.callPackage ../findent-octopus { };
-
-      mergirafStatic = pkgsStatic.callPackage ../mergiraf { };
-
-      ntfy-send = goLinkStatic (pkgs.callPackage ../ntfy-send { }) { };
-
-      rederr = pkgsStatic.callPackage ../rederr { };
-
     in
     {
       age = "${goLinkStatic pkgs.age { }}/bin/age";
@@ -239,12 +237,12 @@ let
       cpz = "${pkgsStatic.fuc}/bin/cpz";
       ctags = "${ctagsStatic}/bin/ctags";
       delta = "${pkgsStatic.delta}/bin/delta";
-      denet = "${denetStatic}/bin/denet";
-      difft = "${difftasticStatic}/bin/difft";
+      denet = "${pkgsStatic.denet}/bin/denet";
+      difft = "${pkgsStatic.difftastic}/bin/difft";
       direnv = "${direnvStatic}/bin/direnv";
       dive = "${goLinkStatic pkgs.dive { }}/bin/dive";
       fd = "${pkgsStatic.fd}/bin/fd";
-      findent-octopus = "${findent-octopus}/bin/findent-octopus";
+      findent-octopus = "${pkgsStatic.findent-octopus}/bin/findent-octopus";
       fq = "${goLinkStatic pkgs.fq { }}/bin/fq";
       freeze = "${freezeStatic}/bin/freeze";
       fuse2fs = "${pkgsStatic.fuse2fs}/bin/fuse2fs";
@@ -269,7 +267,7 @@ let
       less = "${pkgsStatic.less}/bin/less";
       libtree = "${pkgsStatic.libtree}/bin/libtree";
       lsof = "${pkgsStatic.lsof}/bin/lsof";
-      mergiraf = "${mergirafStatic}/bin/mergiraf";
+      mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
       mg = "${mgStatic}/bin/mg";
       mosh-server = "${moshStatic}/bin/mosh-server";
       mtr = "${pkgsStatic.mtr}/bin/mtr";
@@ -278,14 +276,14 @@ let
       ncdu = "${ncduStatic}/bin/ncdu";
       nmap = "${nmapStatic}/bin/nmap";
       nping = "${nmapStatic}/bin/nping";
-      ntfy-send = "${ntfy-send}/bin/ntfy-send";
+      ntfy-send = "${goLinkStatic pkgs.ntfy-send { }}/bin/ntfy-send";
       par2 = "${pkgsStatic.par2cmdline}/bin/par2";
       patchelf = "${patchelfStatic}/bin/patchelf";
       progress = "${pkgsStatic.progress}/bin/progress";
       pv = "${pkgsStatic.pv}/bin/pv";
       rclone = "${goLinkStatic pkgs.rclone { }}/bin/.rclone-wrapped";
       readtags = "${ctagsStatic}/bin/readtags";
-      rederr = "${rederr}/bin/rederr";
+      rederr = "${pkgsStatic.rederr}/bin/rederr";
       reptyr = "${
         pkgsStatic.reptyr.overrideAttrs (_: {
           doCheck = false;

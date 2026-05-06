@@ -4,19 +4,9 @@
 
 with pkgs;
 
-lib.recurseIntoAttrs {
-  denet = callPackage ./denet { };
-  dhcpdoctor = callPackage ./dhcpdoctor { };
-  difftastic = callPackage ./difftastic { };
-  findent-octopus = callPackage ./findent-octopus { };
-  klatexformula = callPackage ./klatexformula { };
+lib.recurseIntoAttrs ({
   local-bin = import ./local-bin { inherit pkgs; };
-  mergiraf = callPackage ./mergiraf { };
-  ntfy-send = callPackage ./ntfy-send { };
-  pkgcheck = callPackage ./pkgcheck { };
-  prometheus-slurm-exporter = callPackage ./prometheus-slurm-exporter { };
-  rederr = callPackage ./rederr { };
-  req2flatpak = callPackage ./req2flatpak { };
-  verrou = callPackage ./verrou { };
-  weave = callPackage ./weave { };
-}
+} // lib.filesystem.packagesFromDirectoryRecursive {
+  inherit (pkgs) callPackage newScope;
+  directory = ./pkgs;
+})
