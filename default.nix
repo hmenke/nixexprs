@@ -9,7 +9,7 @@ lib.recurseIntoAttrs {
   dhcpdoctor = callPackage ./dhcpdoctor { };
   difftastic = callPackage ./difftastic { };
   findent-octopus = callPackage ./findent-octopus { };
-  klatexformula = libsForQt5.callPackage ./klatexformula { };
+  klatexformula = callPackage ./klatexformula { };
   local-bin = import ./local-bin { inherit pkgs; };
   mergiraf = callPackage ./mergiraf { };
   ntfy-send = callPackage ./ntfy-send { };

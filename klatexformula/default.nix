@@ -1,15 +1,13 @@
 {
   lib,
-  mkDerivation,
+  stdenv,
   fetchFromGitHub,
   fetchpatch,
   cmake,
-  qttools,
-  qtx11extras,
-  ghostscript,
+  libsForQt5,
 }:
 
-mkDerivation rec {
+stdenv.mkDerivation rec {
   pname = "klatexformula";
   version = "4.1.0";
 
@@ -33,11 +31,14 @@ mkDerivation rec {
     })
   ];
 
-  nativeBuildInputs = [ cmake ];
-
+  nativeBuildInputs = [
+    cmake
+    libsForQt5.qttools
+    libsForQt5.wrapQtAppsHook
+  ];
   buildInputs = [
-    qttools
-    qtx11extras
+    libsForQt5.qtbase
+    libsForQt5.qtx11extras
   ];
 
   meta = with lib; {
