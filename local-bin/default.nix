@@ -1,16 +1,264 @@
 { ... }@args:
 
 let
-  pkgs' = args.pkgs or (import <nixpkgs> { });
-  pkgs = pkgs'.appendOverlays [
-    (
-      final: prev:
-      pkgs'.lib.filesystem.packagesFromDirectoryRecursive {
-        inherit (prev) callPackage newScope;
-        directory = ../pkgs;
-      }
-    )
-  ];
+  pkgs =
+    let
+      _pkgs = args.pkgs or (import <nixpkgs> { });
+    in
+    _pkgs.appendOverlays [
+      (
+        final: prev:
+        _pkgs.lib.filesystem.packagesFromDirectoryRecursive {
+          inherit (prev) callPackage newScope;
+          directory = ../pkgs;
+        }
+      )
+      (
+        final: prev:
+        let
+          lib = prev.lib;
+          isStatic = prev.stdenv.hostPlatform.isStatic;
+        in
+        {
+          ### start of overlay ###
+
+          unison =
+            if !isStatic then
+              prev.unison
+            else
+              (prev.pkgsBuildHost.pkgsMusl.unison.override { enableX11 = false; }).overrideAttrs {
+                LDFLAGS = "-static";
+              };
+
+          bfs = prev.bfs.overrideAttrs (oa: {
+            configurePhase = ''
+              runHook preConfigure
+              ./configure --prefix=$out --enable-release
+              runHook postConfigure
+            '';
+          });
+
+          ripgrep-all = prev.ripgrep-all.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              doCheck = false;
+              nativeCheckInputs = null;
+              postInstall = null;
+            }
+          );
+
+          btop = prev.btop.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+
+              hardeningDisable = (oa.hardeningDisable or [ ]) ++ [
+                "fortify"
+              ];
+              cmakeFlags = (oa.cmakeFlags or [ ]) ++ [
+                "-DBTOP_STATIC:BOOL=ON"
+                "-DBTOP_FORTIFY:BOOL=OFF"
+              ];
+            }
+          );
+
+          liblinear = prev.liblinear.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              patches = (oa.patches or [ ]) ++ [ ./0002-liblinear-static.patch ];
+              installPhase = ''
+                install -Dt $out/lib liblinear.a
+                install -D train $bin/bin/liblinear-train
+                install -D predict $bin/bin/liblinear-predict
+                install -Dm444 -t $dev/include linear.h
+              '';
+            }
+          );
+
+          nmap =
+            if !isStatic then
+              prev.nmap
+            else
+              (prev.nmap.override {
+                withLua = false;
+              }).overrideAttrs
+                (oa: {
+                  configureFlags = (oa.configureFlags or [ ]) ++ [
+                    "--without-libnl"
+                  ];
+                });
+
+          mg = prev.mg.overrideAttrs (oa: {
+            patches =
+              assert (oa.patches or [ ]) == [ ];
+              [
+                (prev.fetchpatch {
+                  name = "Add-Ctrl-arrow-Ctrl-PgUp-Dn-to-fundamental-bindings.patch";
+                  url = "https://github.com/troglobit/mg/commit/4a1ddb3aa158a9e2d8281427972debc6d326a2f8.patch";
+                  hash = "sha256-TxAO9gJGUoHgnC6IJpkq2Cx5evV3UVgHIsokLwetlg4=";
+                })
+              ];
+            patchFlags = [
+              "-p2"
+              "-F3"
+            ];
+          });
+
+          universal-ctags =
+            if !isStatic then
+              prev.universal-ctags
+            else
+              (prev.universal-ctags.override {
+                python3 = prev.pkgsBuildHost.python3;
+              }).overrideAttrs
+                (_: {
+                  doCheck = false;
+                });
+
+          vtm = prev.vtm.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              patches = (oa.patches or [ ]) ++ [
+                ./0003-vtm-musl.patch
+              ];
+            }
+          );
+
+          patchelf = prev.patchelf.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              doCheck = false;
+            }
+          );
+
+          htop = prev.htop.override (
+            lib.optionalAttrs isStatic {
+              sensorsSupport = false;
+            }
+          );
+
+          libutempter = prev.libutempter.overrideAttrs (
+            oa:
+            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
+              makeFlags = [
+                "utempter"
+                "libutempter.a"
+              ]
+              ++ (oa.makeFlags or [ ]);
+              preInstall = ''
+                touch libutempter.so
+              '';
+
+              postInstall = ''
+                rm -v $out/lib/libutempter.so*
+              '';
+            }
+          );
+
+          tmux = prev.tmux.override {
+            withUtempter = true;
+          };
+
+          charm-freeze = prev.charm-freeze.overrideAttrs (oa: {
+            patches = (oa.patches or [ ]) ++ [
+              (prev.fetchpatch {
+                name = "fix-Support-bold-ANSI-escape-sequence.patch";
+                url = "https://github.com/charmbracelet/freeze/pull/154/commits/a35b9da282154c6a88550a68e130a5b161645ebc.patch";
+                hash = "sha256-bgoKLYiTFIktE5YqXwd9TmcQIcBsWNQAo5cHVj3qtlU=";
+              })
+            ];
+            doCheck = false; # tests including bold of course fail now
+          });
+
+          direnv = prev.direnv.overrideAttrs (
+            oa:
+            if oa ? "BASH_PATH" then
+              { BASH_PATH = ""; }
+            else
+              {
+                env = (oa.env or { }) // {
+                  BASH_PATH = "";
+                };
+              }
+          );
+
+          mosh =
+            if !isStatic then
+              prev.mosh
+            else
+              (prev.mosh.override {
+                inherit (prev.pkgsBuildHost) perl openssh;
+                withUtempter = true;
+              }).overrideAttrs
+                (oa: {
+                  patches = (oa.patches or [ ]) ++ [
+                    ./mosh-fix-colors.patch
+                    ./mosh-fix-username.patch
+                  ];
+                  postPatch = ''
+                    substituteInPlace scripts/mosh.pl \
+                      --subst-var-by ssh "ssh" \
+                      --subst-var-by mosh-client "mosh-client"
+                  '';
+                  postInstall = "";
+                  dontPatchShebangs = true;
+                });
+
+          libwebsockets = prev.libwebsockets.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              postPatch = (oa.postPatch or "") + ''
+                substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-warn \
+                  "set(LIBWEBSOCKETS_LIBRARIES websockets websockets_shared)" \
+                  "set(LIBWEBSOCKETS_LIBRARIES websockets)"
+              '';
+            }
+          );
+
+          vhs = prev.vhs.overrideAttrs (oa: {
+            postInstall = ''
+              $out/bin/vhs man > vhs.1
+              installManPage vhs.1
+              installShellCompletion --cmd vhs \
+                --bash <($out/bin/vhs completion bash) \
+                --fish <($out/bin/vhs completion fish) \
+                --zsh <($out/bin/vhs completion zsh)
+            '';
+          });
+
+          reptyr = prev.reptyr.overrideAttrs (
+            _:
+            lib.optionalAttrs isStatic {
+              doCheck = false;
+              checkFlags = null;
+            }
+          );
+
+          gh = prev.gh.overrideAttrs (
+            oa:
+            lib.optionalAttrs (lib.versionOlder lib.version "26") {
+              nativeBuildInputs = (oa.nativeBuildInputs or [ ]) ++ [ prev.makeWrapper ];
+              postInstall = (oa.postInstall or "") + ''
+                wrapProgram $out/bin/gh --set-default GH_TELEMETRY false
+              '';
+            }
+          );
+
+          lesspipe' = prev.stdenv.mkDerivation {
+            name = prev.lesspipe.name;
+            src = prev.lesspipe.src;
+            meta = prev.lesspipe.meta;
+            nativeBuildInputs = [ prev.perl ];
+            configureFlags = [ "--prefix=/" ];
+            configurePlatforms = [ ];
+            dontBuild = true;
+            installFlags = [ "DESTDIR=$(out)" ];
+            dontPatchShebangs = true;
+          };
+
+          ### end of overlay ###
+        }
+      )
+    ];
 in
 with pkgs;
 
@@ -33,10 +281,6 @@ let
           } (if lib.isFunction args then args oa else args)
         );
 
-      unisonStatic = (pkgsMusl.unison.override { enableX11 = false; }).overrideAttrs {
-        LDFLAGS = "-static";
-      };
-
       ncduStatic = stdenvNoCC.mkDerivation (finalAttrs: {
         name = "ncdu-static";
         version = "2.9.1";
@@ -52,172 +296,6 @@ let
         installPhase = "install -v -Dt $out/bin ncdu";
       });
 
-      ripgrepAllStatic = pkgsStatic.ripgrep-all.overrideAttrs (oa: {
-        doCheck = false;
-        nativeCheckInputs = null;
-        postInstall = null;
-      });
-
-      mgStatic = pkgsStatic.mg.overrideAttrs (oa: {
-        patches =
-          assert (oa.patches or [ ]) == [ ];
-          [
-            (fetchpatch {
-              name = "Add-Ctrl-arrow-Ctrl-PgUp-Dn-to-fundamental-bindings.patch";
-              url = "https://github.com/troglobit/mg/commit/4a1ddb3aa158a9e2d8281427972debc6d326a2f8.patch";
-              hash = "sha256-TxAO9gJGUoHgnC6IJpkq2Cx5evV3UVgHIsokLwetlg4=";
-            })
-          ];
-        patchFlags = [
-          "-p2"
-          "-F3"
-        ];
-      });
-
-      btopStatic = (pkgsStatic.btop.override { cudaSupport = true; }).overrideAttrs (oa: {
-        hardeningDisable = (oa.hardeningDisable or [ ]) ++ [
-          "fortify"
-        ];
-        cmakeFlags = (oa.cmakeFlags or [ ]) ++ [
-          "-DBTOP_STATIC:BOOL=ON"
-          "-DBTOP_FORTIFY:BOOL=OFF"
-        ];
-      });
-
-      bfsStatic = pkgsStatic.bfs.overrideAttrs (oa: {
-        configurePhase = ''
-          runHook preConfigure
-          ./configure --prefix=$out --enable-release
-          runHook postConfigure
-        '';
-      });
-
-      liblinearStatic = pkgsStatic.liblinear.overrideAttrs (oa: {
-        patches = (oa.patches or [ ]) ++ [ ./0002-liblinear-static.patch ];
-        installPhase = ''
-          install -Dt $out/lib liblinear.a
-          install -D train $bin/bin/liblinear-train
-          install -D predict $bin/bin/liblinear-predict
-          install -Dm444 -t $dev/include linear.h
-        '';
-      });
-
-      nmapStatic =
-        (pkgsStatic.nmap.override {
-          liblinear = liblinearStatic;
-          withLua = false;
-        }).overrideAttrs
-          (oa: {
-            configureFlags = (oa.configureFlags or [ ]) ++ [
-              "--without-libnl"
-            ];
-          });
-
-      ctagsStatic =
-        (pkgsStatic.universal-ctags.override {
-          python3 = pkgs.python3;
-        }).overrideAttrs
-          (_: {
-            doCheck = false;
-          });
-
-      vtmStatic = pkgsStatic.vtm.overrideAttrs (oa: {
-        patches = (oa.patches or [ ]) ++ [
-          ./0003-vtm-musl.patch
-        ];
-      });
-
-      patchelfStatic = pkgsStatic.patchelf.overrideAttrs (oa: {
-        doCheck = false;
-      });
-
-      htopStatic = pkgsStatic.htop.override {
-        sensorsSupport = false;
-      };
-
-      libutempterStatic = pkgsStatic.libutempter.overrideAttrs (
-        oa:
-        lib.optionalAttrs (lib.versionOlder lib.version "26") {
-          makeFlags = [
-            "utempter"
-            "libutempter.a"
-          ]
-          ++ (oa.makeFlags or [ ]);
-          preInstall = ''
-            touch libutempter.so
-          '';
-
-          postInstall = ''
-            rm -v $out/lib/libutempter.so*
-          '';
-        }
-      );
-
-      tmuxStatic = pkgsStatic.tmux.override {
-        withUtempter = true;
-        libutempter = libutempterStatic;
-      };
-
-      freezeStatic = goLinkStatic pkgs.charm-freeze (oa: {
-        patches = (oa.patches or [ ]) ++ [
-          (fetchpatch {
-            name = "fix-Support-bold-ANSI-escape-sequence.patch";
-            url = "https://github.com/charmbracelet/freeze/pull/154/commits/a35b9da282154c6a88550a68e130a5b161645ebc.patch";
-            hash = "sha256-bgoKLYiTFIktE5YqXwd9TmcQIcBsWNQAo5cHVj3qtlU=";
-          })
-        ];
-        doCheck = false; # tests including bold of course fail now
-      });
-
-      direnvStatic = goLinkStatic pkgs.direnv (
-        oa: if oa ? "BASH_PATH" then { BASH_PATH = ""; } else { env.BASH_PATH = ""; }
-      );
-
-      moshStatic =
-        (pkgsStatic.mosh.override {
-          inherit (pkgs) perl openssh;
-          withUtempter = true;
-          libutempter = libutempterStatic;
-        }).overrideAttrs
-          (oa: {
-            patches = (oa.patches or [ ]) ++ [
-              ./mosh-fix-colors.patch
-              ./mosh-fix-username.patch
-            ];
-            postPatch = ''
-              substituteInPlace scripts/mosh.pl \
-                --subst-var-by ssh "ssh" \
-                --subst-var-by mosh-client "mosh-client"
-            '';
-            postInstall = "";
-            dontPatchShebangs = true;
-          });
-
-      libwebsocketsStatic = pkgsStatic.libwebsockets.overrideAttrs (oa: {
-        postPatch = (oa.postPatch or "") + ''
-          substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-warn \
-            "set(LIBWEBSOCKETS_LIBRARIES websockets websockets_shared)" \
-            "set(LIBWEBSOCKETS_LIBRARIES websockets)"
-        '';
-      });
-
-      ttydStatic = pkgsStatic.ttyd.override {
-        libwebsockets = libwebsocketsStatic;
-      };
-
-      vhsStatic = goLinkStatic pkgs.vhs (oa: {
-        postInstall = ''
-          $out/bin/vhs man > vhs.1
-          installManPage vhs.1
-          installShellCompletion --cmd vhs \
-            --bash <($out/bin/vhs completion bash) \
-            --fish <($out/bin/vhs completion fish) \
-            --zsh <($out/bin/vhs completion zsh)
-        '';
-      });
-
-      # Local packages
-
       btduStatic = import ./btdu-static.nix { inherit pkgs; };
 
     in
@@ -225,29 +303,29 @@ let
       age = "${goLinkStatic pkgs.age { }}/bin/age";
       age-keygen = "${goLinkStatic pkgs.age { }}/bin/age-keygen";
       bat = "${pkgsStatic.bat}/bin/.bat-wrapped";
-      bfs = "${bfsStatic}/bin/bfs";
+      bfs = "${pkgsStatic.bfs}/bin/bfs";
       bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
       bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
       bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
       btdu = "${btduStatic}/bin/btdu";
-      btop = "${btopStatic}/bin/btop";
+      btop = "${pkgsStatic.btop}/bin/btop";
       busybox = "${pkgsStatic.busybox}/bin/busybox";
       bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
       coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
       cpz = "${pkgsStatic.fuc}/bin/cpz";
-      ctags = "${ctagsStatic}/bin/ctags";
+      ctags = "${pkgsStatic.universal-ctags}/bin/ctags";
       delta = "${pkgsStatic.delta}/bin/delta";
       denet = "${pkgsStatic.denet}/bin/denet";
       difft = "${pkgsStatic.difftastic}/bin/difft";
-      direnv = "${direnvStatic}/bin/direnv";
+      direnv = "${goLinkStatic pkgs.direnv { }}/bin/direnv";
       dive = "${goLinkStatic pkgs.dive { }}/bin/dive";
       fd = "${pkgsStatic.fd}/bin/fd";
       findent-octopus = "${pkgsStatic.findent-octopus}/bin/findent-octopus";
       fq = "${goLinkStatic pkgs.fq { }}/bin/fq";
-      freeze = "${freezeStatic}/bin/freeze";
+      freeze = "${goLinkStatic pkgs.charm-freeze { }}/bin/freeze";
       fuse2fs = "${pkgsStatic.fuse2fs}/bin/fuse2fs";
       fzf = "${goLinkStatic pkgs.fzf { }}/bin/fzf";
-      gh = "${goLinkStatic pkgs.gh { }}/bin/gh";
+      gh = "${goLinkStatic pkgs.gh { }}/bin/.gh-wrapped";
       glab = "${goLinkStatic pkgs.glab { }}/bin/.glab-wrapped";
       gocryptfs = "${
         goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
@@ -258,7 +336,7 @@ let
       gotop = "${goLinkStatic pkgs.gotop { }}/bin/gotop";
       gotty = "${goLinkStatic pkgs.gotty { }}/bin/gotty";
       h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
-      htop = "${htopStatic}/bin/htop";
+      htop = "${pkgsStatic.htop}/bin/htop";
       httm = "${pkgsStatic.httm}/bin/httm";
       hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
       jj = "${pkgsStatic.jujutsu}/bin/jj";
@@ -268,32 +346,27 @@ let
       libtree = "${pkgsStatic.libtree}/bin/libtree";
       lsof = "${pkgsStatic.lsof}/bin/lsof";
       mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
-      mg = "${mgStatic}/bin/mg";
-      mosh-server = "${moshStatic}/bin/mosh-server";
+      mg = "${pkgsStatic.mg}/bin/mg";
+      mosh-server = "${pkgsStatic.mosh}/bin/mosh-server";
       mtr = "${pkgsStatic.mtr}/bin/mtr";
       nc = "${pkgsStatic.netcat}/bin/nc";
-      ncat = "${nmapStatic}/bin/ncat";
+      ncat = "${pkgsStatic.nmap}/bin/ncat";
       ncdu = "${ncduStatic}/bin/ncdu";
-      nmap = "${nmapStatic}/bin/nmap";
-      nping = "${nmapStatic}/bin/nping";
+      nmap = "${pkgsStatic.nmap}/bin/nmap";
+      nping = "${pkgsStatic.nmap}/bin/nping";
       ntfy-send = "${goLinkStatic pkgs.ntfy-send { }}/bin/ntfy-send";
       par2 = "${pkgsStatic.par2cmdline}/bin/par2";
-      patchelf = "${patchelfStatic}/bin/patchelf";
+      patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
       progress = "${pkgsStatic.progress}/bin/progress";
       pv = "${pkgsStatic.pv}/bin/pv";
       rclone = "${goLinkStatic pkgs.rclone { }}/bin/.rclone-wrapped";
-      readtags = "${ctagsStatic}/bin/readtags";
+      readtags = "${pkgsStatic.universal-ctags}/bin/readtags";
       rederr = "${pkgsStatic.rederr}/bin/rederr";
-      reptyr = "${
-        pkgsStatic.reptyr.overrideAttrs (_: {
-          doCheck = false;
-          checkFlags = null;
-        })
-      }/bin/reptyr";
+      reptyr = "${pkgsStatic.reptyr}/bin/reptyr";
       restic = "${goLinkStatic pkgs.restic { }}/bin/.restic-wrapped";
       rg = "${pkgsStatic.ripgrep}/bin/rg";
-      rga = "${ripgrepAllStatic}/bin/rga";
-      rga-preproc = "${ripgrepAllStatic}/bin/rga-preproc";
+      rga = "${pkgsStatic.ripgrep-all}/bin/rga";
+      rga-preproc = "${pkgsStatic.ripgrep-all}/bin/rga-preproc";
       rmz = "${pkgsStatic.fuc}/bin/rmz";
       ruff = "${pkgsStatic.ruff}/bin/ruff";
       rustic = "${pkgsStatic.rustic}/bin/rustic";
@@ -302,40 +375,26 @@ let
       sops = "${goLinkStatic pkgs.sops { }}/bin/sops";
       sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
       ssh-to-age = "${goLinkStatic pkgs.ssh-to-age { }}/bin/ssh-to-age";
-      tmux = "${tmuxStatic}/bin/tmux";
+      tmux = "${pkgsStatic.tmux}/bin/tmux";
       toybox = "${pkgsStatic.toybox}/bin/toybox";
       tree = "${pkgsStatic.tree}/bin/tree";
-      ttyd = "${ttydStatic}/bin/ttyd";
+      ttyd = "${pkgsStatic.ttyd}/bin/ttyd";
       ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
       ug = "${pkgsStatic.ugrep}/bin/ug";
-      unison = "${unisonStatic}/bin/unison";
-      unison-fsmonitor = "${unisonStatic}/bin/unison-fsmonitor";
+      unison = "${pkgsStatic.unison}/bin/unison";
+      unison-fsmonitor = "${pkgsStatic.unison}/bin/unison-fsmonitor";
       upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
       uv = "${pkgsStatic.uv}/bin/uv";
-      vhs = "${vhsStatic}/bin/vhs";
-      vtm = "${vtmStatic}/bin/vtm";
+      vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
+      vtm = "${pkgsStatic.vtm}/bin/vtm";
       watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
       wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
       zstd = "${pkgsStatic.zstd}/bin/zstd";
     };
 
-  scripts =
-    let
-      lesspipe' = stdenv.mkDerivation {
-        name = lesspipe.name;
-        src = lesspipe.src;
-        meta = lesspipe.meta;
-        nativeBuildInputs = [ perl ];
-        configureFlags = [ "--prefix=/" ];
-        configurePlatforms = [ ];
-        dontBuild = true;
-        installFlags = [ "DESTDIR=$(out)" ];
-        dontPatchShebangs = true;
-      };
-    in
-    {
-      "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
-    };
+  scripts = {
+    "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
+  };
 
   share = pkgs.buildEnv {
     name = "local-share";
