@@ -30,13 +30,16 @@ let
                 LDFLAGS = "-static";
               };
 
-          bfs = prev.bfs.overrideAttrs (oa: {
-            configurePhase = ''
-              runHook preConfigure
-              ./configure --prefix=$out --enable-release
-              runHook postConfigure
-            '';
-          });
+          bfs = prev.bfs.overrideAttrs (
+            oa:
+            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
+              configurePhase = ''
+                runHook preConfigure
+                ./configure --prefix=$out --enable-release
+                runHook postConfigure
+              '';
+            }
+          );
 
           ripgrep-all = prev.ripgrep-all.overrideAttrs (
             oa:
@@ -49,8 +52,7 @@ let
 
           btop = prev.btop.overrideAttrs (
             oa:
-            lib.optionalAttrs isStatic {
-
+            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
               hardeningDisable = (oa.hardeningDisable or [ ]) ++ [
                 "fortify"
               ];
@@ -131,7 +133,7 @@ let
           );
 
           htop = prev.htop.override (
-            lib.optionalAttrs isStatic {
+            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
               sensorsSupport = false;
             }
           );
@@ -205,7 +207,7 @@ let
 
           libwebsockets = prev.libwebsockets.overrideAttrs (
             oa:
-            lib.optionalAttrs isStatic {
+            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
               postPatch = (oa.postPatch or "") + ''
                 substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-warn \
                   "set(LIBWEBSOCKETS_LIBRARIES websockets websockets_shared)" \
