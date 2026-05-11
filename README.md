@@ -46,6 +46,12 @@ unzip artifact.zip
 python3 -c 'import shutil; shutil.unpack_archive("artifact.zip")'
 ```
 
+### Find out what's new
+
+```
+diff -u <(cat ~/.local/share/nixexprs/package-versions) <(tar xvf local-bin-share.tar.gz -O .local/share/nixexprs/package-versions)
+```
+
 ### Unpack contents
 
 ```shell
