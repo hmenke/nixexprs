@@ -381,15 +381,35 @@ let
 
   share = pkgs.buildEnv {
     name = "local-share";
-    paths = lib.lists.flatten (
-      lib.mapAttrsToList (
-        _: path: lib.mapAttrsToList (drvPath: _: (import drvPath).all) (builtins.getContext path)
-      ) (lib.filterAttrs (name: _: !lib.elem name [ "jj" ]) (binaries // scripts))
-    );
+    paths =
+      let
+        derivations = lib.lists.flatten (
+          lib.mapAttrsToList (
+            _: path: lib.mapAttrsToList (drvPath: _: (import drvPath).all) (builtins.getContext path)
+          ) (binaries // scripts)
+        );
+        versions = pkgs.writeTextFile {
+          name = "package-versions";
+          destination = "/share/nixexprs/package-versions";
+          text =
+            lib.pipe derivations [
+              (map (drv: drv.name))
+              (lib.sort builtins.lessThan)
+              (lib.unique)
+              (lib.filter (row: row != "")) # fuse2fs returns empty string for some reason
+              (lib.concatStringsSep "\n")
+              (lib.replaceStrings [ "-static-x86_64-unknown-linux-musl" ] [ "" ])
+            ]
+            + "\n";
+        };
+      in
+      # need to exclude jujutsu right now, because Bash completion contains references to /nix/store
+      (lib.filter (drv: !lib.hasPrefix "jujutsu" drv.name) derivations) ++ [ versions ];
     pathsToLink = [
       "/share/bash-completion"
       "/share/btop"
       "/share/fzf"
+      "/share/nixexprs"
     ];
   };
 
