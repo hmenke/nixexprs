@@ -284,6 +284,7 @@ let
   binaries = {
     age = "${goLinkStatic pkgs.age { }}/bin/age";
     age-keygen = "${goLinkStatic pkgs.age { }}/bin/age-keygen";
+    archivemount = "${pkgsStatic.archivemount}/bin/archivemount";
     bat = "${pkgsStatic.bat}/bin/.bat-wrapped";
     bfs = "${pkgsStatic.bfs}/bin/bfs";
     bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
