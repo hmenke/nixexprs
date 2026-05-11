@@ -1,7 +1,7 @@
 { stdenvNoCC, fetchurl }:
 
 stdenvNoCC.mkDerivation (finalAttrs: {
-  name = "ncdu-static";
+  pname = "ncdu-static";
   version = "2.9.1";
   src = fetchurl {
     url = "https://dev.yorhel.nl/download/ncdu-${finalAttrs.version}-linux-x86_64.tar.gz";
