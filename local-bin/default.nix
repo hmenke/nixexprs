@@ -229,7 +229,7 @@ let
 
           reptyr = prev.reptyr.overrideAttrs (
             _:
-            lib.optionalAttrs isStatic {
+            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
               doCheck = false;
               checkFlags = null;
             }
@@ -261,138 +261,118 @@ let
         }
       )
     ];
+
+  goLinkStatic =
+    drv: args:
+    drv.overrideAttrs (
+      oa:
+      pkgs.lib.recursiveUpdate {
+        env = (oa.env or { }) // {
+          CGO_ENABLED = 0;
+        };
+        ldflags = (oa.ldflags or [ ]) ++ [
+          "-s"
+          "-w"
+          "-extldflags '-static'"
+        ];
+      } (if pkgs.lib.isFunction args then args oa else args)
+    );
 in
 with pkgs;
 
 let
-  binaries =
-    let
-      goLinkStatic =
-        drv: args:
-        drv.overrideAttrs (
-          oa:
-          lib.recursiveUpdate {
-            env = (oa.env or { }) // {
-              CGO_ENABLED = 0;
-            };
-            ldflags = (oa.ldflags or [ ]) ++ [
-              "-s"
-              "-w"
-              "-extldflags '-static'"
-            ];
-          } (if lib.isFunction args then args oa else args)
-        );
-
-      ncduStatic = stdenvNoCC.mkDerivation (finalAttrs: {
-        name = "ncdu-static";
-        version = "2.9.1";
-        src = fetchurl {
-          url = "https://dev.yorhel.nl/download/ncdu-${finalAttrs.version}-linux-x86_64.tar.gz";
-          hash = "sha256-DGyEs/djwzuqBRyDJ/DnNvRvM6jMBhu5UdJFF6jF1z4=";
-        };
-        sourceRoot = ".";
-        phases = [
-          "unpackPhase"
-          "installPhase"
-        ];
-        installPhase = "install -v -Dt $out/bin ncdu";
-      });
-
-      btduStatic = import ./btdu-static.nix { inherit pkgs; };
-
-    in
-    {
-      age = "${goLinkStatic pkgs.age { }}/bin/age";
-      age-keygen = "${goLinkStatic pkgs.age { }}/bin/age-keygen";
-      bat = "${pkgsStatic.bat}/bin/.bat-wrapped";
-      bfs = "${pkgsStatic.bfs}/bin/bfs";
-      bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
-      bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
-      bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
-      btdu = "${btduStatic}/bin/btdu";
-      btop = "${pkgsStatic.btop}/bin/btop";
-      busybox = "${pkgsStatic.busybox}/bin/busybox";
-      bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
-      coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
-      cpz = "${pkgsStatic.fuc}/bin/cpz";
-      ctags = "${pkgsStatic.universal-ctags}/bin/ctags";
-      delta = "${pkgsStatic.delta}/bin/delta";
-      denet = "${pkgsStatic.denet}/bin/denet";
-      difft = "${pkgsStatic.difftastic}/bin/difft";
-      direnv = "${goLinkStatic pkgs.direnv { }}/bin/direnv";
-      dive = "${goLinkStatic pkgs.dive { }}/bin/dive";
-      fd = "${pkgsStatic.fd}/bin/fd";
-      findent-octopus = "${pkgsStatic.findent-octopus}/bin/findent-octopus";
-      fq = "${goLinkStatic pkgs.fq { }}/bin/fq";
-      freeze = "${goLinkStatic pkgs.charm-freeze { }}/bin/freeze";
-      fuse2fs = "${pkgsStatic.fuse2fs}/bin/fuse2fs";
-      fzf = "${goLinkStatic pkgs.fzf { }}/bin/fzf";
-      gh = "${goLinkStatic pkgs.gh { }}/bin/.gh-wrapped";
-      glab = "${goLinkStatic pkgs.glab { }}/bin/.glab-wrapped";
-      gocryptfs = "${
-        goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
-      }/bin/.gocryptfs-wrapped";
-      gocryptfs-xray = "${
-        goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
-      }/bin/gocryptfs-xray";
-      gotop = "${goLinkStatic pkgs.gotop { }}/bin/gotop";
-      gotty = "${goLinkStatic pkgs.gotty { }}/bin/gotty";
-      h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
-      htop = "${pkgsStatic.htop}/bin/htop";
-      httm = "${pkgsStatic.httm}/bin/httm";
-      hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
-      jj = "${pkgsStatic.jujutsu}/bin/jj";
-      jq = "${pkgsStatic.jq}/bin/jq";
-      lemonade = "${goLinkStatic pkgs.lemonade { }}/bin/lemonade";
-      less = "${pkgsStatic.less}/bin/less";
-      libtree = "${pkgsStatic.libtree}/bin/libtree";
-      lsof = "${pkgsStatic.lsof}/bin/lsof";
-      mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
-      mg = "${pkgsStatic.mg}/bin/mg";
-      mosh-server = "${pkgsStatic.mosh}/bin/mosh-server";
-      mtr = "${pkgsStatic.mtr}/bin/mtr";
-      nc = "${pkgsStatic.netcat}/bin/nc";
-      ncat = "${pkgsStatic.nmap}/bin/ncat";
-      ncdu = "${ncduStatic}/bin/ncdu";
-      nmap = "${pkgsStatic.nmap}/bin/nmap";
-      nping = "${pkgsStatic.nmap}/bin/nping";
-      ntfy-send = "${goLinkStatic pkgs.ntfy-send { }}/bin/ntfy-send";
-      par2 = "${pkgsStatic.par2cmdline}/bin/par2";
-      patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
-      progress = "${pkgsStatic.progress}/bin/progress";
-      pv = "${pkgsStatic.pv}/bin/pv";
-      rclone = "${goLinkStatic pkgs.rclone { }}/bin/.rclone-wrapped";
-      readtags = "${pkgsStatic.universal-ctags}/bin/readtags";
-      rederr = "${pkgsStatic.rederr}/bin/rederr";
-      reptyr = "${pkgsStatic.reptyr}/bin/reptyr";
-      restic = "${goLinkStatic pkgs.restic { }}/bin/.restic-wrapped";
-      rg = "${pkgsStatic.ripgrep}/bin/rg";
-      rga = "${pkgsStatic.ripgrep-all}/bin/rga";
-      rga-preproc = "${pkgsStatic.ripgrep-all}/bin/rga-preproc";
-      rmz = "${pkgsStatic.fuc}/bin/rmz";
-      ruff = "${pkgsStatic.ruff}/bin/ruff";
-      rustic = "${pkgsStatic.rustic}/bin/rustic";
-      sccache = "${pkgsStatic.sccache}/bin/sccache";
-      sd = "${pkgsStatic.sd}/bin/sd";
-      sops = "${goLinkStatic pkgs.sops { }}/bin/sops";
-      sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
-      ssh-to-age = "${goLinkStatic pkgs.ssh-to-age { }}/bin/ssh-to-age";
-      tmux = "${pkgsStatic.tmux}/bin/tmux";
-      toybox = "${pkgsStatic.toybox}/bin/toybox";
-      tree = "${pkgsStatic.tree}/bin/tree";
-      ttyd = "${pkgsStatic.ttyd}/bin/ttyd";
-      ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
-      ug = "${pkgsStatic.ugrep}/bin/ug";
-      unison = "${pkgsStatic.unison}/bin/unison";
-      unison-fsmonitor = "${pkgsStatic.unison}/bin/unison-fsmonitor";
-      upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
-      uv = "${pkgsStatic.uv}/bin/uv";
-      vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
-      vtm = "${pkgsStatic.vtm}/bin/vtm";
-      watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
-      wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
-      zstd = "${pkgsStatic.zstd}/bin/zstd";
-    };
+  binaries = {
+    age = "${goLinkStatic pkgs.age { }}/bin/age";
+    age-keygen = "${goLinkStatic pkgs.age { }}/bin/age-keygen";
+    bat = "${pkgsStatic.bat}/bin/.bat-wrapped";
+    bfs = "${pkgsStatic.bfs}/bin/bfs";
+    bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
+    bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
+    bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
+    btdu = "${pkgs.btdu-static}/bin/btdu";
+    btop = "${pkgsStatic.btop}/bin/btop";
+    busybox = "${pkgsStatic.busybox}/bin/busybox";
+    bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
+    coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
+    cpz = "${pkgsStatic.fuc}/bin/cpz";
+    ctags = "${pkgsStatic.universal-ctags}/bin/ctags";
+    delta = "${pkgsStatic.delta}/bin/delta";
+    denet = "${pkgsStatic.denet}/bin/denet";
+    difft = "${pkgsStatic.difftastic}/bin/difft";
+    direnv = "${goLinkStatic pkgs.direnv { }}/bin/direnv";
+    dive = "${goLinkStatic pkgs.dive { }}/bin/dive";
+    fd = "${pkgsStatic.fd}/bin/fd";
+    findent-octopus = "${pkgsStatic.findent-octopus}/bin/findent-octopus";
+    fq = "${goLinkStatic pkgs.fq { }}/bin/fq";
+    freeze = "${goLinkStatic pkgs.charm-freeze { }}/bin/freeze";
+    fuse2fs = "${pkgsStatic.fuse2fs}/bin/fuse2fs";
+    fzf = "${goLinkStatic pkgs.fzf { }}/bin/fzf";
+    gh = "${goLinkStatic pkgs.gh { }}/bin/.gh-wrapped";
+    glab = "${goLinkStatic pkgs.glab { }}/bin/.glab-wrapped";
+    gocryptfs = "${
+      goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
+    }/bin/.gocryptfs-wrapped";
+    gocryptfs-xray = "${
+      goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
+    }/bin/gocryptfs-xray";
+    gotop = "${goLinkStatic pkgs.gotop { }}/bin/gotop";
+    gotty = "${goLinkStatic pkgs.gotty { }}/bin/gotty";
+    h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
+    htop = "${pkgsStatic.htop}/bin/htop";
+    httm = "${pkgsStatic.httm}/bin/httm";
+    hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
+    jj = "${pkgsStatic.jujutsu}/bin/jj";
+    jq = "${pkgsStatic.jq}/bin/jq";
+    lemonade = "${goLinkStatic pkgs.lemonade { }}/bin/lemonade";
+    less = "${pkgsStatic.less}/bin/less";
+    libtree = "${pkgsStatic.libtree}/bin/libtree";
+    lsof = "${pkgsStatic.lsof}/bin/lsof";
+    mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
+    mg = "${pkgsStatic.mg}/bin/mg";
+    mosh-server = "${pkgsStatic.mosh}/bin/mosh-server";
+    mtr = "${pkgsStatic.mtr}/bin/mtr";
+    nc = "${pkgsStatic.netcat}/bin/nc";
+    ncat = "${pkgsStatic.nmap}/bin/ncat";
+    ncdu = "${pkgs.ncdu-static}/bin/ncdu";
+    nmap = "${pkgsStatic.nmap}/bin/nmap";
+    nping = "${pkgsStatic.nmap}/bin/nping";
+    ntfy-send = "${goLinkStatic pkgs.ntfy-send { }}/bin/ntfy-send";
+    par2 = "${pkgsStatic.par2cmdline}/bin/par2";
+    patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
+    progress = "${pkgsStatic.progress}/bin/progress";
+    pv = "${pkgsStatic.pv}/bin/pv";
+    rclone = "${goLinkStatic pkgs.rclone { }}/bin/.rclone-wrapped";
+    readtags = "${pkgsStatic.universal-ctags}/bin/readtags";
+    rederr = "${pkgsStatic.rederr}/bin/rederr";
+    reptyr = "${pkgsStatic.reptyr}/bin/reptyr";
+    restic = "${goLinkStatic pkgs.restic { }}/bin/.restic-wrapped";
+    rg = "${pkgsStatic.ripgrep}/bin/rg";
+    rga = "${pkgsStatic.ripgrep-all}/bin/rga";
+    rga-preproc = "${pkgsStatic.ripgrep-all}/bin/rga-preproc";
+    rmz = "${pkgsStatic.fuc}/bin/rmz";
+    ruff = "${pkgsStatic.ruff}/bin/ruff";
+    rustic = "${pkgsStatic.rustic}/bin/rustic";
+    sccache = "${pkgsStatic.sccache}/bin/sccache";
+    sd = "${pkgsStatic.sd}/bin/sd";
+    sops = "${goLinkStatic pkgs.sops { }}/bin/sops";
+    sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
+    ssh-to-age = "${goLinkStatic pkgs.ssh-to-age { }}/bin/ssh-to-age";
+    tmux = "${pkgsStatic.tmux}/bin/tmux";
+    toybox = "${pkgsStatic.toybox}/bin/toybox";
+    tree = "${pkgsStatic.tree}/bin/tree";
+    ttyd = "${pkgsStatic.ttyd}/bin/ttyd";
+    ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
+    ug = "${pkgsStatic.ugrep}/bin/ug";
+    unison = "${pkgsStatic.unison}/bin/unison";
+    unison-fsmonitor = "${pkgsStatic.unison}/bin/unison-fsmonitor";
+    upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
+    uv = "${pkgsStatic.uv}/bin/uv";
+    vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
+    vtm = "${pkgsStatic.vtm}/bin/vtm";
+    watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
+    wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
+    zstd = "${pkgsStatic.zstd}/bin/zstd";
+  };
 
   scripts = {
     "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
