@@ -7,16 +7,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "mergiraf";
-  version = "0.16.3-unstable-2026-05-04";
+  version = "0.17.0-unstable-2026-05-07";
 
   src = fetchFromCodeberg {
     owner = "mergiraf";
     repo = "mergiraf";
-    rev = "ac75c1e8667ceae8938bc7fde9f7066f785fa8c1";
-    hash = "sha256-HZBvbtSdu1ruz2FR+pMR8sghLUf2GsE+y2GhlHiPHVc=";
+    rev = "11b88160fb47376d5b27d524cbed5daebfa0c997";
+    hash = "sha256-Tqz1gNg2XIYO/dFETajF3XUs3A1+mY82U4pz+mMb/ws=";
   };
 
-  cargoHash = "sha256-WHSs46wVei24XF971QLOY5vrzdj1ndw4lXVZo6oUB2E=";
+  cargoHash = "sha256-8Geu6Cd83hTnd53/ZTKq1YIEMIX4oIgwzSS6h8RNaP8=";
 
   nativeCheckInputs = [ git ];
 
