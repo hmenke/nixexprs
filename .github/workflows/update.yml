@@ -41,6 +41,7 @@ jobs:
 
         # Update top-level attrs
         xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit {}" <<-'EOF'
+          denet
           dhcpdoctor
           difftastic --version=branch
           findent-octopus --version=branch
@@ -50,6 +51,7 @@ jobs:
           rederr --version=branch
           req2flatpak
           verrou
+          weave
         EOF
         # TODO: klatexformula
 
