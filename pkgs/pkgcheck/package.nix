@@ -5,6 +5,9 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "pkgcheck";
   version = "3.3.1_2025-12-11";
 

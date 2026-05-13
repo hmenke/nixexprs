@@ -6,7 +6,10 @@
   ninja,
 }:
 
-stdenv.mkDerivation (final: {
+stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "rederr";
   version = "0-unstable-2018-11-22";
 

@@ -6,6 +6,9 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "mergiraf";
   version = "0.17.0-unstable-2026-05-07";
 

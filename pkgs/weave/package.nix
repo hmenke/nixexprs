@@ -7,6 +7,9 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "weave";
   version = "0.2.0";
 

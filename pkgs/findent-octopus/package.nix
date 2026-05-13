@@ -6,7 +6,10 @@
   flex,
 }:
 
-stdenv.mkDerivation (final: {
+stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "findent-octopus";
   version = "1.0-unstable-2026-02-20";
 
@@ -23,7 +26,8 @@ stdenv.mkDerivation (final: {
   ];
 
   makeFlags = [
-    "-C bin"
+    "-C"
+    "bin"
     "CPP=$(CXX)"
   ];
 

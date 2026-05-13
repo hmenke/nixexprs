@@ -4,7 +4,10 @@
   python3,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "dhcpdoctor";
   version = "1.0.0";
   format = "pyproject";
@@ -12,7 +15,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "ArnesSI";
     repo = "dhcpdoctor";
-    rev = version;
+    rev = finalAttrs.version;
     hash = "sha256-u0VmIWvuOGmYliB5eomU1yUc+TEgkPDV8IW94swR8d4=";
   };
 
@@ -22,8 +25,8 @@ python3.pkgs.buildPythonApplication rec {
       --replace 'poetry.masonry.api' 'poetry.core.masonry.api'
   '';
 
-  nativeBuildInputs = with python3.pkgs; [ poetry-core ];
-  propagatedBuildInputs = with python3.pkgs; [ scapy ];
+  nativeBuildInputs = [ python3.pkgs.poetry-core ];
+  propagatedBuildInputs = [ python3.pkgs.scapy ];
 
   meta = {
     description = "Tool for testing IPv4 and IPv6 DHCP services";
@@ -31,4 +34,4 @@ python3.pkgs.buildPythonApplication rec {
     license = lib.licenses.mit;
     maintainers = with lib.maintainers; [ hmenke ];
   };
-}
+})

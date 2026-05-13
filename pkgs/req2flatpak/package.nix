@@ -4,7 +4,10 @@
   python3,
 }:
 
-python3.pkgs.buildPythonApplication rec {
+python3.pkgs.buildPythonApplication (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "req2flatpak";
   version = "0.3.1";
   format = "pyproject";
@@ -12,7 +15,7 @@ python3.pkgs.buildPythonApplication rec {
   src = fetchFromGitHub {
     owner = "johannesjh";
     repo = "req2flatpak";
-    rev = "v${version}";
+    rev = "v${finalAttrs.version}";
     hash = "sha256-gj0SP4SQpkaT1dCov1l4qVWhy5J3Q+s9q3Q7TN83H/Q=";
   };
 
@@ -21,16 +24,14 @@ python3.pkgs.buildPythonApplication rec {
       --replace-fail 'packaging = { version = "^21.3" }' 'packaging = { version = ">=21.3" }'
   '';
 
-  nativeBuildInputs = with python3.pkgs; [ poetry-core ];
+  nativeBuildInputs = [ python3.pkgs.poetry-core ];
   propagatedBuildInputs = with python3.pkgs; [
     setuptools
     packaging
     pyyaml
   ];
 
-  nativeCheckInputs = with python3.pkgs; [
-    pytestCheckHook
-  ];
+  nativeCheckInputs = [ python3.pkgs.pytestCheckHook ];
 
   disabledTests = [
     "test_api"
@@ -47,4 +48,4 @@ python3.pkgs.buildPythonApplication rec {
     mainProgram = "req2flatpak";
     maintainers = with lib.maintainers; [ hmenke ];
   };
-}
+})

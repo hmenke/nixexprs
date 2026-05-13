@@ -7,7 +7,10 @@
   libsForQt5,
 }:
 
-stdenv.mkDerivation rec {
+stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "klatexformula";
   version = "4.1.0";
 
@@ -38,13 +41,14 @@ stdenv.mkDerivation rec {
   ];
   buildInputs = [
     libsForQt5.qtbase
+    libsForQt5.qtsvg
     libsForQt5.qtx11extras
   ];
 
-  meta = with lib; {
+  meta = {
     description = "KLatexFormula is an easy-to-use graphical application for generating images from LaTeX equations.";
     homepage = "https://klatexformula.sourceforge.io/";
-    license = licenses.gpl2Plus;
-    maintainers = with maintainers; [ hmenke ];
+    license = lib.licenses.gpl2Plus;
+    maintainers = with lib.maintainers; [ hmenke ];
   };
-}
+})

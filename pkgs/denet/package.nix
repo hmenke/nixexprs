@@ -5,6 +5,9 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "denet";
   version = "0.4.2";
 
@@ -23,7 +26,7 @@ rustPlatform.buildRustPackage (finalAttrs: {
     description = "Streaming process monitoring tool that provides detailed metrics on running processes, including CPU, memory, I/O, and thread usage";
     homepage = "https://github.com/btraven00/denet";
     changelog = "https://github.com/btraven00/denet/releases/tag/v${finalAttrs.version}";
-    license = with lib.licenses; [ gpl3Plus ];
+    license = lib.licenses.gpl3Plus;
     maintainers = with lib.maintainers; [ hmenke ];
     mainProgram = "denet";
   };

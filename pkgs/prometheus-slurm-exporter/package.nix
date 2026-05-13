@@ -4,14 +4,18 @@
   fetchFromGitHub,
 }:
 
-buildGoModule rec {
+buildGoModule (finalAttrs: {
+  ## go: github.com/prometheus/client_golang@v1.2.1: module lookup disabled by GOPROXY=off
+  #__structuredAttrs = true;
+  strictDeps = true;
+
   pname = "prometheus-slurm-exporter";
   version = "0.20";
 
   src = fetchFromGitHub {
     owner = "vpenso";
     repo = "prometheus-slurm-exporter";
-    rev = version;
+    rev = finalAttrs.version;
     hash = "sha256-KS9LoDuLQFq3KoKpHd8vg1jw20YCNRJNJrnBnu5vxvs=";
   };
 
@@ -25,11 +29,11 @@ buildGoModule rec {
   ];
   doCheck = false;
 
-  meta = with lib; {
+  meta = {
     description = "Prometheus exporter for performance metrics from Slurm";
     homepage = "https://github.com/vpenso/prometheus-slurm-exporter";
-    license = licenses.gpl3Plus;
-    maintainers = [ maintainers.hmenke ];
+    license = lib.licenses.gpl3Plus;
+    maintainers = with lib.maintainers; [ hmenke ];
     mainProgram = "prometheus-slurm-exporter";
   };
-}
+})

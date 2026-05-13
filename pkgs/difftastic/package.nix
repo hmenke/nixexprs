@@ -7,6 +7,9 @@
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "difftastic";
   version = "0.69.0-unstable-2026-05-10";
 

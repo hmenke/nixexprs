@@ -9,12 +9,15 @@
   stdenv,
 }:
 
-stdenv.mkDerivation (final: {
+stdenv.mkDerivation (finalAttrs: {
+  __structuredAttrs = true;
+  strictDeps = true;
+
   pname = "verrou";
   version = "2.7.0";
 
   src = fetchurl {
-    url = "https://github.com/edf-hpc/verrou/releases/download/v${final.version}/valgrind-3.26.0_verrou-${final.version}.tar.gz";
+    url = "https://github.com/edf-hpc/verrou/releases/download/v${finalAttrs.version}/valgrind-3.26.0_verrou-${finalAttrs.version}.tar.gz";
     hash = "sha256-5enYsk0yRRVBfCwTSudtXdVmg1IZ1krw+mb2UsHWavc=";
   };
 
@@ -35,12 +38,12 @@ stdenv.mkDerivation (final: {
   buildInputs = [
     gdb
     perl
-    python3
   ];
   nativeBuildInputs = [
     autoreconfHook
-    perl
     makeWrapper
+    perl
+    python3
   ];
 
   enableParallelBuilding = true;
