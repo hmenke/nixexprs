@@ -8,16 +8,16 @@
 
 rustPlatform.buildRustPackage (finalAttrs: {
   pname = "difftastic";
-  version = "0.69.0-unstable-2026-05-05";
+  version = "0.69.0-unstable-2026-05-10";
 
   src = fetchFromGitHub {
     owner = "wilfred";
     repo = "difftastic";
-    rev = "a81564d256efe63d667139716113b35a51cd8717";
-    hash = "sha256-kJ33bKusvmAr93zafhxlqLEnym8x1gc1owlX0PxiMs4=";
+    rev = "7ccfcb315f7e46fd015809416c7d7dffa5be7078";
+    hash = "sha256-BxJ36OGsec3TPO2QyljtN11HU/aWVBaXaQySAtmG8Q8=";
   };
 
-  cargoHash = "sha256-esTsIpw4n81RIE6xanrtI7g25RCDz5nwJOpuOOrgSfE=";
+  cargoHash = "sha256-SXgAmRK5SaMNrJpr52bBqRdTCtkfje1IKk6wJpyEI1w=";
 
   buildInputs = [ rust-jemalloc-sys ];
 
