@@ -10,13 +10,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "mergiraf";
-  version = "0.17.0-unstable-2026-05-07";
+  version = "0.17.0-unstable-2026-05-18";
 
   src = fetchFromCodeberg {
     owner = "mergiraf";
     repo = "mergiraf";
-    rev = "11b88160fb47376d5b27d524cbed5daebfa0c997";
-    hash = "sha256-Tqz1gNg2XIYO/dFETajF3XUs3A1+mY82U4pz+mMb/ws=";
+    rev = "513fa61689ef6817a91b52034a0fdf5c897e0599";
+    hash = "sha256-EORReVa/xnwswljx3s+wyOOmjYNA2q2FtMJiELHg2MU=";
   };
 
   cargoHash = "sha256-8Geu6Cd83hTnd53/ZTKq1YIEMIX4oIgwzSS6h8RNaP8=";
