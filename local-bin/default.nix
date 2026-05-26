@@ -30,36 +30,12 @@ let
                 LDFLAGS = "-static";
               };
 
-          bfs = prev.bfs.overrideAttrs (
-            oa:
-            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
-              configurePhase = ''
-                runHook preConfigure
-                ./configure --prefix=$out --enable-release
-                runHook postConfigure
-              '';
-            }
-          );
-
           ripgrep-all = prev.ripgrep-all.overrideAttrs (
             oa:
             lib.optionalAttrs isStatic {
               doCheck = false;
               nativeCheckInputs = null;
               postInstall = null;
-            }
-          );
-
-          btop = prev.btop.overrideAttrs (
-            oa:
-            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
-              hardeningDisable = (oa.hardeningDisable or [ ]) ++ [
-                "fortify"
-              ];
-              cmakeFlags = (oa.cmakeFlags or [ ]) ++ [
-                "-DBTOP_STATIC:BOOL=ON"
-                "-DBTOP_FORTIFY:BOOL=OFF"
-              ];
             }
           );
 
@@ -132,34 +108,6 @@ let
             }
           );
 
-          htop = prev.htop.override (
-            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
-              sensorsSupport = false;
-            }
-          );
-
-          libutempter = prev.libutempter.overrideAttrs (
-            oa:
-            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
-              makeFlags = [
-                "utempter"
-                "libutempter.a"
-              ]
-              ++ (oa.makeFlags or [ ]);
-              preInstall = ''
-                touch libutempter.so
-              '';
-
-              postInstall = ''
-                rm -v $out/lib/libutempter.so*
-              '';
-            }
-          );
-
-          tmux = prev.tmux.override {
-            withUtempter = true;
-          };
-
           charm-freeze = prev.charm-freeze.overrideAttrs (oa: {
             patches = (oa.patches or [ ]) ++ [
               (prev.fetchpatch {
@@ -189,7 +137,6 @@ let
             else
               (prev.mosh.override {
                 inherit (prev.pkgsBuildHost) perl openssh;
-                withUtempter = true;
               }).overrideAttrs
                 (oa: {
                   patches = (oa.patches or [ ]) ++ [
@@ -205,17 +152,6 @@ let
                   dontPatchShebangs = true;
                 });
 
-          libwebsockets = prev.libwebsockets.overrideAttrs (
-            oa:
-            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
-              postPatch = (oa.postPatch or "") + ''
-                substituteInPlace "cmake/libwebsockets-config.cmake.in" --replace-warn \
-                  "set(LIBWEBSOCKETS_LIBRARIES websockets websockets_shared)" \
-                  "set(LIBWEBSOCKETS_LIBRARIES websockets)"
-              '';
-            }
-          );
-
           vhs = prev.vhs.overrideAttrs (oa: {
             postInstall = ''
               $out/bin/vhs man > vhs.1
@@ -226,24 +162,6 @@ let
                 --zsh <($out/bin/vhs completion zsh)
             '';
           });
-
-          reptyr = prev.reptyr.overrideAttrs (
-            _:
-            lib.optionalAttrs (isStatic && lib.versionOlder lib.version "26") {
-              doCheck = false;
-              checkFlags = null;
-            }
-          );
-
-          gh = prev.gh.overrideAttrs (
-            oa:
-            lib.optionalAttrs (lib.versionOlder lib.version "26") {
-              nativeBuildInputs = (oa.nativeBuildInputs or [ ]) ++ [ prev.makeWrapper ];
-              postInstall = (oa.postInstall or "") + ''
-                wrapProgram $out/bin/gh --set-default GH_TELEMETRY false
-              '';
-            }
-          );
 
           lesspipe' = prev.stdenv.mkDerivation {
             name = prev.lesspipe.name;

@@ -15,7 +15,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-        - channel: nixos-25.11
+        - channel: nixos-26.05
         - channel: nixpkgs-unstable
     runs-on: ubuntu-latest
     env:
@@ -42,7 +42,7 @@ jobs:
     - name: Run nix build
       run: nix build --print-build-logs --no-link --file ./default.nix
     - name: Prepare artifacts
-      if: ${{ matrix.channel == 'nixos-25.11' }}
+      if: ${{ matrix.channel == 'nixos-26.05' }}
       run: |
         nix build --file ./default.nix -o .local local-bin
         tar cvf local-bin-share.tar --mode='u+rwX,go+rX' --dereference .local/bin/* .local/share/*
@@ -51,7 +51,7 @@ jobs:
         gzip -fv --rsyncable local-libexec.tar
     - name: Delete old artifacts
       uses: actions/github-script@v9
-      if: ${{ matrix.channel == 'nixos-25.11' }}
+      if: ${{ matrix.channel == 'nixos-26.05' }}
       with:
         script: |
           const { owner, repo } = context.issue
@@ -60,7 +60,7 @@ jobs:
             github.rest.actions.deleteArtifact({owner, repo, artifact_id: id})
           })
     - uses: actions/upload-artifact@v7
-      if: ${{ matrix.channel == 'nixos-25.11' }}
+      if: ${{ matrix.channel == 'nixos-26.05' }}
       with:
         path: |
           local-bin-share.tar.gz
