@@ -43,9 +43,7 @@ jobs:
         xargs -t -I{} nix-shell -p nix-update --run "nix-update --build --commit {}" <<-'EOF'
           denet
           dhcpdoctor
-          difftastic --version=branch
           findent-octopus --version=branch
-          mergiraf --version=branch
           pkgcheck
           prometheus-slurm-exporter
           rederr --version=branch
