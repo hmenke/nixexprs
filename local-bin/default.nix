@@ -44,7 +44,7 @@ let
           liblinear = prev.liblinear.overrideAttrs (
             oa:
             lib.optionalAttrs isStatic {
-              patches = (oa.patches or [ ]) ++ [ ./0002-liblinear-static.patch ];
+              patches = (oa.patches or [ ]) ++ [ ./liblinear-static.patch ];
               installPhase = ''
                 install -Dt $out/lib liblinear.a
                 install -D train $bin/bin/liblinear-train
@@ -98,7 +98,7 @@ let
             oa:
             lib.optionalAttrs isStatic {
               patches = (oa.patches or [ ]) ++ [
-                ./0003-vtm-musl.patch
+                ./vtm-musl.patch
               ];
             }
           );
