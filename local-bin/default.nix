@@ -39,6 +39,8 @@ let
             }
           );
 
+          hdf5 = prev.hdf5.override { szipSupport = false; };
+
           liblinear = prev.liblinear.overrideAttrs (
             oa:
             lib.optionalAttrs isStatic {
