@@ -9,17 +9,17 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "pkgcheck";
-  version = "3.3.1_2025-12-11";
+  version = "4.0.2_2026-05-25";
 
   src = fetchFromGitea {
     domain = "codeberg.org";
     owner = "ManfredLotz";
     repo = "pkgcheck";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-sFQk3Y9skvvVs/R7qjB53cio6mFMAuWOwjylLXt/RnE=";
+    hash = "sha256-ZH3ph/6rVZsHo+WL9zPO13UZ6Y3FycF6sIn9BpfJaHw=";
   };
 
-  cargoHash = "sha256-OeW6c27W3hif87kIV9mSSx04FmXvNUftiRmNEz/UKSY=";
+  cargoHash = "sha256-M8sMjZjrlTvdhctf352IooDD1JP33Qm8x8hfSkZTbTc=";
 
   meta = {
     description = "Command line utility which the author uses to check uploaded packages to CTAN before installing them";
