@@ -5,8 +5,7 @@
 }:
 
 buildGoModule (finalAttrs: {
-  ## go: github.com/prometheus/client_golang@v1.2.1: module lookup disabled by GOPROXY=off
-  #__structuredAttrs = true;
+  __structuredAttrs = true;
   strictDeps = true;
 
   pname = "prometheus-slurm-exporter";

@@ -4,9 +4,7 @@
 }:
 
 buildGoModule (finalAttrs: {
-  ## error: output '/nix/store/aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa-ntfy-send-0.0' is not allowed to refer to the following paths:
-  ##          /nix/store/bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb-go-1.25.9
-  #__structuredAttrs = true;
+  __structuredAttrs = true;
   strictDeps = true;
 
   pname = "ntfy-send";
