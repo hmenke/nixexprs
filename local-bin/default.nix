@@ -211,6 +211,7 @@ let
     archivemount = "${pkgsStatic.archivemount}/bin/archivemount";
     bat = "${pkgsStatic.bat}/bin/.bat-wrapped";
     bfs = "${pkgsStatic.bfs}/bin/bfs";
+    bindfs = "${pkgsStatic.bindfs}/bin/bindfs";
     bsdcat = "${pkgsStatic.libarchive}/bin/bsdcat";
     bsdcpio = "${pkgsStatic.libarchive}/bin/bsdcpio";
     bsdtar = "${pkgsStatic.libarchive}/bin/bsdtar";
