@@ -255,7 +255,7 @@ let
     mtr = "${pkgsStatic.mtr}/bin/mtr";
     nc = "${pkgsStatic.netcat}/bin/nc";
     ncat = "${pkgsStatic.nmap}/bin/ncat";
-    ncdu = "${pkgs.ncdu-static}/bin/ncdu";
+    ncdu = "${pkgs.ncdu-bin}/bin/ncdu";
     nmap = "${pkgsStatic.nmap}/bin/nmap";
     nping = "${pkgsStatic.nmap}/bin/nping";
     ntfy-send = "${goLinkStatic pkgs.ntfy-send { }}/bin/ntfy-send";
@@ -276,6 +276,7 @@ let
     rustic = "${pkgsStatic.rustic}/bin/rustic";
     sccache = "${pkgsStatic.sccache}/bin/sccache";
     sd = "${pkgsStatic.sd}/bin/sd";
+    shellcheck = "${pkgs.shellcheck-bin}/bin/shellcheck";
     sops = "${goLinkStatic pkgs.sops { }}/bin/sops";
     sqlite3 = "${pkgsStatic.sqlite-interactive}/bin/sqlite3";
     ssh-to-age = "${goLinkStatic pkgs.ssh-to-age { }}/bin/ssh-to-age";

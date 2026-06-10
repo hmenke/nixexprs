@@ -4,7 +4,7 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   __structuredAttrs = true;
   strictDeps = true;
 
-  pname = "ncdu-static";
+  pname = "ncdu-bin";
   version = "2.9.1";
 
   src = fetchurl {
