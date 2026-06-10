@@ -165,6 +165,10 @@ let
             '';
           });
 
+          gocryptfs = prev.gocryptfs.overrideAttrs (oa: {
+            postInstall = "";
+          });
+
           lesspipe' = prev.stdenv.mkDerivation {
             name = prev.lesspipe.name;
             src = prev.lesspipe.src;
@@ -230,12 +234,8 @@ let
     fzf = "${goLinkStatic pkgs.fzf { }}/bin/fzf";
     gh = "${goLinkStatic pkgs.gh { }}/bin/.gh-wrapped";
     glab = "${goLinkStatic pkgs.glab { }}/bin/.glab-wrapped";
-    gocryptfs = "${
-      goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
-    }/bin/.gocryptfs-wrapped";
-    gocryptfs-xray = "${
-      goLinkStatic pkgs.gocryptfs { tags = [ "without_openssl" ]; }
-    }/bin/gocryptfs-xray";
+    gocryptfs = "${goLinkStatic pkgs.gocryptfs { }}/bin/gocryptfs";
+    gocryptfs-xray = "${goLinkStatic pkgs.gocryptfs { }}/bin/gocryptfs-xray";
     gotop = "${goLinkStatic pkgs.gotop { }}/bin/gotop";
     gotty = "${goLinkStatic pkgs.gotty { }}/bin/gotty";
     h5ls = "${pkgsStatic.hdf5.bin}/bin/h5ls";
