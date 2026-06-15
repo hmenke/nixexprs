@@ -46,9 +46,7 @@ jobs:
       run: |
         nix build --file ./default.nix -o .local local-bin
         tar cvf local-bin-share.tar --mode='u+rwX,go+rX' --dereference .local/bin/* .local/share/*
-        tar cvf local-libexec.tar --mode='u+rwX,go+rX' .local/libexec/git-core/*
         gzip -fv --rsyncable local-bin-share.tar
-        gzip -fv --rsyncable local-libexec.tar
     - name: Delete old artifacts
       uses: actions/github-script@v9
       if: ${{ matrix.channel == 'nixos-26.05' }}
@@ -64,4 +62,3 @@ jobs:
       with:
         path: |
           local-bin-share.tar.gz
-          local-libexec.tar.gz

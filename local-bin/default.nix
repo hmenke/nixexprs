@@ -353,21 +353,6 @@ let
     cp -PRv ${lib.escapeShellArg "${share}/${path}"} $out/${path}
   '') share.pathsToLink;
 
-  gitMinimalStatic = pkgsStatic.gitMinimal.overrideAttrs (oa: {
-    doInstallCheck = false;
-    # force detection of curl
-    configureFlags = oa.configureFlags or [ ] ++ [
-      "ac_cv_lib_curl_curl_global_init=yes"
-    ];
-    # undo patchShebangs and substitutions
-    postFixup = oa.postFixup or "" + ''
-      find $out -type f -exec grep -Iq . {} \; -print0 |
-        xargs -0 -l -t sed -i 's%#!/nix/store/[[:graph:]]*%#!/bin/sh%g; s%/nix/store/[^/]*/bin/\([[:graph:]]*\)%\1%g'
-    '';
-    # libidn2 also defines `error'
-    env.LDFLAGS = (oa.env.LDFLAGS or "") + " -z muldefs";
-  });
-
 in
 pkgs.stdenvNoCC.mkDerivation {
   name = "local-bin";
@@ -377,10 +362,9 @@ pkgs.stdenvNoCC.mkDerivation {
   ];
   dontPatchShebangs = true;
   installPhase = ''
-    mkdir -p $out/bin $out/libexec $out/share
+    mkdir -p $out/bin $out/share
     ${lib.concatStrings copyBinaries}
     ${lib.concatStrings copyScripts}
     ${lib.concatStrings copyShare}
-    ln -s ${gitMinimalStatic}/libexec/git-core $out/libexec/git-core
   '';
 }
