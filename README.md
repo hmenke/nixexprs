@@ -27,7 +27,6 @@ try:
     unpack_archive("local-bin-share.tar.gz", expanduser("~"))
 finally:
     remove("local-bin-share.tar.gz")
-    remove("local-libexec.tar.gz")
 EOF
 ```
 
@@ -56,14 +55,4 @@ diff -u <(cat ~/.local/share/nixexprs/package-versions) <(tar xvf local-bin-shar
 
 ```shell
 tar -kxvf local-bin-share.tar.gz -C ~
-tar -kxvf local-libexec.tar.gz -C ~
-```
-
-### Using Git
-
-*Disclaimer:* Not everything works as expected.
-
-```shell
-export GIT_EXEC_PATH="$HOME/.local/libexec/git-core"
-export PATH="$GIT_EXEC_PATH:$PATH"
 ```
