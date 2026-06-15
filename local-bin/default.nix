@@ -260,6 +260,7 @@ let
     nping = "${pkgsStatic.nmap}/bin/nping";
     ntfy-send = "${goLinkStatic pkgs.ntfy-send { }}/bin/ntfy-send";
     par2 = "${pkgsStatic.par2cmdline}/bin/par2";
+    pasta = "${pkgsStatic.passt}/bin/passt";
     patchelf = "${pkgsStatic.patchelf}/bin/patchelf";
     progress = "${pkgsStatic.progress}/bin/progress";
     pv = "${pkgsStatic.pv}/bin/pv";
