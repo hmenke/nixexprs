@@ -169,6 +169,14 @@ let
             postInstall = "";
           });
 
+          libressl = prev.libressl.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              # broken since https://github.com/NixOS/nixpkgs/pull/515600
+              preCheck = "";
+            }
+          );
+
           lesspipe' = prev.stdenv.mkDerivation {
             name = prev.lesspipe.name;
             src = prev.lesspipe.src;
