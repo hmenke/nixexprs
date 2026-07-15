@@ -308,6 +308,7 @@ let
 
   scripts = {
     "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
+    "findent-octopus_batch" = "${pkgsStatic.findent-octopus}/bin/findent-octopus_batch";
   };
 
   share = pkgs.buildEnv {
