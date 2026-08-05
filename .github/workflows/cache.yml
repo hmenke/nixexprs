@@ -60,5 +60,5 @@ jobs:
     - uses: actions/upload-artifact@v7
       if: ${{ matrix.channel == 'nixos-26.05' }}
       with:
-        path: |
-          local-bin-share.tar.gz
+        path: local-bin-share.tar.gz
+        archive: false
