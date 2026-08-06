@@ -61,4 +61,4 @@ jobs:
       if: ${{ matrix.channel == 'nixos-26.05' }}
       with:
         path: local-bin-share.tar.gz
-        archive: false
+        archive: true # https://github.com/oprypin/nightly.link/issues/88
