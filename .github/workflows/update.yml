@@ -44,6 +44,7 @@ jobs:
           denet
           dhcpdoctor
           findent-octopus --version=branch
+          git-filter-repo
           pkgcheck
           prometheus-slurm-exporter
           rederr --version=branch

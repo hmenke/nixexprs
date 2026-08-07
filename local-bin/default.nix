@@ -209,8 +209,10 @@ let
         ];
       } (if pkgs.lib.isFunction args then args oa else args)
     );
+
+  lib = pkgs.lib;
+  pkgsStatic = pkgs.pkgsStatic;
 in
-with pkgs;
 
 let
   binaries = {
@@ -307,8 +309,9 @@ let
   };
 
   scripts = {
-    "lesspipe.sh" = "${lesspipe'}/bin/lesspipe.sh";
+    "lesspipe.sh" = "${pkgs.lesspipe'}/bin/lesspipe.sh";
     "findent-octopus_batch" = "${pkgsStatic.findent-octopus}/bin/findent-octopus_batch";
+    "git-filter-repo" = "${pkgs.git-filter-repo}/bin/git-filter-repo";
   };
 
   share = pkgs.buildEnv {
