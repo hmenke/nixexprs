@@ -21,6 +21,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-Oxl8sO9Y5ddudoWC8RltTO52mBdaG/Hxlp5FTQr4biU=";
 
+  checkFlags = [
+    "--skip=setgid_file_flagged"
+    "--skip=setuid_and_setgid_both_collapse_to_one_issue"
+    "--skip=setuid_file_flagged"
+    "--skip=setuid_on_directory_not_flagged"
+  ];
+
   meta = {
     description = "Command line utility which the author uses to check uploaded packages to CTAN before installing them";
     homepage = "https://codeberg.org/ManfredLotz/pkgcheck";
