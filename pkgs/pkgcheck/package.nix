@@ -9,17 +9,17 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "pkgcheck";
-  version = "4.0.3_2026-05-28";
+  version = "4.1.0_2026-08-05";
 
   src = fetchFromGitea {
     domain = "codeberg.org";
     owner = "ManfredLotz";
     repo = "pkgcheck";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-DDb+t8zkV0soQwzWIvD/5IrJW1jyqp92Qkga2ok5O8k=";
+    hash = "sha256-NrpV9qUFXmRvCVO1Cpgz6qSPTMRGXX460RcH7JOYW/I=";
   };
 
-  cargoHash = "sha256-Oxl8sO9Y5ddudoWC8RltTO52mBdaG/Hxlp5FTQr4biU=";
+  cargoHash = "sha256-xqxJOAyeaKjFu1cszRMM9+jKJgsHEf0utDHfGFj1v6A=";
 
   checkFlags = [
     "--skip=setgid_file_flagged"
