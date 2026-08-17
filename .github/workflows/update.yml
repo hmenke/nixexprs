@@ -45,10 +45,12 @@ jobs:
           dhcpdoctor
           findent-octopus --version=branch
           git-filter-repo
+          pandoc-bin --version-regex \"^([0-9].*)\"
           pkgcheck
           prometheus-slurm-exporter
           rederr --version=branch
           req2flatpak
+          shellcheck-bin
           verrou
           weave
         EOF
