@@ -28,7 +28,10 @@ stdenv.mkDerivation (finalAttrs: {
     description = "Quickly rewrite git repository history";
     homepage = "https://github.com/newren/git-filter-repo";
     changelog = "https://github.com/newren/git-filter-repo/releases/tag/v${finalAttrs.version}";
-    license = with lib.licenses; [ mit gpl2Plus ];
+    license = with lib.licenses; [
+      mit
+      gpl2Plus
+    ];
     maintainers = with lib.maintainers; [ hmenke ];
     mainProgram = "git-filter-repo";
   };
