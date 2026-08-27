@@ -41,31 +41,10 @@ let
 
           hdf5 = prev.hdf5.override { szipSupport = false; };
 
-          liblinear = prev.liblinear.overrideAttrs (
-            oa:
-            lib.optionalAttrs isStatic {
-              patches = (oa.patches or [ ]) ++ [ ./liblinear-static.patch ];
-              installPhase = ''
-                install -Dt $out/lib liblinear.a
-                install -D train $bin/bin/liblinear-train
-                install -D predict $bin/bin/liblinear-predict
-                install -Dm444 -t $dev/include linear.h
-              '';
-            }
-          );
-
-          nmap =
-            if !isStatic then
-              prev.nmap
-            else
-              (prev.nmap.override {
-                withLua = false;
-              }).overrideAttrs
-                (oa: {
-                  configureFlags = (oa.configureFlags or [ ]) ++ [
-                    "--without-libnl"
-                  ];
-                });
+          nmap = prev.nmap.override {
+            liblinear = null;
+            withLua = false;
+          };
 
           mg = prev.mg.overrideAttrs (oa: {
             patches =
