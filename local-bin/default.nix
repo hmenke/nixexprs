@@ -302,7 +302,6 @@ let
     upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
     uv = "${pkgsStatic.uv}/bin/uv";
     vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
-    vtm = "${pkgsStatic.vtm}/bin/vtm";
     watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
