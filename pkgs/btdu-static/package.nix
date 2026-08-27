@@ -5,8 +5,8 @@ let
   version = "0.7.2";
   src =
     fetchTarball
-      #"https://github.com/CyberShadow/${pname}/archive/refs/tags/v${version}.tar.gz";
-      "https://github.com/CyberShadow/${pname}/archive/8b6e9b0c229e48b8c19bf6d4f1e264fd55592fd4.tar.gz";
+      #"https://github.com/CyberShadow/btdu/archive/refs/tags/v${version}.tar.gz";
+      "https://github.com/hmenke/btdu/archive/8909ef4eca0cbb38bf5956005618309d2931cab6.tar.gz";
   flake = import "${src}/flake.nix";
   self = null;
   nixpkgs = {
