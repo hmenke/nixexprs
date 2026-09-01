@@ -41,19 +41,32 @@ let
 
           hdf5 = prev.hdf5.override { szipSupport = false; };
 
-          nmap = prev.nmap.override {
-            liblinear = null;
-            withLua = false;
-          };
+          nmap =
+            (prev.nmap.override {
+              liblinear = null;
+              withLua = false;
+            }).overrideAttrs
+              (
+                oa:
+                lib.optionalAttrs (lib.versionAtLeast lib.version "26.11pre") {
+                  patches = (oa.patches or [ ]) ++ [
+                    (prev.fetchpatch2 {
+                      name = "Do-not-call-NSE-if-compiling-without-Lua-support.patch";
+                      url = "https://github.com/nmap/nmap/commit/4c36cf12f246b52a8d510bdde8becd5c5b3bf8b5.patch";
+                      hash = "sha256-aWPHfJF1wOE5l6LQUKCqKVKxBoyNFov3r0NGEOxWpw8=";
+                    })
+                  ];
+                }
+              );
 
           mg = prev.mg.overrideAttrs (oa: {
             patches =
               assert (oa.patches or [ ]) == [ ];
               [
-                (prev.fetchpatch {
+                (prev.fetchpatch2 {
                   name = "Add-Ctrl-arrow-Ctrl-PgUp-Dn-to-fundamental-bindings.patch";
                   url = "https://github.com/troglobit/mg/commit/4a1ddb3aa158a9e2d8281427972debc6d326a2f8.patch";
-                  hash = "sha256-TxAO9gJGUoHgnC6IJpkq2Cx5evV3UVgHIsokLwetlg4=";
+                  hash = "sha256-+tQ5doUkAAh9LowqoNPnalVecmOIXWPTuhZl9j/iMUc=";
                 })
               ];
             patchFlags = [
@@ -91,10 +104,10 @@ let
 
           charm-freeze = prev.charm-freeze.overrideAttrs (oa: {
             patches = (oa.patches or [ ]) ++ [
-              (prev.fetchpatch {
+              (prev.fetchpatch2 {
                 name = "fix-Support-bold-ANSI-escape-sequence.patch";
                 url = "https://github.com/charmbracelet/freeze/pull/154/commits/a35b9da282154c6a88550a68e130a5b161645ebc.patch";
-                hash = "sha256-bgoKLYiTFIktE5YqXwd9TmcQIcBsWNQAo5cHVj3qtlU=";
+                hash = "sha256-QTWydWmzeDNnvCji5L8OM1X/pD/WI04OppEo92bNH+8=";
               })
             ];
             doCheck = false; # tests including bold of course fail now

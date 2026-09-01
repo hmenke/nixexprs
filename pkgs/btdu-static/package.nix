@@ -6,7 +6,7 @@ let
   src =
     fetchTarball
       #"https://github.com/CyberShadow/btdu/archive/refs/tags/v${version}.tar.gz";
-      "https://github.com/hmenke/btdu/archive/8909ef4eca0cbb38bf5956005618309d2931cab6.tar.gz";
+      "https://github.com/CyberShadow/btdu/archive/aaace08cb44d4b9fc0f92cbc853ec0dc6d5a749c.tar.gz";
   flake = import "${src}/flake.nix";
   self = null;
   nixpkgs = {
