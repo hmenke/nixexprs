@@ -86,15 +86,6 @@ let
                   doCheck = false;
                 });
 
-          vtm = prev.vtm.overrideAttrs (
-            oa:
-            lib.optionalAttrs isStatic {
-              patches = (oa.patches or [ ]) ++ [
-                ./vtm-musl.patch
-              ];
-            }
-          );
-
           patchelf = prev.patchelf.overrideAttrs (
             oa:
             lib.optionalAttrs isStatic {
@@ -124,27 +115,6 @@ let
                 };
               }
           );
-
-          mosh =
-            if !isStatic then
-              prev.mosh
-            else
-              (prev.mosh.override {
-                inherit (prev.pkgsBuildHost) perl openssh;
-              }).overrideAttrs
-                (oa: {
-                  patches = (oa.patches or [ ]) ++ [
-                    ./mosh-fix-colors.patch
-                    ./mosh-fix-username.patch
-                  ];
-                  postPatch = ''
-                    substituteInPlace scripts/mosh.pl \
-                      --subst-var-by ssh "ssh" \
-                      --subst-var-by mosh-client "mosh-client"
-                  '';
-                  postInstall = "";
-                  dontPatchShebangs = true;
-                });
 
           vhs = prev.vhs.overrideAttrs (oa: {
             postInstall = ''
@@ -253,7 +223,6 @@ let
     lsof = "${pkgsStatic.lsof}/bin/lsof";
     mergiraf = "${pkgsStatic.mergiraf}/bin/mergiraf";
     mg = "${pkgsStatic.mg}/bin/mg";
-    mosh-server = "${pkgsStatic.mosh}/bin/mosh-server";
     mtr = "${pkgsStatic.mtr}/bin/mtr";
     nc = "${pkgsStatic.netcat}/bin/nc";
     ncat = "${pkgsStatic.nmap}/bin/ncat";
