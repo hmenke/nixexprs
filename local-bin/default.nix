@@ -88,17 +88,11 @@ let
             doCheck = false; # tests including bold of course fail now
           });
 
-          direnv = prev.direnv.overrideAttrs (
-            oa:
-            if oa ? "BASH_PATH" then
-              { BASH_PATH = ""; }
-            else
-              {
-                env = (oa.env or { }) // {
-                  BASH_PATH = "";
-                };
-              }
-          );
+          direnv = prev.direnv.overrideAttrs (oa: {
+            env = (oa.env or { }) // {
+              BASH_PATH = "";
+            };
+          });
 
           vhs = prev.vhs.overrideAttrs (oa: {
             postInstall = ''
@@ -111,13 +105,16 @@ let
             '';
           });
 
-          gocryptfs = prev.gocryptfs.overrideAttrs (oa: {
-            postInstall = "";
-          });
+          gocryptfs = prev.gocryptfs.overrideAttrs (
+            oa:
+            lib.optionalAttrs (lib.versionOlder lib.version "26.11pre") {
+              postInstall = "";
+            }
+          );
 
           libressl = prev.libressl.overrideAttrs (
             oa:
-            lib.optionalAttrs isStatic {
+            lib.optionalAttrs (isStatic && (lib.versionOlder lib.version "26.11pre")) {
               # broken since https://github.com/NixOS/nixpkgs/pull/515600
               preCheck = "";
             }
