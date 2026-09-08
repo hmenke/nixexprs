@@ -59,22 +59,6 @@ let
                 }
               );
 
-          mg = prev.mg.overrideAttrs (oa: {
-            patches =
-              assert (oa.patches or [ ]) == [ ];
-              [
-                (prev.fetchpatch2 {
-                  name = "Add-Ctrl-arrow-Ctrl-PgUp-Dn-to-fundamental-bindings.patch";
-                  url = "https://github.com/troglobit/mg/commit/4a1ddb3aa158a9e2d8281427972debc6d326a2f8.patch";
-                  hash = "sha256-+tQ5doUkAAh9LowqoNPnalVecmOIXWPTuhZl9j/iMUc=";
-                })
-              ];
-            patchFlags = [
-              "-p2"
-              "-F3"
-            ];
-          });
-
           universal-ctags =
             if !isStatic then
               prev.universal-ctags
