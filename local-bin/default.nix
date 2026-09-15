@@ -120,6 +120,13 @@ let
             }
           );
 
+          zellij-unwrapped' = prev.zellij-unwrapped.overrideAttrs (oa: {
+            buildInputs = (oa.buildInputs or [ ]) ++ [ prev.libssh2 ];
+            env = (oa.env or { }) // {
+              LIBSSH2_SYS_USE_PKG_CONFIG = 1;
+            };
+          });
+
           lesspipe' = prev.stdenv.mkDerivation {
             name = prev.lesspipe.name;
             src = prev.lesspipe.src;
@@ -246,6 +253,7 @@ let
     vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
     watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
+    zellij = "${pkgsStatic.zellij-unwrapped'}/bin/zellij";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
   };
 
