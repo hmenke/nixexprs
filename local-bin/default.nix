@@ -41,23 +41,10 @@ let
 
           hdf5 = prev.hdf5.override { szipSupport = false; };
 
-          nmap =
-            (prev.nmap.override {
-              liblinear = null;
-              withLua = false;
-            }).overrideAttrs
-              (
-                oa:
-                lib.optionalAttrs (lib.versionAtLeast lib.version "26.11pre") {
-                  patches = (oa.patches or [ ]) ++ [
-                    (prev.fetchpatch2 {
-                      name = "Do-not-call-NSE-if-compiling-without-Lua-support.patch";
-                      url = "https://github.com/nmap/nmap/commit/4c36cf12f246b52a8d510bdde8becd5c5b3bf8b5.patch";
-                      hash = "sha256-aWPHfJF1wOE5l6LQUKCqKVKxBoyNFov3r0NGEOxWpw8=";
-                    })
-                  ];
-                }
-              );
+          nmap = prev.nmap.override {
+            liblinear = null;
+            withLua = false;
+          };
 
           universal-ctags =
             if !isStatic then
