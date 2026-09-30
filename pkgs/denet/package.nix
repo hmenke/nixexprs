@@ -1,7 +1,9 @@
 {
   lib,
   fetchFromGitHub,
+  python3,
   rustPlatform,
+  versionCheckHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -20,7 +22,15 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-ChzRmH31H5Goq751B7+wSHjkJriBJ7YP8Bn2MY55I+Y=";
 
-  doCheck = false; # TODO
+  nativeCheckInputs = [ python3 ];
+  checkFlags = [
+    # TODO: Why does this test fail?
+    "--skip=metadata_reports_command_not_stub"
+  ];
+
+  nativeInstallCheckInputs = [ versionCheckHook ];
+  versionCheckProgramArg = "--version";
+  doInstallCheck = true;
 
   meta = {
     description = "Streaming process monitoring tool that provides detailed metrics on running processes, including CPU, memory, I/O, and thread usage";
