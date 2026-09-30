@@ -9,16 +9,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "denet";
-  version = "0.7.2";
+  version = "0.10.3";
 
   src = fetchFromGitHub {
     owner = "btraven00";
     repo = "denet";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-noWVLqcvlYQ8wIB4EZJ5FGdkKLs9KAIlQ/kjLqxt8IY=";
+    hash = "sha256-E9G3hrNE0OczAvGZtITneNYi1AD50qTSZhIJQVQLK/A=";
   };
 
-  cargoHash = "sha256-WD6JBDADHg43WAgIZ50BL11Oi2CG/ZmJf3lNb+5u7Gk=";
+  cargoHash = "sha256-ChzRmH31H5Goq751B7+wSHjkJriBJ7YP8Bn2MY55I+Y=";
 
   doCheck = false; # TODO
 
