@@ -22,6 +22,8 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-ChzRmH31H5Goq751B7+wSHjkJriBJ7YP8Bn2MY55I+Y=";
 
+  buildFeatures = [ "gpu" ];
+
   nativeCheckInputs = [ python3 ];
   checkFlags = [
     # TODO: Why does this test fail?
