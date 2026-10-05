@@ -28,6 +28,9 @@ rustPlatform.buildRustPackage (finalAttrs: {
   checkFlags = [
     # TODO: Why does this test fail?
     "--skip=metadata_reports_command_not_stub"
+    # TODO: These only fail on nixpkgs-unstable and only in GitHub Actions
+    "--skip=real_subprocesses_are_still_detected"
+    "--skip=tree_energy_follows_tree_cpu"
   ];
 
   nativeInstallCheckInputs = [ versionCheckHook ];
