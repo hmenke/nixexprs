@@ -9,16 +9,16 @@ buildGoModule (finalAttrs: {
   strictDeps = true;
 
   pname = "prometheus-slurm-exporter";
-  version = "0.20";
+  version = "0.24";
 
   src = fetchFromGitHub {
     owner = "vpenso";
     repo = "prometheus-slurm-exporter";
     rev = finalAttrs.version;
-    hash = "sha256-KS9LoDuLQFq3KoKpHd8vg1jw20YCNRJNJrnBnu5vxvs=";
+    hash = "sha256-WWAioKaK8qxKgQTxn89rslW8OMvNRuOV6GSWu2XA7w4=";
   };
 
-  vendorHash = "sha256-A1dd9T9SIEHDCiVT2UwV6T02BSLh9ej6LC/2l54hgwI=";
+  vendorHash = "sha256-TCMYaCRR62dBbJD/lZ6vVd0jM0gfJjkjJJaI8lCiND0=";
 
   env.CGO_ENABLED = 0;
   ldflags = [
