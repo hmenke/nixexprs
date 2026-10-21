@@ -190,7 +190,6 @@ let
     htop = "${pkgsStatic.htop}/bin/htop";
     httm = "${pkgsStatic.httm}/bin/httm";
     hyperfine = "${pkgsStatic.hyperfine}/bin/hyperfine";
-    jj = "${pkgsStatic.jujutsu}/bin/jj";
     jq = "${pkgsStatic.jq}/bin/jq";
     lemonade = "${goLinkStatic pkgs.lemonade { }}/bin/lemonade";
     less = "${pkgsStatic.less}/bin/less";
