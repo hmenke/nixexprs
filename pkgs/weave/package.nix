@@ -5,6 +5,7 @@
   openssl,
   pkg-config,
   rustPlatform,
+  writableTmpDirAsHomeHook,
 }:
 
 rustPlatform.buildRustPackage (finalAttrs: {
@@ -12,16 +13,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "weave";
-  version = "0.5.4";
+  version = "0.6.1";
 
   src = fetchFromGitHub {
     owner = "Ataraxy-Labs";
     repo = "weave";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-en8HwzvC2uPBwyHnQyUHrRLvWyWDWPptfTpX353i/pU=";
+    hash = "sha256-9GQcIdtwmdiU9oLpe7GftMSOrvnfVU0jCiPXMzy2868=";
   };
 
-  cargoHash = "sha256-LYcHCc3OkBmWY9tSpm3Mp+Dw/CRoTICngL7+GkUDAHk=";
+  cargoHash = "sha256-xKbbFUusg3ILqwYt72zT+987u+p4ZpfIiGeJAQEzHCA=";
 
   nativeBuildInputs = [
     pkg-config
@@ -31,6 +32,18 @@ rustPlatform.buildRustPackage (finalAttrs: {
   ];
   nativeCheckInputs = [
     gitMinimal
+    writableTmpDirAsHomeHook
+  ];
+  preCheck = ''
+    git config --global user.email "you@example.com"
+    git config --global user.name "Your Name"
+  '';
+  checkFlags = [
+    "--exact"
+    "--skip=a_commit_that_fails_on_a_lock_then_a_removed_lock_never_publishes_a_merge_that_drops_main"
+  ];
+  cargoTestFlags = [
+    "--no-fail-fast"
   ];
 
   meta = {
