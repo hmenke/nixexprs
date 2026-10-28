@@ -5,11 +5,11 @@ stdenvNoCC.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   pname = "pandoc-bin";
-  version = "3.12.1";
+  version = "3.13";
 
   src = fetchurl {
     url = "https://github.com/jgm/pandoc/releases/download/${finalAttrs.version}/pandoc-${finalAttrs.version}-linux-amd64.tar.gz";
-    hash = "sha256-0MkEEOkCBMnKg7hTn6xceu0B/VNyB+RYWEn4q8XfILg=";
+    hash = "sha256-OKozsyWivJakw5QJYxIS21VwL1ZCULzb6tGAs79kY4k=";
   };
 
   phases = [
