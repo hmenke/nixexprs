@@ -111,6 +111,14 @@ let
             }
           );
 
+          tzdata = prev.tzdata.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              # fails to build since https://github.com/NixOS/nixpkgs/pull/568533
+              doCheck = assert prev.tzdata.doCheck; false;
+            }
+          );
+
           libressl = prev.libressl.overrideAttrs (
             oa:
             lib.optionalAttrs (isStatic && (lib.versionOlder lib.version "26.11pre")) {
