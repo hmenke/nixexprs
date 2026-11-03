@@ -99,6 +99,18 @@ let
             }
           );
 
+          uv = prev.uv.overrideAttrs (
+            oa:
+            lib.optionalAttrs (lib.versionOlder lib.version "26.11pre") {
+              nativeBuildInputs = (oa.nativeBuildInputs or [ ]) ++ [
+                prev.makeBinaryWrapper
+              ];
+              postInstall = (oa.postInstall or "") + ''
+                wrapProgram $out/bin/uv --set-default UV_SYSTEM_CERTS 1
+              '';
+            }
+          );
+
           libressl = prev.libressl.overrideAttrs (
             oa:
             lib.optionalAttrs (isStatic && (lib.versionOlder lib.version "26.11pre")) {
@@ -236,7 +248,7 @@ let
     unison = "${pkgsStatic.unison}/bin/unison";
     unison-fsmonitor = "${pkgsStatic.unison}/bin/unison-fsmonitor";
     upterm = "${goLinkStatic pkgs.upterm { }}/bin/upterm";
-    uv = "${pkgsStatic.uv}/bin/uv";
+    uv = "${pkgsStatic.uv}/bin/.uv-wrapped";
     vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
     watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
