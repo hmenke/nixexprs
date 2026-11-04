@@ -13,16 +13,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "weave";
-  version = "0.6.2";
+  version = "0.7.1";
 
   src = fetchFromGitHub {
     owner = "Ataraxy-Labs";
     repo = "weave";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-qID6kJHliwq6J+0Gr/uiRTI3mWfYAxPCkf0sFKodF7c=";
+    hash = "sha256-zxW4uDjZsL7a6jxbNOIuy1XWGZP/oEZ0Z2k0xYBxRvE=";
   };
 
-  cargoHash = "sha256-CBTWOze+bnShGR/HW+d5EbCZSUwCFVbCdiWgEr5dQHE=";
+  cargoHash = "sha256-9AoA7d97xwBCzdxhDtZqhPqPItFfcf2+zZpCdk3CGi4=";
 
   nativeBuildInputs = [
     pkg-config
