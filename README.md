@@ -4,10 +4,10 @@
 
 ### Bootstrap and update
 
-[`bootstrap.sh`](bootstrap.sh) downloads the latest artifact, prints the changes
-in package versions and installs `~/.local/bin` and `~/.local/share`.  It
-requires `tar`, `gzip` and `diff` and uses whichever of `curl`, `wget` or
-`python3` is available for downloading.
+[`bootstrap.sh`](.gh-pages/bootstrap.sh) downloads the latest artifact, prints
+the changes in package versions and installs `~/.local/bin` and
+`~/.local/share`.  It requires `tar`, `gzip` and `diff` and uses whichever of
+`curl`, `wget` or `python3` is available for downloading.
 
 ```shell
 curl -fsSL https://hmenke.github.io/nixexprs/bootstrap.sh | bash

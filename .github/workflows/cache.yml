@@ -43,46 +43,19 @@ jobs:
         pushFilter: "(-source$|nixpkgs.tar.gz$)"
     - name: Run nix build
       run: nix build --print-build-logs --no-link --file ./default.nix
-    - name: Prepare archive
+    - name: Prepare archive and pages
       if: ${{ matrix.channel == 'nixos-26.05' }}
       run: |
         nix build --file ./default.nix -o .local local-bin
-        tar cvf local-bin-share.tar --mode='u+rwX,go+rX' --dereference .local/bin/* .local/share/*
-        gzip -fv --rsyncable local-bin-share.tar
-    - name: Prepare pages
-      if: ${{ matrix.channel == 'nixos-26.05' }}
-      run: |
-        mkdir -p pages/
-        mv -v local-bin-share.tar.gz pages/
-        cp -v bootstrap.sh pages/
-        updated="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
-        cat > pages/index.html <<EOF
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-        <meta charset="utf-8">
-        <title>nixexprs</title>
-        </head>
-        <body>
-        <h1>nixexprs</h1>
-        <p>Install or update <code>~/.local/bin</code> and <code>~/.local/share</code>:</p>
-        <pre>curl -fsSL https://hmenke.github.io/nixexprs/bootstrap.sh | bash
-        wget -qO- https://hmenke.github.io/nixexprs/bootstrap.sh | bash</pre>
-        <ul>
-        <li><a href="bootstrap.sh">bootstrap.sh</a></li>
-        <li><a href="local-bin-share.tar.gz">local-bin-share.tar.gz</a></li>
-        </ul>
-        <p>Last updated: <time datetime="${updated}">${updated}</time></p>
-        <p>Source: <a href="https://github.com/hmenke/nixexprs">github.com/hmenke/nixexprs</a></p>
-        </body>
-        </html>
-        EOF
+        tar cvf .gh-pages/local-bin-share.tar --mode='u+rwX,go+rX' --dereference .local/bin/* .local/share/*
+        gzip -fv --rsyncable .gh-pages/local-bin-share.tar
+        sed -i "s/@UPDATED@/$(date -u '+%Y-%m-%dT%H:%M:%SZ')/g" .gh-pages/index.html
     - name: Upload pages
       id: upload-pages
       if: ${{ matrix.channel == 'nixos-26.05' && github.ref == 'refs/heads/master' }}
       uses: actions/upload-pages-artifact@v5
       with:
-        path: pages/
+        path: .gh-pages/
 
   deploy-pages:
     needs: nix-build
