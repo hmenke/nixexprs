@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 #shellcheck enable=all
 
+{ # Prevent execution if this script was only partially downloaded
+
 set -o errexit
 set -o nounset
 set -o pipefail
@@ -33,3 +35,5 @@ gzip -dc local-bin-share.tar.gz | tar -xf - -C "${_HOME}"
 
 echo "==> Removing local-bin-share.tar.gz"
 rm local-bin-share.tar.gz
+
+} # End of wrapping
