@@ -55,7 +55,8 @@ jobs:
         mkdir -p pages/
         mv -v local-bin-share.tar.gz pages/
         cp -v bootstrap.sh pages/
-        cat > pages/index.html <<'EOF'
+        updated="$(date -u '+%Y-%m-%dT%H:%M:%SZ')"
+        cat > pages/index.html <<EOF
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -71,6 +72,7 @@ jobs:
         <li><a href="bootstrap.sh">bootstrap.sh</a></li>
         <li><a href="local-bin-share.tar.gz">local-bin-share.tar.gz</a></li>
         </ul>
+        <p>Last updated: <time datetime="${updated}">${updated}</time></p>
         <p>Source: <a href="https://github.com/hmenke/nixexprs">github.com/hmenke/nixexprs</a></p>
         </body>
         </html>

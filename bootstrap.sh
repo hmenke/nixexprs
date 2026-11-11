@@ -24,7 +24,7 @@ fi
 
 if [[ ! -f "${_HOME}/${versions}" ]]; then
 	echo "==> Fresh installation, no previous package versions found"
-elif diff -u -L installed -L new "${versions}" <(gzip -dc local-bin-share.tar.gz | tar -xOf - "${versions}" || true); then
+elif diff -U0 -L installed -L new "${versions}" <(gzip -dc local-bin-share.tar.gz | tar -xOf - "${versions}" || true); then
 	echo "==> Package versions are unchanged"
 fi
 
