@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  actions: write
+  contents: read
 
 jobs:
   nix-build:
@@ -18,6 +18,8 @@ jobs:
         - channel: nixos-26.05
         - channel: nixpkgs-unstable
     runs-on: ubuntu-latest
+    outputs:
+      pages-artifact: ${{ steps.upload-pages.outputs.artifact_id }}
     env:
       NIXPKGS_ALLOW_UNFREE: 1
     steps:
@@ -41,24 +43,55 @@ jobs:
         pushFilter: "(-source$|nixpkgs.tar.gz$)"
     - name: Run nix build
       run: nix build --print-build-logs --no-link --file ./default.nix
-    - name: Prepare artifacts
+    - name: Prepare archive
       if: ${{ matrix.channel == 'nixos-26.05' }}
       run: |
         nix build --file ./default.nix -o .local local-bin
         tar cvf local-bin-share.tar --mode='u+rwX,go+rX' --dereference .local/bin/* .local/share/*
         gzip -fv --rsyncable local-bin-share.tar
-    - name: Delete old artifacts
-      uses: actions/github-script@v9
+    - name: Prepare pages
       if: ${{ matrix.channel == 'nixos-26.05' }}
+      run: |
+        mkdir -p pages/
+        mv -v local-bin-share.tar.gz pages/
+        cp -v bootstrap.sh pages/
+        cat > pages/index.html <<'EOF'
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+        <meta charset="utf-8">
+        <title>nixexprs</title>
+        </head>
+        <body>
+        <h1>nixexprs</h1>
+        <p>Install or update <code>~/.local/bin</code> and <code>~/.local/share</code>:</p>
+        <pre>curl -fsSL https://hmenke.github.io/nixexprs/bootstrap.sh | bash
+        wget -qO- https://hmenke.github.io/nixexprs/bootstrap.sh | bash</pre>
+        <ul>
+        <li><a href="bootstrap.sh">bootstrap.sh</a></li>
+        <li><a href="local-bin-share.tar.gz">local-bin-share.tar.gz</a></li>
+        </ul>
+        <p>Source: <a href="https://github.com/hmenke/nixexprs">github.com/hmenke/nixexprs</a></p>
+        </body>
+        </html>
+        EOF
+    - name: Upload pages
+      id: upload-pages
+      if: ${{ matrix.channel == 'nixos-26.05' && github.ref == 'refs/heads/master' }}
+      uses: actions/upload-pages-artifact@v5
       with:
-        script: |
-          const { owner, repo } = context.issue
-          const res = await github.rest.actions.listArtifactsForRepo({owner, repo})
-          res.data.artifacts.forEach(({ id }) => {
-            github.rest.actions.deleteArtifact({owner, repo, artifact_id: id})
-          })
-    - uses: actions/upload-artifact@v7
-      if: ${{ matrix.channel == 'nixos-26.05' }}
-      with:
-        path: local-bin-share.tar.gz
-        archive: true # https://github.com/oprypin/nightly.link/issues/88
+        path: pages/
+
+  deploy-pages:
+    needs: nix-build
+    if: ${{ !cancelled() && needs.nix-build.outputs.pages-artifact && github.ref == 'refs/heads/master' }}
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    - id: deployment
+      uses: actions/deploy-pages@v5

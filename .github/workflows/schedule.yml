@@ -12,6 +12,10 @@ jobs:
   cache:
     uses: ./.github/workflows/cache.yml
     secrets: inherit
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
   update:
     uses: ./.github/workflows/update.yml
     secrets: inherit

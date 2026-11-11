@@ -2,57 +2,14 @@
 [![schedule](https://github.com/hmenke/nixexprs/actions/workflows/schedule.yml/badge.svg)](https://github.com/hmenke/nixexprs/actions/workflows/schedule.yml)
 [![update](https://github.com/hmenke/nixexprs/actions/workflows/update.yml/badge.svg)](https://github.com/hmenke/nixexprs/actions/workflows/update.yml)
 
-https://nightly.link/hmenke/nixexprs/workflows/cache/master/artifact.zip
+### Bootstrap and update
 
-### All-in-one download and extract
-
-```shell
-python3 <<EOF
-from urllib.request import urlretrieve
-from shutil import unpack_archive
-from os import remove
-from os.path import expanduser
-
-print("Downloading...")
-urlretrieve("https://nightly.link/hmenke/nixexprs/workflows/cache/master/artifact.zip", "artifact.zip")
-
-try:
-    print("Extracting artifact...")
-    unpack_archive("artifact.zip")
-finally:
-    remove("artifact.zip")
-
-try:
-    print("Extracting local-bin-share...")
-    unpack_archive("local-bin-share.tar.gz", expanduser("~"))
-finally:
-    remove("local-bin-share.tar.gz")
-EOF
-```
-
-### Download
+[`bootstrap.sh`](bootstrap.sh) downloads the latest artifact, prints the changes
+in package versions and installs `~/.local/bin` and `~/.local/share`.  It
+requires `tar`, `gzip` and `diff` and uses whichever of `curl`, `wget` or
+`python3` is available for downloading.
 
 ```shell
-curl -LO https://nightly.link/hmenke/nixexprs/workflows/cache/master/artifact.zip
-wget https://nightly.link/hmenke/nixexprs/workflows/cache/master/artifact.zip
-python3 -c 'from urllib.request import *; urlretrieve("https://nightly.link/hmenke/nixexprs/workflows/cache/master/artifact.zip", "artifact.zip")'
-```
-
-### Unpack top level
-
-```shell
-unzip artifact.zip
-python3 -c 'import shutil; shutil.unpack_archive("artifact.zip")'
-```
-
-### Find out what's new
-
-```
-diff -u <(cat ~/.local/share/nixexprs/package-versions) <(tar xvf local-bin-share.tar.gz -O .local/share/nixexprs/package-versions)
-```
-
-### Unpack contents
-
-```shell
-tar -kxvf local-bin-share.tar.gz -C ~
+curl -fsSL https://hmenke.github.io/nixexprs/bootstrap.sh | bash
+wget -qO- https://hmenke.github.io/nixexprs/bootstrap.sh | bash
 ```
