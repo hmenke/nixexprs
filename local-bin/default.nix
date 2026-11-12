@@ -115,7 +115,9 @@ let
             oa:
             lib.optionalAttrs isStatic {
               # fails to build since https://github.com/NixOS/nixpkgs/pull/568533
-              doCheck = assert prev.tzdata.doCheck; false;
+              doCheck =
+                assert prev.tzdata.doCheck;
+                false;
             }
           );
 
@@ -186,6 +188,7 @@ let
     btop = "${pkgsStatic.btop}/bin/btop";
     busybox = "${pkgsStatic.busybox}/bin/busybox";
     bwrap = "${pkgsStatic.bubblewrap}/bin/bwrap";
+    chezmoi = "${goLinkStatic pkgs.chezmoi { }}/bin/chezmoi";
     coreutils = "${pkgsStatic.coreutils}/bin/coreutils";
     cpz = "${pkgsStatic.fuc}/bin/cpz";
     ctags = "${pkgsStatic.universal-ctags}/bin/ctags";
