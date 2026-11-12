@@ -1,6 +1,8 @@
 {
-  lib,
+  aws-lc,
   fetchFromGitea,
+  lib,
+  pkg-config,
   rustPlatform,
 }:
 
@@ -20,6 +22,13 @@ rustPlatform.buildRustPackage (finalAttrs: {
   };
 
   cargoHash = "sha256-Be+jESYIqXX9/hHLGII/T/NOEOkILpSpyywCRGC+kcA=";
+
+  nativeBuildInputs = [
+    pkg-config
+  ];
+  buildInputs = [
+    aws-lc
+  ];
 
   checkFlags = [
     "--skip=setgid_file_flagged"

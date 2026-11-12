@@ -30,6 +30,14 @@ let
                 LDFLAGS = "-static";
               };
 
+          ripgrep = prev.ripgrep.overrideAttrs (
+            oa:
+            lib.optionalAttrs isStatic {
+              # This was broken by the great devendoring
+              buildInputs = (oa.buildInputs or [ ]) ++ [ prev.rust-jemalloc-sys ];
+            }
+          );
+
           ripgrep-all = prev.ripgrep-all.overrideAttrs (
             oa:
             lib.optionalAttrs isStatic {
@@ -120,6 +128,17 @@ let
                 false;
             }
           );
+
+          aws-lc =
+            if (isStatic && lib.versionAtLeast lib.version "26.11pre") then
+              # fails to build since https://github.com/NixOS/nixpkgs/pull/581545
+              (prev.aws-lc.override { go = prev.pkgsBuildBuild.go; }).overrideAttrs (oa: {
+                env = (oa.env or { }) // {
+                  CGO_ENABLED = 0;
+                };
+              })
+            else
+              prev.aws-lc;
 
           libressl = prev.libressl.overrideAttrs (
             oa:

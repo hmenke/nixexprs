@@ -1,7 +1,9 @@
 {
-  lib,
+  aws-lc,
   fetchFromGitHub,
   gitMinimal,
+  lib,
+  libgit2,
   openssl,
   pkg-config,
   rustPlatform,
@@ -24,10 +26,17 @@ rustPlatform.buildRustPackage (finalAttrs: {
 
   cargoHash = "sha256-9AoA7d97xwBCzdxhDtZqhPqPItFfcf2+zZpCdk3CGi4=";
 
+  env = {
+    LIBGIT2_NO_VENDOR = 1;
+    OPENSSL_NO_VENDOR = 1;
+  };
+
   nativeBuildInputs = [
     pkg-config
   ];
   buildInputs = [
+    aws-lc
+    libgit2
     openssl
   ];
   nativeCheckInputs = [
