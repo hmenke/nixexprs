@@ -33,6 +33,14 @@
           -webkit-user-select: all;
       }
 
+      pre.listing {
+          display: block;
+      }
+
+      summary {
+          cursor: pointer;
+      }
+
       button {
           font: inherit;
           font-size: 0.875rem;
@@ -67,7 +75,18 @@
     <ul>
       <li><a href="bootstrap.sh">bootstrap.sh</a></li>
       <li><a href="local-bin-share.tar.gz">local-bin-share.tar.gz</a></li>
+      <li><a href="SHA256SUMS">SHA256SUMS</a></li>
     </ul>
+    <p>SHA-256 checksums:</p>
+    <pre class="listing">
+@SHA256SUMS@
+</pre>
+    <details>
+      <summary>Contents of <code>local-bin-share.tar.gz</code></summary>
+      <pre class="listing">
+@CONTENTS@
+</pre>
+    </details>
     <footer>
       Last updated <time datetime="@UPDATED@">@UPDATED@</time>
       · <a href="https://github.com/hmenke/nixexprs">Source</a>

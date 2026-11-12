@@ -45,10 +45,30 @@ jobs:
       run: nix build --print-build-logs --no-link --file ./default.nix
     - name: Prepare archive and pages
       if: ${{ matrix.channel == 'nixos-26.05' }}
+      shell: bash
+      env:
+        LC_ALL: C
       run: |
         nix build --file ./default.nix -o .local local-bin
-        tar cvf .gh-pages/local-bin-share.tar --mode='u+rwX,go+rX' --dereference .local/bin/* .local/share/*
-        gzip -fv --rsyncable .gh-pages/local-bin-share.tar
+
+        # Create archive
+        tar --create --file=- --verbose --format=gnu \
+          --sort=name \
+          --mtime="@${SOURCE_DATE_EPOCH:-315532800}" \
+          --owner=0 --group=0 --numeric-owner \
+          --mode='u+rwX,go+rX' \
+          --dereference --hard-dereference \
+          .local/bin/* .local/share/* |
+          gzip --no-name --rsyncable > .gh-pages/local-bin-share.tar.gz
+
+        # Compute checksums
+        (cd .gh-pages && sha256sum bootstrap.sh local-bin-share.tar.gz > SHA256SUMS)
+
+        # Prepare pages
+        tar --list --gzip --file=.gh-pages/local-bin-share.tar.gz |
+          sed -e 's/&/\&amp;/g' -e 's/</\&lt;/g' -e 's/>/\&gt;/g' |
+          sed -i -e '/^@CONTENTS@$/{r /dev/stdin' -e 'd}' .gh-pages/index.html
+        sed -i -e '/^@SHA256SUMS@$/{r .gh-pages/SHA256SUMS' -e 'd}' .gh-pages/index.html
         sed -i "s/@UPDATED@/$(date -u '+%Y-%m-%dT%H:%M:%SZ')/g" .gh-pages/index.html
     - name: Upload pages
       id: upload-pages
