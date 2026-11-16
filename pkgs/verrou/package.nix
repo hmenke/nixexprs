@@ -31,7 +31,6 @@ stdenv.mkDerivation (finalAttrs: {
   hardeningDisable = [
     "stackprotector"
   ];
-  NIX_ENFORCE_NO_NATIVE = false;
 
   # GDB is needed to provide a sane default for `--db-command'.
   # Perl is needed for `callgrind_{annotate,control}'.
@@ -50,7 +49,11 @@ stdenv.mkDerivation (finalAttrs: {
   separateDebugInfo = true;
 
   postPatch = ''
-    substituteInPlace verrou/Makefile.am --replace-fail '/usr/share' '/share'
+    substituteInPlace verrou/Makefile.am \
+      --replace-fail '/usr/share' '/share' \
+      --replace-fail '-march=native' '-march=x86-64-v3'
+    substituteInPlace verrou/configure.ac \
+      --replace-fail '-march=native' '-march=x86-64-v3'
     patchShebangs verrou/generateBackendInterOperator.py
     patchShebangs verrou/generateInstrumentOp_impl.py
     patchShebangs verrou/generateOpImpl.py
