@@ -30,14 +30,6 @@ let
                 LDFLAGS = "-static";
               };
 
-          ripgrep = prev.ripgrep.overrideAttrs (
-            oa:
-            lib.optionalAttrs isStatic {
-              # This was broken by the great devendoring
-              buildInputs = (oa.buildInputs or [ ]) ++ [ prev.rust-jemalloc-sys ];
-            }
-          );
-
           ripgrep-all = prev.ripgrep-all.overrideAttrs (
             oa:
             lib.optionalAttrs isStatic {
@@ -100,35 +92,6 @@ let
             '';
           });
 
-          gocryptfs = prev.gocryptfs.overrideAttrs (
-            oa:
-            lib.optionalAttrs (lib.versionOlder lib.version "26.11pre") {
-              postInstall = "";
-            }
-          );
-
-          uv = prev.uv.overrideAttrs (
-            oa:
-            lib.optionalAttrs (lib.versionOlder lib.version "26.11pre") {
-              nativeBuildInputs = (oa.nativeBuildInputs or [ ]) ++ [
-                prev.makeBinaryWrapper
-              ];
-              postInstall = (oa.postInstall or "") + ''
-                wrapProgram $out/bin/uv --set-default UV_SYSTEM_CERTS 1
-              '';
-            }
-          );
-
-          tzdata = prev.tzdata.overrideAttrs (
-            oa:
-            lib.optionalAttrs isStatic {
-              # fails to build since https://github.com/NixOS/nixpkgs/pull/568533
-              doCheck =
-                assert prev.tzdata.doCheck;
-                false;
-            }
-          );
-
           aws-lc =
             if (isStatic && lib.versionAtLeast lib.version "26.11pre") then
               # fails to build since https://github.com/NixOS/nixpkgs/pull/581545
@@ -139,21 +102,6 @@ let
               })
             else
               prev.aws-lc;
-
-          libressl = prev.libressl.overrideAttrs (
-            oa:
-            lib.optionalAttrs (isStatic && (lib.versionOlder lib.version "26.11pre")) {
-              # broken since https://github.com/NixOS/nixpkgs/pull/515600
-              preCheck = "";
-            }
-          );
-
-          zellij-unwrapped' = prev.zellij-unwrapped.overrideAttrs (oa: {
-            buildInputs = (oa.buildInputs or [ ]) ++ [ prev.libssh2 ];
-            env = (oa.env or { }) // {
-              LIBSSH2_SYS_USE_PKG_CONFIG = 1;
-            };
-          });
 
           lesspipe' = prev.stdenv.mkDerivation {
             name = prev.lesspipe.name;
@@ -273,7 +221,7 @@ let
     toybox = "${pkgsStatic.toybox}/bin/toybox";
     tree = "${pkgsStatic.tree}/bin/tree";
     ttyd = "${pkgsStatic.ttyd}/bin/ttyd";
-    ts = "${pkgsStatic.taskspooler}/bin/.ts-wrapped";
+    ts = "${pkgsStatic.taskspooler}/bin/ts";
     ug = "${pkgsStatic.ugrep}/bin/ug";
     unison = "${pkgsStatic.unison}/bin/unison";
     unison-fsmonitor = "${pkgsStatic.unison}/bin/unison-fsmonitor";
@@ -282,7 +230,7 @@ let
     vhs = "${goLinkStatic pkgs.vhs { }}/bin/vhs";
     watchexec = "${pkgsStatic.watchexec}/bin/watchexec";
     wireproxy = "${goLinkStatic pkgs.wireproxy { }}/bin/wireproxy";
-    zellij = "${pkgsStatic.zellij-unwrapped'}/bin/zellij";
+    zellij = "${pkgsStatic.zellij-unwrapped}/bin/zellij";
     zstd = "${pkgsStatic.zstd}/bin/zstd";
   };
 
