@@ -9,20 +9,15 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
   strictDeps = true;
 
   pname = "req2flatpak";
-  version = "0.3.1";
+  version = "0.3.2";
   format = "pyproject";
 
   src = fetchFromGitHub {
     owner = "johannesjh";
     repo = "req2flatpak";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-gj0SP4SQpkaT1dCov1l4qVWhy5J3Q+s9q3Q7TN83H/Q=";
+    hash = "sha256-VvrjknnihL11BgqnwK9IE42iEChJWXfe2L0ayTc99nU=";
   };
-
-  postPatch = ''
-    substituteInPlace ./pyproject.toml \
-      --replace-fail 'packaging = { version = "^21.3" }' 'packaging = { version = ">=21.3" }'
-  '';
 
   nativeBuildInputs = [ python3.pkgs.poetry-core ];
   propagatedBuildInputs = with python3.pkgs; [
@@ -44,6 +39,7 @@ python3.pkgs.buildPythonApplication (finalAttrs: {
   meta = {
     description = "Convert Python package requirements to Flatpak build manifests";
     homepage = "https://johannesjh.github.io/req2flatpak/";
+    changelog = "https://github.com/johannesjh/req2flatpak/blob/v${finalAttrs.version}/docs/source/changelog.rst";
     license = lib.licenses.mit;
     mainProgram = "req2flatpak";
     maintainers = with lib.maintainers; [ hmenke ];
