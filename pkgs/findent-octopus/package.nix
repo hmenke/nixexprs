@@ -11,13 +11,13 @@ stdenv.mkDerivation (finalAttrs: {
   strictDeps = true;
 
   pname = "findent-octopus";
-  version = "1.0-unstable-2026-02-20";
+  version = "1.0-unstable-2026-11-17";
 
   src = fetchFromGitLab {
     owner = "octopus-code";
     repo = "findent-octopus";
-    rev = "5432c71402157515564b91507616780fb933f3ae";
-    hash = "sha256-6EZHA6UNFRFsq2avE9Al+PHdu9HfONcBNKLiCGN0le0=";
+    rev = "e4b23370f962fee093543cb25ba183d483d566ce";
+    hash = "sha256-QuvERrYQ0xXb8yA/mKlXHxbhja9J46z5yiEj/ifklow=";
   };
 
   nativeBuildInputs = [
