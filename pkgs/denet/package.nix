@@ -11,16 +11,16 @@ rustPlatform.buildRustPackage (finalAttrs: {
   strictDeps = true;
 
   pname = "denet";
-  version = "0.11.2";
+  version = "0.11.3";
 
   src = fetchFromGitHub {
     owner = "btraven00";
     repo = "denet";
     rev = "v${finalAttrs.version}";
-    hash = "sha256-OGwsrkKWN1wwgQl7O3kxy7mE+OzHWlU+NySfCJVr9SQ=";
+    hash = "sha256-fH2MCbpTDerTgkArqpWZ6hIRMfxUwSd8lPgcL+KkWuA=";
   };
 
-  cargoHash = "sha256-chp0uWYvvZyg0ajKBIgvXQqTzPOc9pI43DSKDbs3BK4=";
+  cargoHash = "sha256-lvVDAIZzOGHw827iRs3EWqod99jxzhbdyvP5xQnoSHw=";
 
   buildFeatures = [ "gpu" ];
 
