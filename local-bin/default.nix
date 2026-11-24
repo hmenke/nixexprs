@@ -103,6 +103,10 @@ let
             else
               prev.aws-lc;
 
+          zellij-unwrapped = prev.zellij-unwrapped.overrideAttrs (oa: {
+            postFixup = lib.optionalString (!isStatic) oa.postFixup;
+          });
+
           lesspipe' = prev.stdenv.mkDerivation {
             name = prev.lesspipe.name;
             src = prev.lesspipe.src;
